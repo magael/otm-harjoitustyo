@@ -1,8 +1,8 @@
-# OTM Projekti
+﻿# OTM Projekti
 
 **OTM** *projekti*.
 
-by Mikael Jaakkola :fire::sparkles::unicorn::boom:
+Author: Mikael Jaakkola. :fire::sparkles::unicorn::boom:
   
 ## Tehtävät
 #### Viikko 1

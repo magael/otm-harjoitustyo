@@ -5,7 +5,7 @@
 Author: Mikael Jaakkola. :fire::sparkles::unicorn::boom:
   
 ## Tehtävät
-#### Viikko 1
+### Viikko 1
 
 [komentorivi.txt](https://github.com/magael/otm-harjoitustyo/blob/master/komentorivi.txt)
 

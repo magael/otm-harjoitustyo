@@ -1,5 +1,5 @@
 # Työaikakirjanpito
 
-| pvm | aika (h) | mitä tein  |
+| pvm | aika (h) | kuvaus |
 | :----:|:-----| :-----|
 |  |  |  |

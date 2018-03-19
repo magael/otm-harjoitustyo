@@ -1,0 +1,90 @@
+ommit b7fd57f0369aa14bf04bb0af1be79d58f2d176cb
+Author: Mikael Jaakkola <mikael.jaakkola@helsinki.fi>
+Date:   Wed Mar 14 00:45:56 2018 +0200
+
+    muutox
+
+ eka.txt          | 2 ++
+ stuff/kolmas.txt | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+commit 221cb2907c7f1d92f0b79d6cd58960c7ab9d84f8
+Author: Mikael Jaakkola <mikael.jaakkola@helsinki.fi>
+Date:   Wed Mar 14 00:43:01 2018 +0200
+
+    tiedosto->eka
+
+ eka.txt      | 561 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ tiedosto.txt | 561 
+-----------------------------------------------------------
+ 2 files changed, 561 insertions(+), 561 deletions(-)
+
+commit b170b6c8381875e566baa6f9251dbfae4551e46d
+Author: Mikael Jaakkola <mikael.jaakkola@helsinki.fi>
+Date:   Wed Mar 14 00:41:49 2018 +0200
+
+    poisto
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 89985388bc5d5daa1cf0cba36d09d8244d4e46ff
+Author: Mikael Jaakkola <mikael.jaakkola@helsinki.fi>
+Date:   Wed Mar 14 00:02:43 2018 +0200
+
+    wikipediaa tilalle tiedostoon
+
+ tiedosto.txt | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+commit 0b35717622e0d3b3514705d582c39b4dcd5d0427
+Author: Mikael Jaakkola <mikael.jaakkola@helsinki.fi>
+Date:   Wed Mar 14 00:00:41 2018 +0200
+
+    tiedostoon tekstii
+
+ tiedosto.txt | 555 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 554 insertions(+), 1 deletion(-)
+
+commit f3a6805021a6b16b2bc2d6c329fd55a891233eb3
+Author: Mikael Jaakkola <mikael.jaakkola@helsinki.fi>
+Date:   Tue Mar 13 23:51:32 2018 +0200
+
+    uus dir stuff, kolmas sinne
+
+ kolmas.txt       | 1 -
+ stuff/kolmas.txt | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+commit 1cac20956d5dfccb62c317a2cb6d5c447a388b77
+Author: Mikael Jaakkola <mikael.jaakkola@helsinki.fi>
+Date:   Tue Mar 13 23:50:22 2018 +0200
+
+    tokaan muutos, uus kolmas
+
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit fe7f9b1c41fecd684b6be4fde7a7e80bf6d2c0dd
+Author: Mikael Jaakkola <mikael.jaakkola@helsinki.fi>
+Date:   Tue Mar 13 23:35:01 2018 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit 2d2bddcd24dd636eaf8f4aff4c47e36330cc8b08
+Author: Mikael Jaakkola <mikael.jaakkola@helsinki.fi>
+Date:   Tue Mar 13 23:29:22 2018 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+

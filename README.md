@@ -2,4 +2,4 @@
 
 **OTM** [*projekti*](https://github.com/magael/otm-harjoitustyo).
 
-by Mikael Jaakkola :sparkles::unicorn::boom::wave:
+by Mikael Jaakkola :sparkles::unicorn::boom::cat-face::fire:

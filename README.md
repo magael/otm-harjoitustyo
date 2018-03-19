@@ -1,4 +1,4 @@
-#OTM Projekti
+# OTM Projekti
 
 **OTM** [*projekti*](https://github.com/magael/otm-harjoitustyo).
-* Mikael Jaakkola :sparkles:
+by Mikael Jaakkola :sparkles:

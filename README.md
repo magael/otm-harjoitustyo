@@ -1,3 +1,6 @@
 # OTM Projekti
+
 **OTM** [*projekti*](https://github.com/magael/otm-harjoitustyo).
-by Mikael Jaakkola :sparkles:
+
+by Mikael Jaakkola :sparkles::sparkles::sparkles::sparkles::sparkles:
+:unicorn:

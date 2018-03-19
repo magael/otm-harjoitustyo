@@ -1,6 +1,6 @@
 # OTM harjoitustyö
 
-**OTM** projekti.
+Tasohyppelypeli **JavaScriptilla** hyödyntäen HTML 5:n canvas-elementtiä. Tarkoitus olisi pärjätä ilman valmiita pelimoottoreita ym. kehyksiä.
 
 *Author: Mikael Jaakkola.* :fire::sparkles::unicorn::boom:
   

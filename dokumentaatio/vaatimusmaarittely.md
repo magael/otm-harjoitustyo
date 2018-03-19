@@ -4,7 +4,7 @@
 ## Soveluksen tarkoitus
 Sovellus on selaimella ("on-" tai "offline") pelattavissa oleva tasohyppelypeli.
 
-(Ohjelmointikielenä toimii JavaScript.
+(Kielenä toimii JavaScript.
 
 Tarkoitus olisi pärjätä ilman valmiita pelimoottoreita ym. kehyksiä.)
 

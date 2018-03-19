@@ -14,10 +14,6 @@ Tarkoitus olisi pärjätä ilman valmiita pelimoottoreita ym. kehyksiä.)
 ## Perusversion tarjoama toiminnallisuus
 
 
-### Ennen kirjautumista
-
-
-### Kirjautumisen jälkeen
 
 
 ## Jatkokehitysideoita

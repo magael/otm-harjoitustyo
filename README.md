@@ -1,4 +1,4 @@
-﻿# OTM Projekti
+# OTM Harjoitustyö
 
 **OTM** *projekti*.
 

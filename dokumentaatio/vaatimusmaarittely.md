@@ -28,10 +28,11 @@ Pelistä voi kehittää ajan salliessa yhä monimutkaisemman version.
 * "Juice": ruudun tärähdysefekti, taustojen parallaksi eteneminen, hienot grafiikat, äänet jne.
 * Pistetilastot verkossa
 * Mobiiliversio
+* Koodin ja dokumentaation kääntäminen englanniksi
 
 
 #### Klassinen (esim. Super Mario -tyylinen) tasohyppelypeli:
-Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaksi (esim. nuoli-, a- ja d-näppäimillä). Myös tämä versio on mahdollista pitää yksinkertaisena ja toimivana, lisäten hiljalleen lisää ominaisuuksia.
+Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaksi (esim. nuoli-, a- ja d-näppäimillä). Myös tämä versio on mahdollista pitää yksinkertaisena ja toimivana, lisäten hiljalleen ominaisuuksia.
 
 * Tarina
 * "Elämät" tms.
@@ -52,3 +53,4 @@ Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaks
 * "One way platforms": Vain hteen suuntaan liikkeen estävät tasot
 * Kaltevat mäet ym.
 * Moninpeli
+* Konsoliohjaimen tuki

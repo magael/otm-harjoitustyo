@@ -17,10 +17,8 @@ Pelissä on itse tasohyppelynäkymän lisäksi aloitus- ja päättymisnäkymät.
 
 Pelistä voi kehittää ajan salliessa yhä monimutkaisemman version.
 
-
-
 ## Jatkokehitysideoita
 
-####"Endless runner"-versioon sopivia ominaisuuksia:
+#### "Endless runner"-versioon sopivia ominaisuuksia:
 * Kerättävät "kolikot" tms
 * 

@@ -21,3 +21,6 @@ Pelistä voi kehittää ajan salliessa yhä monimutkaisemman version.
 
 ## Jatkokehitysideoita
 
+####"Endless runner"-versioon sopivia ominaisuuksia:
+* Kerättävät "kolikot" tms
+* 

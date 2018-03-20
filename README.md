@@ -4,7 +4,7 @@ Tasohyppelypeli **JavaScriptilla**.
 
 *Author: Mikael Jaakkola.* :fire::sparkles::unicorn::boom:
 
-*\mikael.jaakkola@helsinki.fi\*
+* \ mikael.jaakkola\[\at\]\helsinki.fi \ *
   
 ## Tehtävät
 ### Viikko 1

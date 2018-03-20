@@ -51,7 +51,7 @@ Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaks
 * Liikkuvia tasoja
 * Ympäristöön vaikuttavia kytkimiä
 * "Power-ups": Erityisominaisuuksia antavat kerättävät esineet
-* "One way platforms": Vain hteen suuntaan liikkeen estävät tasot
+* "One way platforms": Vain yhteen suuntaan liikkeen estävät tasot
 * Kaltevat mäet ym.
 * Moninpeli
 * Konsoliohjaimen tuki

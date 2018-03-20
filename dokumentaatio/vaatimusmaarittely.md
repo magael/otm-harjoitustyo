@@ -34,7 +34,7 @@ Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaks
 
 * Tarina
 * "Elämät" tms.
-* Vihollisia
+* Vihollisia (eri tavoin partioivia ja liikkuvia)
 * Keinoja vuorovaikuttaa tietokoneen ohjaamien hahmojen ("NPC") kanssa
   * Pelaajan "elämän" tai vastaavan menettäminen osuessaan viholliseen
   * Vihollisten päälle hyppiminen

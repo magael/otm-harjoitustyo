@@ -43,6 +43,7 @@ Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaks
   * Lyöminen tms.
   * Projektiilit
   * Puhuminen ystävällisten tietokonehahmojen kanssa
+* Varustevalikko
 * Nopea "dash"-liike ilmassa
 * Seiniä pitkin hyppiminen
 * "Grappling hook": köysi & koukku

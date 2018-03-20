@@ -42,7 +42,7 @@ Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaks
   * Vihollisten päälle hyppiminen
   * Lyöminen tms.
   * Projektiilit
-  * Puhuminen ystävällisten tietokonehahmojen kanssa
+  * Puhuminen ym. ystävällisten tietokonehahmojen kanssa
 * Varustevalikko
 * Nopea "dash"-liike ilmassa
 * Seiniä pitkin hyppiminen

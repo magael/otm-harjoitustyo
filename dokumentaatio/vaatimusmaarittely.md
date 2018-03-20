@@ -25,19 +25,23 @@ Pelistä voi kehittää ajan salliessa yhä monimutkaisemman version.
 * Kerättävät "kolikot" tms
 * Vaihtoehtoisia polkuja
 * Tuplahyppy
-* Taustojen parallaksi eteneminen
-* "Juice": ruudun tärähdysefekti, grafiikat, äänet jne.
+* "Juice": ruudun tärähdysefekti, taustojen parallaksi eteneminen, hienot grafiikat, äänet jne.
+* Pistetilastot verkossa
+* Mobiiliversio
 
 
-#### Klassinen (esim. Super Mario -tyylinen) tasohyppelypeli
+#### Klassinen (esim. Super Mario -tyylinen) tasohyppelypeli:
 Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaksi (esim. nuoli-, a- ja d-näppäimillä). Myös tämä versio on mahdollista pitää yksinkertaisena ja toimivana, lisäten hiljalleen lisää ominaisuuksia.
 
+* Tarina
 * "Elämät" tms.
 * Vihollisia
 * Keinoja vuorovaikuttaa tietokoneen ohjaamien hahmojen kanssa
   * Pelaajan "elämän" tai vastaavan menettäminen
   * Vihollisten päälle hyppiminen
+  * Lyöminen tms.
   * Projektiilit
+  * Puhuminen ystävällisten tietokonehahmojen kanssa
 * Nopea "dash"-liike ilmassa
 * Seiniä pitkin hyppiminen
 * "Grappling hook": köysi & koukku
@@ -47,5 +51,4 @@ Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaks
 * "Power-ups": Erityisominaisuuksia antavat kerättävät esineet
 * "One way platforms": Vain hteen suuntaan liikkeen estävät tasot
 * Kaltevat mäet ym.
-
-Pelistä voi myös jatkossa kehittää PC-version lisäksi mobiiliversio.
+* Moninpeli

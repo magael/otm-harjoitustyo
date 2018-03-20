@@ -1,6 +1,5 @@
 # Vaatimusmäärittely
 
-
 ## Soveluksen tarkoitus
 Sovellus on selaimella (PC:llä, "on-" tai "offline") pelattavissa oleva tasohyppelypeli.
 
@@ -16,12 +15,12 @@ Lähtökohtana on "The Impossible Game"-tyylinen kaksiulotteisen sivuttaisnäkym
 * Pisteitä saa etenemisestä, ja ne näytetään pelin lopuksi (ehkä myös pelin aikana).
 * Peli päättyy, jos pelaaja jää jumiin tai osuu "piikkeihin" epäonnistuneen hypyn seurauksena (mahdollisesti myös onnistuttuaan pääsemään ennalta määriteltyjen "tasojen" päättymispisteisiin).
 
-
 Pelistä voi kehittää ajan salliessa yhä monimutkaisemman version.
 
 ## Jatkokehitysideoita
 
 #### "Endless runner"-versioon sopivia ominaisuuksia:
+* Proseduraalisten ja/tai käsin kehiteltyjen tasojen edelleen kehittäminen
 * Kerättävät "kolikot" tms
 * Vaihtoehtoisia polkuja
 * Tuplahyppy
@@ -29,7 +28,6 @@ Pelistä voi kehittää ajan salliessa yhä monimutkaisemman version.
 * Pistetilastot verkossa
 * Mobiiliversio
 * Koodin ja dokumentaation kääntäminen englanniksi
-
 
 #### Klassinen (esim. Super Mario -tyylinen) tasohyppelypeli:
 Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaksi (esim. nuoli-, a- ja d-näppäimillä). Myös tämä versio on mahdollista pitää yksinkertaisena ja toimivana, lisäten hiljalleen ominaisuuksia.

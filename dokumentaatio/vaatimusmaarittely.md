@@ -38,7 +38,7 @@ Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaks
 * "Elämät" tms.
 * Vihollisia
 * Keinoja vuorovaikuttaa tietokoneen ohjaamien hahmojen ("NPC") kanssa
-  * Pelaajan "elämän" tai vastaavan menettäminen
+  * Pelaajan "elämän" tai vastaavan menettäminen osuessaan viholliseen
   * Vihollisten päälle hyppiminen
   * Lyöminen tms.
   * Projektiilit

@@ -3,6 +3,8 @@
 Tasohyppelypeli **JavaScriptilla**.
 
 *Author: Mikael Jaakkola.* :fire::sparkles::unicorn::boom:
+
+*mikael.jaakkola@helsinki.fi*
   
 ## Tehtävät
 ### Viikko 1

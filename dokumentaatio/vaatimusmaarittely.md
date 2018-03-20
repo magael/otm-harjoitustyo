@@ -2,7 +2,7 @@
 
 
 ## Soveluksen tarkoitus
-Sovellus on selaimella ("on-" tai "offline") pelattavissa oleva tasohyppelypeli.
+Sovellus on selaimella (PC:llä, "on-" tai "offline") pelattavissa oleva tasohyppelypeli.
 
 (Kielenä toimii JavaScript. Tarkoitus olisi pärjätä ilman valmiita pelimoottoreita ym. kehyksiä.)
 
@@ -35,15 +35,17 @@ Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaks
 * "Elämät" tms.
 * Vihollisia
 * Keinoja vuorovaikuttaa tietokoneen ohjaamien hahmojen kanssa
-** Pelaajan "elämän" tai vastaavan menettäminen
-** Vihollisten päälle hyppiminen
-** Projektiilit
+  * Pelaajan "elämän" tai vastaavan menettäminen
+  * Vihollisten päälle hyppiminen
+  * Projektiilit
+* Nopea "dash"-liike ilmassa
+* Seiniä pitkin hyppiminen
+* "Grappling hook": köysi & koukku
 * Salaisia polkuja ja kerättäviä esineitä
 * Liikkuvia tasoja
 * Ympäristöön vaikuttavia kytkimiä
-* Nopea "dash"-liike ilmassa
-* Seiniä pitkin hyppiminen
 * "Power-ups": Erityisominaisuuksia antavat kerättävät esineet
 * "One way platforms": Vain hteen suuntaan liikkeen estävät tasot
 * Kaltevat mäet ym.
-* 
+
+Pelistä voi myös jatkossa kehittää PC-version lisäksi mobiiliversio.

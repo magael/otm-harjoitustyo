@@ -24,7 +24,7 @@ Pelistä voi kehittää ajan salliessa yhä monimutkaisemman version.
 * Kerättävät "kolikot" tms
 * Vaihtoehtoisia polkuja
 * Tuplahyppy
-* "Juice": ruudun tärähdysefekti, taustojen parallaksi eteneminen, hienot grafiikat, äänet jne.
+* "Juice": ruudun tärähdysefekti, taustojen parallaksi eteneminen, hienot grafiikat ja animaatiot, äänet jne.
 * Pistetilastot verkossa
 * Mobiiliversio
 * Koodin ja dokumentaation kääntäminen englanniksi

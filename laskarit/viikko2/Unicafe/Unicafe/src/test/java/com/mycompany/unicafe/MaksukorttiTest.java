@@ -55,37 +55,3 @@ public class MaksukorttiTest {
         assertTrue(kortti != null);
     }
 }
-
-// Toisen Maksukortin (tässä tapauksessa Kassapäätteen testejä)
-//    @Test
-//    public void syoEdullisestiToimiiKunJaljellaEdullisenHinta() {
-//        kortti.syoEdullisesti();
-//        kortti.syoEdullisesti();
-//        kortti.syoEdullisesti();
-//        kortti.syoEdullisesti();
-//        assertEquals("Kortilla on rahaa 0.0 euroa", kortti.toString());
-//    }
-//
-//    @Test
-//    public void syoMaukkaastiToimiiKunJaljellaMaukkaanHinta() {
-//        Maksukortti uusiKortti = new Maksukortti(4);
-//        uusiKortti.syoMaukkaasti();
-//        assertEquals("Kortilla on rahaa 0.0 euroa", uusiKortti.toString());
-//    }
-//    @Test
-//    public void kortilleVoiLadataRahaa() {
-//        kortti.lataaRahaa(25);
-//        assertEquals("Kortilla on rahaa 35.0 euroa", kortti.toString());
-//    }
-//
-//    @Test
-//    public void kortinSaldoEiYlitaMaksimiarvoa() {
-//        kortti.lataaRahaa(200);
-//        assertEquals("Kortilla on rahaa 150.0 euroa", kortti.toString());
-//    }
-//
-//    @Test
-//    public void negatiivisenSummanLataaminenEiMuutaSaldoa() {
-//        kortti.lataaRahaa(-100);
-//        assertEquals("Kortilla on rahaa 10.0 euroa", kortti.toString());
-//    }

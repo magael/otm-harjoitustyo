@@ -12,7 +12,7 @@ Sovellus on selaimella (PC:llä, "on-" tai "offline") pelattavissa oleva tasohyp
 Lähtökohtana on The Impossible Game -tyylinen kaksiulotteisen sivuttaisnäkymän yhden painikkeen "endless runner", eli eteneminen on automaattista, pelaajan tarvitsee vain hypätä oikeissa kohdissa.
 
 * Pelissä on itse tasohyppelynäkymän lisäksi aloitus- ja päättymisnäkymät.
-* Pisteitä saa etenemisestä, ja ne näytetään pelin lopuksi (ehkä ei tarvitsekaan pelin aikana: pelaaja ei ehdi kiinnittää huomiota).
+* Pisteitä saa etenemisestä, ja ne näytetään pelin lopuksi. (Ehkä ei tarvitsekaan pelin aikana: pelaaja ei ehdi kiinnittää huomiota.)
 * Peli päättyy, jos pelaaja jää jumiin tai osuu "piikkeihin" epäonnistuneen hypyn seurauksena.
 
 ## Jatkokehitysideoita

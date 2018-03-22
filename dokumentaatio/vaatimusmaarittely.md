@@ -13,12 +13,13 @@ Lähtökohtana on "The Impossible Game"-tyylinen kaksiulotteisen sivuttaisnäkym
 
 * Pelissä on itse tasohyppelynäkymän lisäksi aloitus- ja päättymisnäkymät.
 * Pisteitä saa etenemisestä, ja ne näytetään pelin lopuksi (ehkä myös pelin aikana).
-* Peli päättyy, jos pelaaja jää jumiin tai osuu "piikkeihin" epäonnistuneen hypyn seurauksena (mahdollisesti myös onnistuttuaan pääsemään ennalta määriteltyjen "tasojen" päättymispisteisiin).
+* Peli päättyy, jos pelaaja jää jumiin tai osuu "piikkeihin" epäonnistuneen hypyn seurauksena.
 
 ## Jatkokehitysideoita
 
 #### "Endless runner"-versioon sopivia ominaisuuksia:
-* Proseduraalisten ja/tai käsin kehiteltyjen tasojen edelleen kehittäminen
+* Etenemistä ennalta määrityillä tasoilla / kartoilla ("level / map" -taso, ei "platform")
+* Proseduraalisten ja/tai käsin tehtyjen tasojen edelleen kehittäminen
 * Kerättävät "kolikot" tms
 * Vaihtoehtoisia polkuja
 * Tuplahyppy

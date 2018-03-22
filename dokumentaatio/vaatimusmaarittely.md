@@ -15,8 +15,6 @@ Lähtökohtana on "The Impossible Game"-tyylinen kaksiulotteisen sivuttaisnäkym
 * Pisteitä saa etenemisestä, ja ne näytetään pelin lopuksi (ehkä myös pelin aikana).
 * Peli päättyy, jos pelaaja jää jumiin tai osuu "piikkeihin" epäonnistuneen hypyn seurauksena (mahdollisesti myös onnistuttuaan pääsemään ennalta määriteltyjen "tasojen" päättymispisteisiin).
 
-Pelistä voi kehittää ajan salliessa yhä monimutkaisemman version.
-
 ## Jatkokehitysideoita
 
 #### "Endless runner"-versioon sopivia ominaisuuksia:

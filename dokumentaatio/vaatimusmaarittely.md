@@ -26,7 +26,7 @@ Lähtökohtana on The Impossible Game -tyylinen kaksiulotteisen sivuttaisnäkym�
 * "Juice": ruudun tärähdysefekti, taustojen parallaksi eteneminen, hienot grafiikat ja animaatiot, äänet jne.
 * Pistetilastot verkossa
 * Mobiiliversio
-* Koodin ja dokumentaation kääntäminen englanniksi
+* Koodin ja dokumentaation kääntäminen englanniksi, ellei ole jo
 
 #### Klassinen (esim. Super Mario -tyylinen) tasohyppelypeli:
 Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaksi (esim. nuoli-, a- ja d-näppäimillä). Myös tämä versio on mahdollista pitää yksinkertaisena ja toimivana, lisäten hiljalleen ominaisuuksia.

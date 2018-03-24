@@ -24,6 +24,8 @@ Lähtökohtana on The Impossible Game -tyylinen kaksiulotteisen sivuttaisnäkym�
 * Kerättävät "kolikot" tms.
 * Tuplahyppy
 * "Juice": ruudun tärähdysefekti, taustojen parallaksi eteneminen, hienot grafiikat ja animaatiot, äänet jne.
+* Pelin laittaminen tauolle
+* Paikallisesti tallennettavat ja ladattavat pistetulokset
 * Pistetilastot verkossa
 * Mobiiliversio
 * Koodin ja dokumentaation kääntäminen englanniksi, ellei ole jo
@@ -31,6 +33,7 @@ Lähtökohtana on The Impossible Game -tyylinen kaksiulotteisen sivuttaisnäkym�
 #### Klassinen (esim. Super Mario -tyylinen) tasohyppelypeli:
 Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaksi (esim. nuoli-, a- ja d-näppäimillä). Myös tämä versio on mahdollista pitää yksinkertaisena ja toimivana, lisäten hiljalleen ominaisuuksia.
 
+* Pelitilanteen tallentaminen
 * Kamera "lerp" (“linear interpolation”) seuraa pelaajaa
 * "Camera box"
 * Tarina

@@ -1,7 +1,8 @@
 # OTM-kurssin tehtävänpalautukset ja harjoitustyö
 
 Harjoitustyö: Tasohyppelypeli **JavaScriptilla**.
-        :fire::sparkles::unicorn::boom:
+
+<p style="text-align: center;"> :fire::sparkles::unicorn::boom: </p>
 
 *mikael.jaakkola\[at\]helsinki.fi*
   

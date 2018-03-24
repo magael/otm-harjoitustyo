@@ -3,7 +3,7 @@
 <p align="center">
  Harjoitustyö: Tasohyppelypeli <b>JavaScriptilla</b>.</br>
 :fire::sparkles::unicorn::boom:</br>
-<i>mikael.jaakkola\[at\]helsinki.fi</i></br>
+<i>mikael.jaakkola[at]helsinki.fi</i></br>
  </p>
   
 ## Tehtävät

@@ -20,8 +20,8 @@ Lähtökohtana on The Impossible Game -tyylinen kaksiulotteisen sivuttaisnäkym�
 #### "Endless runner"-versioon sopivia ominaisuuksia:
 * Etenemistä ennalta määrityillä tasoilla / kartoilla ("level / map" -taso, ei "platform")
 * Proseduraalisten ja/tai käsin tehtyjen tasojen arkkitehtuurin edelleen kehittäminen
+  * Vaihtoehtoisia polkuja, parempia proc. gen. algoritmeja, toimivampia, kekseliäämpiä, haastavampia tasoja
 * Kerättävät "kolikot" tms.
-* Vaihtoehtoisia polkuja
 * Tuplahyppy
 * "Juice": ruudun tärähdysefekti, taustojen parallaksi eteneminen, hienot grafiikat ja animaatiot, äänet jne.
 * Pistetilastot verkossa

@@ -18,4 +18,6 @@ Tasohyppelypeli **JavaScriptilla**.
 [Vaatimusmäärittely](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
 
 ### Viikko 3
-[Luokkakaavio](https://github.com/magael/otm-harjoitustyo/blob/master/laskarit/viikko3/luokkakaavio.xml)
+-tähän linkki: luokkakaavio-png/jpeg-
+
+-tähän linkki: sekvenssikaavio-png/jpeg-

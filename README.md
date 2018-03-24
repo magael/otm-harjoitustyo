@@ -18,6 +18,6 @@
 [Vaatimusmäärittely](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
 
 ### Viikko 3
--tähän linkki: luokkakaavio-png/jpeg-
+*-tähän linkki: **luokkakaavio**-png/jpeg-*
 
--tähän linkki: sekvenssikaavio-png/jpeg-
+*-tähän linkki: **sekvenssikaavio**-png/jpeg-*

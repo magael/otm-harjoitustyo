@@ -1,7 +1,7 @@
 # Vaatimusmäärittely
 
 ## Soveluksen tarkoitus
-Sovellus on selaimella (PC:llä, "on-" tai "offline") pelattavissa oleva tasohyppelypeli.
+Sovellus on web-selaimella (PC:llä, ilman internet-yhteyttä) pelattavissa oleva tasohyppelypeli.
 
 (Kielenä toimii JavaScript. Tarkoitus olisi pärjätä ilman valmiita pelimoottoreita ym. kehyksiä.)
 

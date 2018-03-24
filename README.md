@@ -1,4 +1,4 @@
-# OTM-kurssin harjoitustyö
+# OTM-kurssin tehtävänpalautukset ja harjoitustyö
 
 Tasohyppelypeli **JavaScriptilla**.
 

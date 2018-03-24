@@ -49,7 +49,7 @@ Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaks
 * Nopea "dash"-liike ilmassa
 * Seiniä pitkin hyppiminen
 * "Grappling hook": köysi & koukku
-* Salaisia polkuja ja kerättäviä esineitä
+* Salaisia polkuja ja sieltä kerättäviä erityisiä esineitä
 * Liikkuvia tasoja
 * Ympäristöön vaikuttavia kytkimiä
 * "Power-ups": Erityisominaisuuksia antavat kerättävät esineet

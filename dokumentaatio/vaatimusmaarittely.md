@@ -32,6 +32,7 @@ Lähtökohtana on The Impossible Game -tyylinen kaksiulotteisen sivuttaisnäkym�
 Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaksi (esim. nuoli-, a- ja d-näppäimillä). Myös tämä versio on mahdollista pitää yksinkertaisena ja toimivana, lisäten hiljalleen ominaisuuksia.
 
 * Kamera "lerp" (“linear interpolation”) seuraa pelaajaa
+* "Camera box"
 * Tarina
 * "Elämät" tms.
 * Vihollisia (eri tavoin partioivia ja liikkuvia)

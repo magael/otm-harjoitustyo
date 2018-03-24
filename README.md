@@ -7,14 +7,14 @@ Tasohyppelypeli **JavaScriptilla**.
 *mikael.jaakkola\[at\]helsinki.fi*
   
 ## Tehtävät
-### Viikko 1
+### [Viikko 1](https://github.com/magael/otm-harjoitustyo/tree/master/laskarit/viikko1)
 
 [komentorivi.txt](https://github.com/magael/otm-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)
 
 [gitlog.txt](https://github.com/magael/otm-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)
 
-### Viikko 2
+### [Viikko 2](https://github.com/magael/otm-harjoitustyo/tree/master/laskarit/viikko2)
 [Vaatimusmäärittely](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
 
-### Viikko 3
+### [Viikko 3](https://github.com/magael/otm-harjoitustyo/tree/master/laskarit/viikko3)
 [Luokkakaavio](https://github.com/magael/otm-harjoitustyo/blob/master/laskarit/viikko3/luokkakaavio.xml)

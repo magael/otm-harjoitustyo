@@ -2,7 +2,7 @@
 
 Harjoitustyö: Tasohyppelypeli **JavaScriptilla**.
 
-<p style="text-align: center;"> :fire::sparkles::unicorn::boom: </p>
+<p align="center">:fire::sparkles::unicorn::boom: </p>
 
 *mikael.jaakkola\[at\]helsinki.fi*
   

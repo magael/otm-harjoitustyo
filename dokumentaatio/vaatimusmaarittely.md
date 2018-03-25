@@ -44,7 +44,7 @@ Peli päättyy, jos pelaaja jää jumiin tai osuu piikkeihin epäonnistuneen hyp
 * Koodin ja dokumentaation kääntäminen englanniksi, ellei ole jo
 
 #### Klassinen (esim. Super Mario -tyylinen) tasohyppelypeli:
-Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaksi (esim. nuoli-, a- ja d-näppäimillä). Myös tämä versio on mahdollista pitää yksinkertaisena ja toimivana, lisäten hiljalleen ominaisuuksia.
+Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaksi (esim. nuoli-, a- ja d-näppäimillä).
 
 * Kamera "lerp" (“linear interpolation”) seuraa pelaajaa
 * "Camera box"

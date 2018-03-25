@@ -1,7 +1,7 @@
 # Vaatimusmäärittely
 
 ## Soveluksen tarkoitus
-Sovellus on tasohyppelypeli PC:lle. (Tarkoitus on viihdyttää pelaajaa hetki.)
+Sovellus on tasohyppelypeli PC:lle. Tarkoitus on viihdyttää pelaajaa hetki.
 
 (Kielenä toimii JavaScript. Yritän pärjätä ilman valmiita pelimoottori-kirjastoja ym.)
 

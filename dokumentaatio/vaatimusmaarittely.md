@@ -34,7 +34,7 @@ Peli päättyy, jos pelaaja jää jumiin tai osuu piikkeihin epäonnistuneen hyp
   * Vaihtoehtoisia polkuja, parempia proc. gen. algoritmeja, toimivampia, kekseliäämpiä, haastavampia tasoja
 * Kerättävät kolikot tms.
 * Tuplahyppy
-* "Juice": ruudun tärähdysefekti, taustojen parallaksi eteneminen, hienot grafiikat ja animaatiot, äänet jne.
+* "Juice": ruudun tärähdysefekti, taustojen parallaksi eteneminen, hienot "spritet" ja animaatiot, partikkeliefektit, äänet jne.
 * Pelin laittaminen tauolle
 * Paikallisesti tallennettavat ja ladattavat pistetulokset
 * Pistetilastot verkossa

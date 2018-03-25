@@ -1,9 +1,9 @@
 # Vaatimusmäärittely
 
 ## Soveluksen tarkoitus
-Sovellus on web-selaimella (PC:llä, ilman internet-yhteyttä) pelattavissa oleva tasohyppelypeli.
+Sovellus on tasohyppelypeli PC:lle. (Tarkoitus on viihdyttää pelaajaa hetki.)
 
-(Kielenä toimii JavaScript. Tarkoitus olisi pärjätä ilman valmiita pelimoottoreita ym. kehyksiä.)
+(Kielenä toimii JavaScript. Yritän pärjätä ilman valmiita "pelimoottori"-kirjastoja ym.)
 
 ## Käyttöliittymäluonnos
 ![kayttoliittymaluonnos](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/otm_kayttoliittymaluonnos.jpg)

@@ -11,14 +11,24 @@ Sovellus on tasohyppelypeli PC:lle. (Tarkoitus on viihdyttää pelaajaa hetki.)
 ## Perusversion tarjoama toiminnallisuus
 Lähtökohtana on The Impossible Game -tyylinen kaksiulotteisen sivuttaisnäkymän yhden painikkeen "endless runner", eli eteneminen on automaattista, pelaajan tarvitsee vain hypätä oikeissa kohdissa.
 
-* Pelissä on itse tasohyppelynäkymän lisäksi aloitus- ja päättymisnäkymät.
-* Pisteitä saa etenemisestä, ja ne näytetään pelin lopuksi. (Ehkä myös pelin aikana.)
-* Peli päättyy, jos pelaaja jää jumiin tai osuu "piikkeihin" epäonnistuneen hypyn seurauksena.
+Pisteitä saa etenemisestä, ja ne näytetään lopuksi ja/tai pelin aikana.
+
+Peli päättyy, jos pelaaja jää jumiin tai osuu "piikkeihin" epäonnistuneen hypyn seurauksena.
+
+####Toiminnallisuudet:
+* Hyppiminen
+* Törmäysten havaitseminen
+* Valmiiksi suunniteltuja tasoja
+* Tasot liikkuvat kohti pelaajaa (näyttää, kuin pelaaja liikkuisi niitä kohti)
+* Uusien tasojen lataaminen edetessä
+* Pelin päättyminen
+* Pisteiden lasku ja tulostus
 
 ## Jatkokehitysideoita
 
 #### "Endless runner"-versioon sopivia ominaisuuksia:
-* Etenemistä ennalta määrityillä tasoilla / kartoilla ("level / map" -taso, ei "platform")
+* Aloitus- ja päättymisnäkymät
+* Eri "leveleitä" (aluksi siis 1 "level"-taso tai "kartta", jossa erilaisia "platform"-tasoja)
 * Proseduraalisten ja/tai käsin tehtyjen tasojen arkkitehtuurin edelleen kehittäminen
   * Vaihtoehtoisia polkuja, parempia proc. gen. algoritmeja, toimivampia, kekseliäämpiä, haastavampia tasoja
 * Kerättävät "kolikot" tms.

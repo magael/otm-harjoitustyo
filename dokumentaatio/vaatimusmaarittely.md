@@ -32,6 +32,7 @@ Peli päättyy, jos pelaaja jää jumiin tai osuu piikkeihin epäonnistuneen hyp
 * Eri "leveleitä" (aluksi siis 1 "level"-taso / kartta, jossa erilaisia "platform"-tasoja)
 * Proseduraalisten ja/tai käsin tehtyjen tasojen arkkitehtuurin edelleen kehittäminen
   * Vaihtoehtoisia polkuja, parempia proc. gen. algoritmeja, toimivampia, kekseliäämpiä, haastavampia tasoja
+* Pelitilanteen tallentaminen
 * Kerättävät kolikot tms.
 * Tuplahyppy
 * Hypyn korkeuden hallitseminen pitämällä näppäintä pohjassa
@@ -45,7 +46,6 @@ Peli päättyy, jos pelaaja jää jumiin tai osuu piikkeihin epäonnistuneen hyp
 #### Klassinen (esim. Super Mario -tyylinen) tasohyppelypeli:
 Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaksi (esim. nuoli-, a- ja d-näppäimillä). Myös tämä versio on mahdollista pitää yksinkertaisena ja toimivana, lisäten hiljalleen ominaisuuksia.
 
-* Pelitilanteen tallentaminen
 * Kamera "lerp" (“linear interpolation”) seuraa pelaajaa
 * "Camera box"
 * Tarina

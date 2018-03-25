@@ -15,7 +15,7 @@ Pisteitä saa etenemisestä, ja ne näytetään lopuksi ja/tai pelin aikana.
 
 Peli päättyy, jos pelaaja jää jumiin tai osuu "piikkeihin" epäonnistuneen hypyn seurauksena.
 
-####Toiminnallisuudet:
+#### Toiminnallisuudet:
 * Hyppiminen
 * Törmäysten havaitseminen
 * Valmiiksi suunniteltuja tasoja

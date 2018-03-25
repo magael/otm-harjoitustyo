@@ -3,7 +3,7 @@
 ## Soveluksen tarkoitus
 Sovellus on tasohyppelypeli PC:lle. (Tarkoitus on viihdyttää pelaajaa hetki.)
 
-(Kielenä toimii JavaScript. Yritän pärjätä ilman valmiita "pelimoottori"-kirjastoja ym.)
+(Kielenä toimii JavaScript. Yritän pärjätä ilman valmiita pelimoottori-kirjastoja ym.)
 
 ## Käyttöliittymäluonnos
 ![kayttoliittymaluonnos](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/otm_kayttoliittymaluonnos.jpg)
@@ -13,7 +13,7 @@ Lähtökohtana on The Impossible Game -tyylinen kaksiulotteisen sivuttaisnäkym�
 
 Pisteitä saa etenemisestä, ja ne näytetään lopuksi ja/tai pelin aikana.
 
-Peli päättyy, jos pelaaja jää jumiin tai osuu "piikkeihin" epäonnistuneen hypyn seurauksena.
+Peli päättyy, jos pelaaja jää jumiin tai osuu piikkeihin epäonnistuneen hypyn seurauksena.
 
 #### Toiminnallisuudet:
 * Tasojen ja pelaajahahmon piirtäminen ja päivittäminen
@@ -29,10 +29,10 @@ Peli päättyy, jos pelaaja jää jumiin tai osuu "piikkeihin" epäonnistuneen h
 
 #### "Endless runner"-versioon sopivia ominaisuuksia:
 * Aloitus- ja päättymisnäkymät
-* Eri "leveleitä" (aluksi siis 1 "level"-taso tai "kartta", jossa erilaisia "platform"-tasoja)
+* Eri "leveleitä" (aluksi siis 1 "level"-taso / kartta, jossa erilaisia "platform"-tasoja)
 * Proseduraalisten ja/tai käsin tehtyjen tasojen arkkitehtuurin edelleen kehittäminen
   * Vaihtoehtoisia polkuja, parempia proc. gen. algoritmeja, toimivampia, kekseliäämpiä, haastavampia tasoja
-* Kerättävät "kolikot" tms.
+* Kerättävät kolikot tms.
 * Tuplahyppy
 * "Juice": ruudun tärähdysefekti, taustojen parallaksi eteneminen, hienot grafiikat ja animaatiot, äänet jne.
 * Pelin laittaminen tauolle
@@ -48,10 +48,10 @@ Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaks
 * Kamera "lerp" (“linear interpolation”) seuraa pelaajaa
 * "Camera box"
 * Tarina
-* "Elämät" tms.
+* Elämät tms.
 * Vihollisia (eri tavoin partioivia ja liikkuvia)
 * Keinoja vuorovaikuttaa tietokoneen ohjaamien hahmojen ("NPC") kanssa
-  * Pelaajan "elämän" tai vastaavan menettäminen osuessaan viholliseen
+  * Pelaajan elämän tai vastaavan menettäminen osuessaan viholliseen
   * Vihollisten päälle hyppiminen
   * Lyöminen tms.
   * Projektiilit

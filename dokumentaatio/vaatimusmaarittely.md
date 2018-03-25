@@ -34,6 +34,7 @@ Peli päättyy, jos pelaaja jää jumiin tai osuu piikkeihin epäonnistuneen hyp
   * Vaihtoehtoisia polkuja, parempia proc. gen. algoritmeja, toimivampia, kekseliäämpiä, haastavampia tasoja
 * Kerättävät kolikot tms.
 * Tuplahyppy
+* Hypyn korkeuden hallitseminen pitämällä näppäintä pohjassa
 * "Juice": ruudun tärähdysefekti, taustojen parallaksi eteneminen, hienot "spritet" ja animaatiot, partikkeliefektit, äänet jne.
 * Pelin laittaminen tauolle
 * Paikallisesti tallennettavat ja ladattavat pistetulokset
@@ -56,6 +57,7 @@ Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaks
   * Lyöminen tms.
   * Projektiilit
   * Puhuminen ym. ystävällisten NPC:iden kanssa
+* "Power-ups": Erityisominaisuuksia antavat kerättävät esineet
 * Varustevalikko
 * Nopea "dash"-liike ilmassa
 * Seiniä pitkin hyppiminen
@@ -63,8 +65,10 @@ Automaattinen sivuttaisliike voidaan vaihtaa manuaalisesti pelaajan hallitsemaks
 * Salaisia polkuja ja sieltä kerättäviä erityisiä esineitä
 * Liikkuvia tasoja
 * Ympäristöön vaikuttavia kytkimiä
-* "Power-ups": Erityisominaisuuksia antavat kerättävät esineet
+* Hajoavia tason osia
 * "One way platforms": Vain yhteen suuntaan liikkeen estävät tasot
-* Kaltevat mäet ym.
+* Kehittyneemmät törmäyksen havaitsemiset
+* Kaltevat mäet, portaat ym.
+* Köydet, tikkaat ym.
 * Moninpeli
 * Konsoliohjaimen tuki

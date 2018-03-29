@@ -16,8 +16,3 @@
 [Laskarit](https://github.com/magael/otm-harjoitustyo/tree/master/laskarit/viikko2)
 
 [Vaatimusmäärittely](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
-
-### Viikko 3
-*-tähän linkki: **luokkakaavio**-png/jpeg-*
-
-*-tähän linkki: **sekvenssikaavio**-png/jpeg-*

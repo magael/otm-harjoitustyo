@@ -1,9 +1,8 @@
 # Platformer
 
-<p align="center">
- OTM-kurssin harjoitustyö: Tasohyppelypeli <b>JavaScriptilla</b>.</br>
-:fire::sparkles::unicorn::boom:</br>
- </p>
+
+ OTM-kurssin harjoitustyö: Tasohyppelypeli JavaScriptilla.</br>
+:fire::sparkles::unicorn::boom:
   
 ## Dokumentaatio
 

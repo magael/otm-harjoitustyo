@@ -1,6 +1,6 @@
 # Työaikakirjanpito
 
-| pvm | aika (h) | kuvaus |
+| pvm | tunteja | kuvaus |
 | :----:|:-----| :-----|
 | 19.3. | 2 | Pelin suunnittelua, tekniikoiden ja työkalujen tutkimista |
 | 22.3. | 2 | -"- (mm. pelisuunnittelu ja tasohyppelypelit yleisesti)|

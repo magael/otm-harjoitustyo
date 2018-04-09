@@ -1,7 +1,7 @@
 # Platformer
 
 
- OTM-kurssin harjoitustyö: Tasohyppelypeli JavaScriptilla.</br>
+ OTM-kurssin harjoitustyö: Tasohyppelypeli (JavaFX).</br>
   
 ## Dokumentaatio
 [Vaatimusmäärittely](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)

@@ -6,3 +6,6 @@
 | 22.3. | 2 | -"- (mm. pelisuunnittelu ja tasohyppelypelit yleisesti)|
 | 24.3. | 3 | -"- (mm. JavaScript-pelinkehitys, node & electron asennus)|
 | 28.3. | 3 | Electron.js:n tutustuminen |
+| 5.4. | 1 | Mavenin ym. JavaScript-vastaavuuksien tutkiminen |
+| 6.4. | 2 | JavaFX:n tutustuminen, kielen vaihto Javaan ja projektin alustaminen |
+| 10.4 | 6 | JavaFX:n opettelu ja ensimmäiset toiminnallisuudet |

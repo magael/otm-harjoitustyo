@@ -25,7 +25,6 @@ Peli päättyy, jos pelaaja jää jumiin tai osuu piikkeihin epäonnistuneen hyp
 
 ## Jatkokehitysideoita
 
-#### "Endless runner"-versioon sopivia ominaisuuksia:
 * Aloitus- ja päättymisnäkymät
 * Eri "leveleitä" (aluksi siis 1 "level"-taso / kartta, jossa erilaisia "platform"-tasoja)
 * Proseduraalisten ja/tai käsin tehtyjen tasojen arkkitehtuurin edelleen kehittäminen

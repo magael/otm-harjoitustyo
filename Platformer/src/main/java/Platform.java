@@ -1,5 +1,4 @@
 
-import javafx.geometry.Point2D;
 import javafx.scene.Node;
 
 public class Platform extends GameObject {

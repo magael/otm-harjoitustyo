@@ -10,21 +10,21 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
 // Second version of the platforming game (old: platformer.OldWorld.java),
-// using AnimationTimer for the game loop
-// and methods of the Node class and Point2D for updating position.
+// using javafx.animation.AnimationTimer for the game loop,
+// javafx.scene.layout.Pane as the root node
+// and methods of javafx.scene.Node (and possibly Point2D) for updating position.
 public class World extends Application {
 
-    int tileSize;
-    int canvasWidth, canvasHeight;
+    final int tileSize;
+    final int canvasWidth, canvasHeight;
     int groundLevel;
     int playerWidth, playerHeight, playerStartX, playerStartY;
     Color color1, color2, color3, color4, color5;
 
-    public World() {
+    public World() { // Move these to init()?
         tileSize = 32;
         canvasWidth = 900;
         canvasHeight = 640;
@@ -52,33 +52,21 @@ public class World extends Application {
         Pane pane = new Pane();
         pane.setPrefSize(canvasWidth, canvasHeight);
 
-//        ArrayList<Node> sprites = new ArrayList<>();
-
         Player player1 = createPlayer();
         pane.getChildren().add(player1.getSprite());
 
         Ground ground = createGround();
         pane.getChildren().add(ground.getSprite());
         
-        Platform platform1 = new Platform(new Rectangle(tileSize * 3, tileSize, color2), canvasWidth - tileSize, groundLevel - tileSize);
+        Platform platform1 = createPlatform(tileSize * 3, tileSize, canvasWidth, groundLevel - tileSize);
         platform1.setSpeed(5);
         pane.getChildren().add(platform1.getSprite());
-        
-//        for (Node sprite : sprites) {
-//            pane.getChildren().add(sprite);
-//        }
         
         Scene scene = new Scene(pane, color5);
         stage.setTitle("Platformer");
         stage.setScene(scene);
 
-        Map<KeyCode, Boolean> buttonsDown = new HashMap<>();
-        scene.setOnKeyPressed(event -> {
-            buttonsDown.put(event.getCode(), Boolean.TRUE);
-        });
-        scene.setOnKeyReleased(event -> {
-            buttonsDown.put(event.getCode(), Boolean.FALSE);
-        });
+        initInput(scene);
 
         new AnimationTimer() {
             @Override
@@ -94,6 +82,16 @@ public class World extends Application {
         }.start();
         
         stage.show();
+    }
+
+    private void initInput(Scene scene) {
+        Map<KeyCode, Boolean> buttonsDown = new HashMap<>();
+        scene.setOnKeyPressed(event -> {
+            buttonsDown.put(event.getCode(), Boolean.TRUE);
+        });
+        scene.setOnKeyReleased(event -> {
+            buttonsDown.put(event.getCode(), Boolean.FALSE);
+        });
     }
 
     private Platform createPlatform(int width, int height, int x, int y) {

@@ -1,6 +1,6 @@
 package mj.platformer;
 
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +16,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 // Using javafx.animation.AnimationTimer for the game loop,
 // javafx.scene.layout.Pane as the root node
@@ -29,14 +31,19 @@ public class World extends Application {
     private Color color1, color2, color3, color4, color5;
     private Color playerColor, platformColor, groundColor, backgroundColor;
     private boolean gameOver;
+    private ArrayList<Platform> platforms;
+    private ArrayList<Integer> scoringPositions;
+    private int scoringPositionIndex;
+    private int playerScoringPosition;
+    private int score;
+    private int platformSpeed;
+    private Text scoreText;
 
     public World() { // Move these to init()?
         tileSize = 32;
         canvasWidth = 900;
         canvasHeight = 640;
-
         groundLevel = (int) (canvasHeight / 1.618);
-
         playerWidth = tileSize;
         playerHeight = tileSize;
         playerStartX = canvasWidth - (playerWidth / 2) - (int) (canvasWidth / 1.618);
@@ -47,7 +54,6 @@ public class World extends Application {
         color3 = Color.rgb(58, 113, 89);
         color4 = Color.rgb(139, 192, 114);
         color5 = Color.rgb(222, 244, 208);
-
         //palette tests
 //        color1 = Color.rgb(109, 204, 50);
 //        color2 = Color.rgb(255, 87, 96);
@@ -55,6 +61,20 @@ public class World extends Application {
 //        color2 = Color.SALMON;
 //        color3 = Color.CADETBLUE;
 //        color4 = Color.DARKSLATEGREY;
+        playerColor = color4;
+        platformColor = color3;
+        groundColor = color2;
+        backgroundColor = color1;
+        
+        platformSpeed = 5;
+        platforms = new ArrayList<>();
+        scoringPositions = new ArrayList<>();
+        scoringPositionIndex = 0;
+        playerScoringPosition = playerStartX;
+        score = 0;
+        scoreText = new Text(26, 34, "Score: 0");
+        scoreText.setFill(color3);
+        scoreText.setFont(Font.font("Manaspace", 26));
         gameOver = false;
     }
 
@@ -63,18 +83,11 @@ public class World extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        playerColor = color4;
-        platformColor = color3;
-        groundColor = color2;
-        backgroundColor = color1;
-//        playerColor = color1;
-//        platformColor1 = color2;
-//        groundColor = color3;
-//        backgroundColor = color4;
-
+    public void start(Stage stage) throws Exception {        
         Pane pane = new Pane();
         pane.setPrefSize(canvasWidth, canvasHeight);
+        
+        pane.getChildren().add(scoreText);
 
         GameObject ground = createGround();
         pane.getChildren().add(ground.getSprite());
@@ -83,12 +96,34 @@ public class World extends Application {
 //        Platform platform1 = createPlatform(tileSize * 3, tileSize, canvasWidth, groundLevel - tileSize);
         platform1.setSpeed(5);
         pane.getChildren().add(platform1.getSprite());
-        
-        //read platforms from file test
-        ArrayList<Platform> platforms = new ArrayList<>();
-        Scanner scanner = new Scanner("level1.txt");
+
+        //read platforms from file test (refactor into leveldatareader
+        try {
+            int platformX = canvasWidth + (5 * tileSize);
+            File lvl = new File("src/main/java/mj/platformer/data/level1.txt");
+            Scanner scanner = new Scanner(lvl);
+            while (scanner.hasNextLine()) {
+                String platformData = scanner.nextLine();
+                for (int i = 0; i < platformData.length(); i++) {
+                    if (platformData.charAt(i) == '1') {
+                        Platform p = createPlatform(tileSize, tileSize, platformX, groundLevel - tileSize);
+                        p.setSpeed(platformSpeed);
+                        platforms.add(p);
+                        pane.getChildren().add(p.getSprite());
+                        platformX += tileSize;
+                        scoringPositions.add(platformX);
+                        
+                    } else if (platformData.charAt(i) == '0') {
+                        platformX += tileSize;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        // here reset platformpos & scanner and move this to handle() & edit it so it works there
+        // if the intention is to loop around
         //end of read platforms from file test
-        
 
         Player player = createPlayer();
         pane.getChildren().add(player.getSprite());
@@ -109,13 +144,29 @@ public class World extends Application {
                     if (buttonsDown.getOrDefault(KeyCode.SPACE, false)) {
                         player.jump();
                     }
-                    
-                    platform1.move();
+
+//                    //old 1 platform move
+//                    platform1.move();
+                    for (Platform p : platforms) {
+                        p.move();
+                    }
                     if (!player.getGrounded()) {
                         player.updatePosition();
                     }
-
-                    checkCollisions(player, platform1);
+                    
+                    // add to score if past another obstacle
+                    playerScoringPosition += platformSpeed;
+                    if (scoringPositionIndex < scoringPositions.size() && playerScoringPosition >= scoringPositions.get(scoringPositionIndex)) {
+                        score += 100 * (scoringPositionIndex + 1);
+                        scoringPositionIndex += 1;
+                        scoreText.setText("Score: " + score);
+                    }
+                    
+//                    //old 1 platform collision check
+//                    checkCollisions(player, platform1);
+                    for (Platform platform : platforms) {
+                        checkCollisions(player, platform);
+                    }
                 }
             }
         }.start();
@@ -179,10 +230,11 @@ public class World extends Application {
 //                gameOver = true;
 //            }
 //        }
-
         // alternative version: assumes player sprites are JavaFX Shapes
         Shape collisionArea = Shape.intersect(player.getSprite(), platform.getSprite());
-        gameOver = collisionArea.getBoundsInLocal().getWidth() != -1;
+        if (collisionArea.getBoundsInLocal().getWidth() != -1) {
+            gameOver = true;
+        }
     }
 
     private boolean isGrounded(Player player) {
@@ -190,10 +242,10 @@ public class World extends Application {
         if ((playerY + playerHeight) >= groundLevel) {
             //clamp position
             player.getSprite().setTranslateY(groundLevel - playerHeight);
-            
+
             player.setFalling(false);
             player.setVelocity(0);
-            
+
             return true;
         }
         return false;

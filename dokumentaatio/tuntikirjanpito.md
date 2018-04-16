@@ -10,5 +10,5 @@
 | 6.4. | 2 | JavaFX:n tutustuminen, kielen vaihto Javaan ja projektin alustaminen |
 | 9.4. | 6 | Pelihahmot ruudulle ja alustava liike |
 | 10.4. | 1 | Readme:n ja vaatimusmäärittelyn päivitys, pelaajalle testi, refaktorointia |
-| 16.4. | 8 | Törmäilyt, esteiden lataus tiedostosta, hyppy, pisteet |
-| yht | 28 |
+| 16.4. | 7 | Törmäilyt, esteiden lataus tiedostosta, hyppy, pisteet |
+| yht | 27 |

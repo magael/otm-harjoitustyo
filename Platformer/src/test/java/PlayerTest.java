@@ -1,13 +1,16 @@
 
+import mj.platformer.Player;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class PlayerTest {
     
-    Node sprite;
+//    Node sprite;
+    Shape sprite;
     Player player;
 
     @Before

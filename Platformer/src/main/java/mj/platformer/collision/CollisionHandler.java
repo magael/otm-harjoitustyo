@@ -1,4 +1,3 @@
-
 package mj.platformer.collision;
 
 import javafx.scene.shape.Shape;
@@ -6,16 +5,16 @@ import mj.platformer.gameobject.Obstacle;
 import mj.platformer.gameobject.Player;
 
 public class CollisionHandler {
-    
+
     public boolean handleCollisions(Player player, Obstacle obstacle) {
         // At the moment ends the game on any collision.
         // This version assumes player sprites are JavaFX Shapes.
-            Shape collisionArea = Shape.intersect(player.getSprite(), obstacle.getSprite());
-            if (collisionArea.getBoundsInLocal().getWidth() != -1) {
-                return true;
-            }
-            return false;
-            
+        Shape collisionArea = Shape.intersect(player.getSprite(), obstacle.getSprite());
+        if (collisionArea.getBoundsInLocal().getWidth() != -1) {
+            return true;
+        }
+        return false;
+
 //        // the first version: tested only on Rectangles
 //        double playerX = player.getSprite().getTranslateX();
 //        double playerY = player.getSprite().getTranslateY();
@@ -32,8 +31,8 @@ public class CollisionHandler {
 //                gameOver = true;
 //            }
 //        }
-        }
-    
+    }
+
     public boolean isGrounded(Player player, int playerHeight, int groundLevel) {
         double playerY = player.getSprite().getTranslateY();
         if ((playerY + playerHeight) >= groundLevel) {
@@ -47,5 +46,5 @@ public class CollisionHandler {
         }
         return false;
     }
-    
+
 }

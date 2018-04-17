@@ -1,4 +1,4 @@
-package mj.platformer;
+package mj.platformer.ui;
 
 import mj.platformer.gameobject.Obstacle;
 import mj.platformer.gameobject.Player;

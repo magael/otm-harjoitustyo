@@ -1,5 +1,4 @@
-package mj.platformer;
-
+package mj.platformer.gameobject;
 
 import javafx.scene.Node;
 import javafx.scene.shape.Shape;
@@ -17,7 +16,7 @@ public class Player extends GameObject {
 //    public Player(Node sprite, int x, int y) {
     public Player(Shape sprite, int x, int y) {
         super(sprite, x, y);
-        grounded = false;
+        grounded = true; // think about how to init and test this. 
         falling = false; // think about how to init and test this. 
         speed = 1;
         acceleration = 1.5;
@@ -41,7 +40,7 @@ public class Player extends GameObject {
         } else {
             velocity -= speed * acceleration;
         }
-        
+
         this.getSprite().setTranslateY(this.getSprite().getTranslateY() - velocity);
     }
 

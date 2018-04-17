@@ -1,23 +1,24 @@
 package mj.platformer;
 
+import mj.platformer.gameobject.Obstacle;
+import mj.platformer.gameobject.Player;
+import mj.platformer.gameobject.GameObject;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.Node;
-import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import mj.platformer.collision.CollisionHandler;
+import mj.platformer.input.InputHandler;
 
 // Using javafx.animation.AnimationTimer for the game loop,
 // javafx.scene.layout.Pane as the root node
@@ -29,17 +30,19 @@ public class World extends Application {
     private int groundLevel;
     private int playerWidth, playerHeight, playerStartX, playerStartY;
     private Color color1, color2, color3, color4, color5;
-    private Color playerColor, platformColor, groundColor, backgroundColor;
+    private Color playerColor, obstacleColor, groundColor, backgroundColor;
+    private boolean gameStart;
     private boolean gameOver;
-    private ArrayList<Platform> platforms;
+    private ArrayList<Obstacle> obstacles;
     private ArrayList<Integer> scoringPositions;
     private int scoringPositionIndex;
     private int playerScoringPosition;
     private int score;
-    private int platformSpeed;
+    private int obstacleSpeed;
     private Text scoreText;
+    private Text startText;
 
-    public World() { // Move these to init()?
+    public World() {
         tileSize = 32;
         canvasWidth = 900;
         canvasHeight = 640;
@@ -54,28 +57,27 @@ public class World extends Application {
         color3 = Color.rgb(58, 113, 89);
         color4 = Color.rgb(139, 192, 114);
         color5 = Color.rgb(222, 244, 208);
-        //palette tests
-//        color1 = Color.rgb(109, 204, 50);
-//        color2 = Color.rgb(255, 87, 96);
-//        color1 = Color.WHEAT;
-//        color2 = Color.SALMON;
-//        color3 = Color.CADETBLUE;
-//        color4 = Color.DARKSLATEGREY;
+
         playerColor = color4;
-        platformColor = color3;
+        obstacleColor = color3;
         groundColor = color2;
         backgroundColor = color1;
-        
-        platformSpeed = 5;
-        platforms = new ArrayList<>();
+
+        gameStart = false;
+        gameOver = false;
+        obstacleSpeed = 5;
+        obstacles = new ArrayList<>();
         scoringPositions = new ArrayList<>();
         scoringPositionIndex = 0;
         playerScoringPosition = playerStartX;
         score = 0;
-        scoreText = new Text(26, 34, "Score: 0");
+        // refactor the text stuff into a method and call from start? maybe even a Score or TextUI object or sumn?
+        scoreText = new Text(26, 42, "Score: 0");
         scoreText.setFill(color3);
-        scoreText.setFont(Font.font("Manaspace", 26));
-        gameOver = false;
+        scoreText.setFont(Font.font(26));
+        startText = new Text((canvasWidth / 2) - 120, 100, "Press any key to start");
+        startText.setFill(color4);
+        startText.setFont(Font.font(26));
     }
 
     public static void main(String[] args) {
@@ -83,175 +85,208 @@ public class World extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {        
+    public void start(Stage stage) throws Exception {
         Pane pane = new Pane();
         pane.setPrefSize(canvasWidth, canvasHeight);
-        
-        pane.getChildren().add(scoreText);
 
+        pane.getChildren().add(scoreText);
+        pane.getChildren().add(startText);
+
+//        Obstacle platform1 = createPlatform(tileSize, tileSize, canvasWidth, groundLevel - tileSize); // earlier version
+////        Platform platform1 = createPlatform(tileSize * 3, tileSize, canvasWidth, groundLevel - tileSize); // earlier version
+//        platform1.setSpeed(5);
+//        pane.getChildren().add(platform1.getSprite());
         GameObject ground = createGround();
         pane.getChildren().add(ground.getSprite());
 
-        Platform platform1 = createPlatform(tileSize, tileSize, canvasWidth, groundLevel - tileSize);
-//        Platform platform1 = createPlatform(tileSize * 3, tileSize, canvasWidth, groundLevel - tileSize);
-        platform1.setSpeed(5);
-        pane.getChildren().add(platform1.getSprite());
+        Player player = createPlayer();
+        pane.getChildren().add(player.getSprite());
 
-        //read platforms from file test (refactor into leveldatareader
+        readLevelFile(pane);
+
+        Scene scene = new Scene(pane, backgroundColor);
+        stage.setTitle("Escape Spikeworld");
+        stage.setScene(scene);
+
+//        Map<KeyCode, Boolean> buttonsDown = initInput(scene);
+        InputHandler inputHandler = new InputHandler();
+        inputHandler.initInput(scene);
+
+        CollisionHandler collisionHandler = new CollisionHandler();
+
+        //The game loop
+        new AnimationTimer() {
+            @Override
+            public void handle(long currentTime) {
+                if (!inputHandler.getButtonsDown().isEmpty()) {
+                    gameStart = true;
+                }
+                if (gameStart && !gameOver) {
+//                    input();
+                    inputHandler.handlePlayerInput(player);
+                    update();
+                } else if (gameOver) {
+                    startText.setText("Ouch! Game over.");
+                }
+            }
+
+            private void update() {
+                if (!player.getGrounded()) {
+                    player.updatePosition();
+                }
+                for (Obstacle o : obstacles) {
+                    o.move();
+
+//                    checkCollisions(player, p); // earlier version
+                    // hoping it speeds things up to first check if the object is even close to the player
+                    if (o.getSprite().getTranslateX() < playerStartX + playerWidth
+                            && o.getSprite().getTranslateX() > playerStartX) {
+                        gameOver = collisionHandler.handleCollisions(player, o);
+                        if (gameOver) {
+                            break;
+                        }
+                    }
+                }
+//                player.setGrounded(isGrounded(player)); // earlier version
+                player.setGrounded(collisionHandler.isGrounded(player, playerHeight, groundLevel));
+
+                updateScore();
+            }
+
+//            private void input() { // earlier version
+//                if (buttonsDown.getOrDefault(KeyCode.SPACE, false)) {
+//                    player.jump();
+//                }
+//            }
+        }.start();
+
+        stage.show();
+    }
+
+    private void updateScore() {
+        //Add to the score when the player passes another obstacle
+        playerScoringPosition += obstacleSpeed;
+        if (scoringPositionIndex < scoringPositions.size()
+                && playerScoringPosition >= scoringPositions.get(scoringPositionIndex)) {
+            score += 100 * (scoringPositionIndex + 1);
+            scoringPositionIndex += 1;
+            scoreText.setText("Score: " + score);
+            startText.setText("");
+        }
+        if (gameStart && score == 0) {
+            startText.setText("Dodge the spikes!\nPress Space to jump");
+        }
+    }
+
+    private void readLevelFile(Pane pane) {
         try {
-            int platformX = canvasWidth + (5 * tileSize);
+            int obstacleX = canvasWidth + (5 * tileSize);
             File lvl = new File("src/main/java/mj/platformer/data/level1.txt");
             Scanner scanner = new Scanner(lvl);
             while (scanner.hasNextLine()) {
                 String platformData = scanner.nextLine();
                 for (int i = 0; i < platformData.length(); i++) {
                     if (platformData.charAt(i) == '1') {
-                        Platform p = createPlatform(tileSize, tileSize, platformX, groundLevel - tileSize);
-                        p.setSpeed(platformSpeed);
-                        platforms.add(p);
-                        pane.getChildren().add(p.getSprite());
-                        platformX += tileSize;
-                        scoringPositions.add(platformX);
-                        
+                        obstacleX = fileObstacle(obstacleX, pane);
                     } else if (platformData.charAt(i) == '0') {
-                        platformX += tileSize;
+                        obstacleX += tileSize;
                     }
                 }
             }
         } catch (Exception e) {
             System.out.println(e);
         }
-        // here reset platformpos & scanner and move this to handle() & edit it so it works there
-        // if the intention is to loop around
-        //end of read platforms from file test
-
-        Player player = createPlayer();
-        pane.getChildren().add(player.getSprite());
-
-        Scene scene = new Scene(pane, backgroundColor);
-        stage.setTitle("Platformer");
-        stage.setScene(scene);
-
-        Map<KeyCode, Boolean> buttonsDown = initInput(scene);
-
-        new AnimationTimer() {
-            @Override
-            public void handle(long currentTime) {
-                //platform movement test
-                if (!gameOver) {
-                    player.setGrounded(isGrounded(player));
-
-                    if (buttonsDown.getOrDefault(KeyCode.SPACE, false)) {
-                        player.jump();
-                    }
-
-//                    //old 1 platform move
-//                    platform1.move();
-                    for (Platform p : platforms) {
-                        p.move();
-                    }
-                    if (!player.getGrounded()) {
-                        player.updatePosition();
-                    }
-                    
-                    // add to score if past another obstacle
-                    playerScoringPosition += platformSpeed;
-                    if (scoringPositionIndex < scoringPositions.size() && playerScoringPosition >= scoringPositions.get(scoringPositionIndex)) {
-                        score += 100 * (scoringPositionIndex + 1);
-                        scoringPositionIndex += 1;
-                        scoreText.setText("Score: " + score);
-                    }
-                    
-//                    //old 1 platform collision check
-//                    checkCollisions(player, platform1);
-                    for (Platform platform : platforms) {
-                        checkCollisions(player, platform);
-                    }
-                }
-            }
-        }.start();
-
-        stage.show();
+        // if the intention is to loop around, reset obstaclepos & scanner in handle() & edit the above it so it works there
     }
 
-    private Map<KeyCode, Boolean> initInput(Scene scene) {
-        Map<KeyCode, Boolean> buttonsDown = new HashMap<>();
-        scene.setOnKeyPressed(event -> {
-            buttonsDown.put(event.getCode(), Boolean.TRUE);
-        });
-        scene.setOnKeyReleased(event -> {
-            buttonsDown.put(event.getCode(), Boolean.FALSE);
-        });
-        return buttonsDown;
+    private int fileObstacle(int obstacleX, Pane pane) {
+        Obstacle p = createObstacle(tileSize, tileSize, obstacleX, groundLevel - tileSize);
+        p.setSpeed(obstacleSpeed);
+        obstacles.add(p);
+        pane.getChildren().add(p.getSprite());
+        obstacleX += tileSize;
+        scoringPositions.add(obstacleX);
+        return obstacleX;
     }
 
-    private Platform createPlatform(int width, int height, int x, int y) {
-        Polygon platformSprite = new Polygon();
-        platformSprite.setFill(platformColor);
-        platformSprite.getPoints().addAll(new Double[]{
+    private Obstacle createObstacle(int width, int height, int x, int y) {
+        Polygon obstacleSprite = new Polygon();
+        obstacleSprite.setFill(obstacleColor);
+        obstacleSprite.getPoints().addAll(new Double[]{
             ((double) tileSize / 2), 0.0,
             0.0, (double) tileSize,
             (double) tileSize, (double) tileSize});
-//        Shape platformSprite = new Rectangle(width, height, platformColor);
-//        Node platformSprite = new Rectangle(width, height, platformColor);
-        return new Platform(platformSprite, x, y, width, height);
+//        Shape platformSprite = new Rectangle(width, height, platformColor); // earlier version
+//        Node platformSprite = new Rectangle(width, height, platformColor); // earlier version
+        return new Obstacle(obstacleSprite, x, y, width, height);
     }
 
     private GameObject createGround() {
-//        Node groundSprite = new Rectangle(canvasWidth, tileSize / 2, groundColor);
+//        Node groundSprite = new Rectangle(canvasWidth, tileSize / 2, groundColor); // earlier version
         Shape groundSprite = new Rectangle(canvasWidth, canvasHeight - groundLevel, groundColor);
-//        Node groundSprite = new Rectangle(canvasWidth, canvasHeight - groundLevel, groundColor);
-//        return new Ground(groundSprite, 0, groundLevel);
-        return new Platform(groundSprite, 0, groundLevel, canvasWidth, canvasHeight - groundLevel);
+//        Node groundSprite = new Rectangle(canvasWidth, canvasHeight - groundLevel, groundColor); // earlier version
+//        return new Ground(groundSprite, 0, groundLevel); // earlier version
+        return new Obstacle(groundSprite, 0, groundLevel, canvasWidth, canvasHeight - groundLevel);
     }
 
-    public Player createPlayer() {
+    private Player createPlayer() {
         Shape playerSprite = new Rectangle(playerWidth, playerHeight, playerColor);
 //        Node playerSprite = new Rectangle(playerWidth, playerHeight, playerColor);
         return new Player(playerSprite, playerStartX, playerStartY);
     }
 
-    private void checkCollisions(Player player, Platform platform) {
-        // atm ends game on any collision.
-
-//        // the first version: tested only on Rectangles
-//        double playerX = player.getSprite().getTranslateX();
-//        double playerY = player.getSprite().getTranslateY();
-//        double platformX = platform.getSprite().getTranslateX();
-//        double platformY = platform.getSprite().getTranslateY();
-//        double platformWidth = platform.getWidth();
-//        double platformHeight = platform.getHeight();
-//        
-//        if ((playerY + playerHeight) >= platformY && playerY <= (platformY + platformHeight)) {
-//            player.setGrounded(true);
-//            if ((playerX + playerWidth) >= platformX && playerX <= (platformX + platformWidth)) {
-////                System.out.println("collision");
-////                maybe add blinking player sprite effect
+//    private Map<KeyCode, Boolean> initInput(Scene scene) { // earlier version
+//        Map<KeyCode, Boolean> buttonsDown = new HashMap<>();
+//        scene.setOnKeyPressed(event -> {
+//            buttonsDown.put(event.getCode(), Boolean.TRUE);
+//        });
+//        scene.setOnKeyReleased(event -> {
+//            buttonsDown.put(event.getCode(), Boolean.FALSE);
+//        });
+//        return buttonsDown;
+//    }
+//    
+//    private void checkCollisions(Player player, Obstacle obstacle) { // earlier version
+//        // atm ends game on any collision.
+//
+////        // the first version: tested only on Rectangles
+////        double playerX = player.getSprite().getTranslateX();
+////        double playerY = player.getSprite().getTranslateY();
+////        double platformX = platform.getSprite().getTranslateX();
+////        double platformY = platform.getSprite().getTranslateY();
+////        double platformWidth = platform.getWidth();
+////        double platformHeight = platform.getHeight();
+////        
+////        if ((playerY + playerHeight) >= platformY && playerY <= (platformY + platformHeight)) {
+////            player.setGrounded(true);
+////            if ((playerX + playerWidth) >= platformX && playerX <= (platformX + platformWidth)) {
+//////                System.out.println("collision");
+//////                maybe add blinking player sprite effect
+////                gameOver = true;
+////            }
+////        }
+//        // alternative version: assumes player sprites are JavaFX Shapes
+//        // hoping it speeds things up to first check if the object is even close to the player
+//        if (obstacle.getSprite().getTranslateX() < playerStartX + playerWidth
+//                && obstacle.getSprite().getTranslateX() > playerStartX) {
+//            Shape collisionArea = Shape.intersect(player.getSprite(), obstacle.getSprite());
+//            if (collisionArea.getBoundsInLocal().getWidth() != -1) {
 //                gameOver = true;
 //            }
 //        }
-        // alternative version: assumes player sprites are JavaFX Shapes
-        Shape collisionArea = Shape.intersect(player.getSprite(), platform.getSprite());
-        if (collisionArea.getBoundsInLocal().getWidth() != -1) {
-            gameOver = true;
-        }
-    }
-
-    private boolean isGrounded(Player player) {
-        double playerY = player.getSprite().getTranslateY();
-        if ((playerY + playerHeight) >= groundLevel) {
-            //clamp position
-            player.getSprite().setTranslateY(groundLevel - playerHeight);
-
-            player.setFalling(false);
-            player.setVelocity(0);
-
-            return true;
-        }
-        return false;
-    }
-
-//    public void setGameOver(boolean gameOver) {
-//        this.gameOver = gameOver;
+//    }
+//    
+//    private boolean isGrounded(Player player) { // earlier version
+//        double playerY = player.getSprite().getTranslateY();
+//        if ((playerY + playerHeight) >= groundLevel) {
+//            //clamp position
+//            player.getSprite().setTranslateY(groundLevel - playerHeight);
+//
+//            player.setFalling(false);
+//            player.setVelocity(0);
+//
+//            return true;
+//        }
+//        return false;
 //    }
 }

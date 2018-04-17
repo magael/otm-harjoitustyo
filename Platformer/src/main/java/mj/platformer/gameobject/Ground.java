@@ -1,5 +1,4 @@
-package mj.platformer;
-
+package mj.platformer.gameobject;
 
 import javafx.scene.Node;
 import javafx.scene.shape.Shape;

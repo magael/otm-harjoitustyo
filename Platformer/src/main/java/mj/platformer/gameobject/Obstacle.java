@@ -1,17 +1,16 @@
-package mj.platformer;
-
+package mj.platformer.gameobject;
 
 import javafx.scene.Node;
 import javafx.scene.shape.Shape;
 
-public class Platform extends GameObject {
+public class Obstacle extends GameObject {
 
     private int speed;
     private int width;
     private int height;
 
 //    public Platform(Node sprite, int x, int y, int width, int height) {
-    public Platform(Shape sprite, int x, int y, int width, int height) {
+    public Obstacle(Shape sprite, int x, int y, int width, int height) {
         super(sprite, x, y);
         this.width = width;
         this.height = height;
@@ -41,7 +40,7 @@ public class Platform extends GameObject {
     public void setHeight(int height) {
         this.height = height;
     }
-    
+
     public void move() {
         Node sprite = this.getSprite();
         sprite.setTranslateX(sprite.getTranslateX() - speed);

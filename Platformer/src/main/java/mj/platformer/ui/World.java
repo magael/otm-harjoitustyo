@@ -25,8 +25,8 @@ import mj.platformer.input.InputHandler;
 // and methods of javafx.scene.Node for updating position.
 public class World extends Application {
 
-    private final int tileSize;
-    private final int canvasWidth, canvasHeight;
+    private int tileSize;
+    private int canvasWidth, canvasHeight;
     private int groundLevel;
     private int playerWidth, playerHeight, playerStartX, playerStartY;
     private Color color1, color2, color3, color4, color5;
@@ -42,7 +42,76 @@ public class World extends Application {
     private Text scoreText;
     private Text startText;
 
-    public World() {
+    private Player player;
+    private InputHandler inputHandler;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        initWorld();
+        Pane pane = initPane();
+        initText(pane);
+        initGameObjects(pane);
+//        Player player = initGameObjects(pane);
+        Scene scene = initScene(pane, stage);
+//        InputHandler inputHandler = new InputHandler();
+        this.inputHandler = new InputHandler();
+        inputHandler.initInput(scene);
+        CollisionHandler collisionHandler = new CollisionHandler();
+
+        //The game loop
+        new AnimationTimer() {
+            @Override
+            public void handle(long currentTime) {
+                if (!inputHandler.getButtonsDown().isEmpty()) {
+                    gameStart = true;
+                }
+                if (gameStart && !gameOver) {
+                    inputHandler.handlePlayerInput(player);
+                    update();
+                } else if (gameOver) {
+                    startText.setText("Ouch! Game over.\nPress 'R' to try again.");
+                    // would be nice to have only spacebutton but that might lead to buttonmashers missing the game over ui
+                    if (inputHandler.handleRestartInput()) {
+                        restart(pane, scene, stage);
+                    }
+//                    restart(pane, player, scene, stage, inputHandler, collisionHandler);
+                }
+            }
+
+            private void update() {
+                if (!player.getGrounded()) {
+                    player.updatePosition();
+                }
+
+                for (Obstacle o : obstacles) {
+                    o.move();
+
+                    // hoping it speeds things up to first check if the object is even close to the player
+                    if (o.getSprite().getTranslateX() < playerStartX + playerWidth
+                            && o.getSprite().getTranslateX() > playerStartX) {
+                        // check collisions
+                        gameOver = collisionHandler.handleCollisions(player, o);
+                        if (gameOver) {
+                            break;
+                        }
+                    }
+                }
+
+                player.setGrounded(collisionHandler.isGrounded(player, playerHeight, groundLevel));
+
+                updateScore();
+            }
+        }.start();
+
+        stage.show();
+    }
+
+    private void initWorld() {
+        // reading these from a file might be nice
         tileSize = 32;
         canvasWidth = 900;
         canvasHeight = 640;
@@ -71,96 +140,67 @@ public class World extends Application {
         scoringPositionIndex = 0;
         playerScoringPosition = playerStartX;
         score = 0;
-        // refactor the text stuff into a method and call from start? maybe even a Score or TextUI object or sumn?
-        scoreText = new Text(26, 42, "Score: 0");
+
+        scoreText = new Text(26, 42, "");
         scoreText.setFill(color3);
         scoreText.setFont(Font.font(26));
-        startText = new Text((canvasWidth / 2) - 120, 100, "Press any key to start");
+        startText = new Text((canvasWidth / 2) - 120, 100, "");
         startText.setFill(color4);
         startText.setFont(Font.font(26));
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        Pane pane = new Pane();
-        pane.setPrefSize(canvasWidth, canvasHeight);
-
-        pane.getChildren().add(scoreText);
-        pane.getChildren().add(startText);
-
-//        Obstacle platform1 = createPlatform(tileSize, tileSize, canvasWidth, groundLevel - tileSize); // earlier version
-////        Platform platform1 = createPlatform(tileSize * 3, tileSize, canvasWidth, groundLevel - tileSize); // earlier version
-//        platform1.setSpeed(5);
-//        pane.getChildren().add(platform1.getSprite());
-        GameObject ground = createGround();
-        pane.getChildren().add(ground.getSprite());
-
-        Player player = createPlayer();
-        pane.getChildren().add(player.getSprite());
-
-        readLevelFile(pane);
-
+    private Scene initScene(Pane pane, Stage stage) {
         Scene scene = new Scene(pane, backgroundColor);
         stage.setTitle("Escape Spikeworld");
         stage.setScene(scene);
+        return scene;
+    }
 
-//        Map<KeyCode, Boolean> buttonsDown = initInput(scene);
-        InputHandler inputHandler = new InputHandler();
-        inputHandler.initInput(scene);
+    private Pane initPane() {
+        Pane pane = new Pane();
+        pane.setPrefSize(canvasWidth, canvasHeight);
+        return pane;
+    }
 
-        CollisionHandler collisionHandler = new CollisionHandler();
+    private void initGameObjects(Pane pane) {
+        GameObject ground = createGround();
+        pane.getChildren().add(ground.getSprite());
+        this.player = createPlayer();
+        pane.getChildren().add(player.getSprite());
+        readLevelFile(pane);
+    }
+//    private Player initGameObjects(Pane pane) {
+//        GameObject ground = createGround();
+//        pane.getChildren().add(ground.getSprite());
+//        Player player = createPlayer();
+//        pane.getChildren().add(player.getSprite());
+//        readLevelFile(pane);
+//        return player;
+//    }
 
-        //The game loop
-        new AnimationTimer() {
-            @Override
-            public void handle(long currentTime) {
-                if (!inputHandler.getButtonsDown().isEmpty()) {
-                    gameStart = true;
-                }
-                if (gameStart && !gameOver) {
-//                    input();
-                    inputHandler.handlePlayerInput(player);
-                    update();
-                } else if (gameOver) {
-                    startText.setText("Ouch! Game over.");
-                }
-            }
+    private void initText(Pane pane) {
+        // refactor the text stuff into a method and call from start? maybe even a Score or TextUI object or sumn?
+        scoreText.setText("Score: 0");
+        startText.setText("Press any key to start");
+        pane.getChildren().add(scoreText);
+        pane.getChildren().add(startText);
+    }
 
-            private void update() {
-                if (!player.getGrounded()) {
-                    player.updatePosition();
-                }
-                for (Obstacle o : obstacles) {
-                    o.move();
-
-//                    checkCollisions(player, p); // earlier version
-                    // hoping it speeds things up to first check if the object is even close to the player
-                    if (o.getSprite().getTranslateX() < playerStartX + playerWidth
-                            && o.getSprite().getTranslateX() > playerStartX) {
-                        gameOver = collisionHandler.handleCollisions(player, o);
-                        if (gameOver) {
-                            break;
-                        }
-                    }
-                }
-//                player.setGrounded(isGrounded(player)); // earlier version
-                player.setGrounded(collisionHandler.isGrounded(player, playerHeight, groundLevel));
-
-                updateScore();
-            }
-
-//            private void input() { // earlier version
-//                if (buttonsDown.getOrDefault(KeyCode.SPACE, false)) {
-//                    player.jump();
-//                }
-//            }
-        }.start();
-
-        stage.show();
+    private void restart(Pane pane, Scene scene, Stage stage) {
+//    private void restart(Pane pane, Player player, Scene scene, Stage stage, InputHandler inputHandler, CollisionHandler collisionHandler) {
+        initWorld();
+        pane = initPane();
+        initText(pane);
+        initGameObjects(pane);
+//        player = initGameObjects(pane);
+        scene = initScene(pane, stage);
+//        inputHandler = new InputHandler();
+//        inputHandler.initInput(scene);
+        this.inputHandler = new InputHandler();
+        this.inputHandler.initInput(scene);
+//        collisionHandler = new CollisionHandler();
+        gameOver = false;
+        gameStart = true;
     }
 
     private void updateScore() {
@@ -180,6 +220,9 @@ public class World extends Application {
 
     private void readLevelFile(Pane pane) {
         try {
+            if (!obstacles.isEmpty()) {
+                obstacles = new ArrayList<>();
+            }
             int obstacleX = canvasWidth + (5 * tileSize);
             File lvl = new File("src/main/java/mj/platformer/data/level1.txt");
             Scanner scanner = new Scanner(lvl);
@@ -216,8 +259,6 @@ public class World extends Application {
             ((double) tileSize / 2), 0.0,
             0.0, (double) tileSize,
             (double) tileSize, (double) tileSize});
-//        Shape platformSprite = new Rectangle(width, height, platformColor); // earlier version
-//        Node platformSprite = new Rectangle(width, height, platformColor); // earlier version
         return new Obstacle(obstacleSprite, x, y, width, height);
     }
 
@@ -234,59 +275,4 @@ public class World extends Application {
 //        Node playerSprite = new Rectangle(playerWidth, playerHeight, playerColor);
         return new Player(playerSprite, playerStartX, playerStartY);
     }
-
-//    private Map<KeyCode, Boolean> initInput(Scene scene) { // earlier version
-//        Map<KeyCode, Boolean> buttonsDown = new HashMap<>();
-//        scene.setOnKeyPressed(event -> {
-//            buttonsDown.put(event.getCode(), Boolean.TRUE);
-//        });
-//        scene.setOnKeyReleased(event -> {
-//            buttonsDown.put(event.getCode(), Boolean.FALSE);
-//        });
-//        return buttonsDown;
-//    }
-//    
-//    private void checkCollisions(Player player, Obstacle obstacle) { // earlier version
-//        // atm ends game on any collision.
-//
-////        // the first version: tested only on Rectangles
-////        double playerX = player.getSprite().getTranslateX();
-////        double playerY = player.getSprite().getTranslateY();
-////        double platformX = platform.getSprite().getTranslateX();
-////        double platformY = platform.getSprite().getTranslateY();
-////        double platformWidth = platform.getWidth();
-////        double platformHeight = platform.getHeight();
-////        
-////        if ((playerY + playerHeight) >= platformY && playerY <= (platformY + platformHeight)) {
-////            player.setGrounded(true);
-////            if ((playerX + playerWidth) >= platformX && playerX <= (platformX + platformWidth)) {
-//////                System.out.println("collision");
-//////                maybe add blinking player sprite effect
-////                gameOver = true;
-////            }
-////        }
-//        // alternative version: assumes player sprites are JavaFX Shapes
-//        // hoping it speeds things up to first check if the object is even close to the player
-//        if (obstacle.getSprite().getTranslateX() < playerStartX + playerWidth
-//                && obstacle.getSprite().getTranslateX() > playerStartX) {
-//            Shape collisionArea = Shape.intersect(player.getSprite(), obstacle.getSprite());
-//            if (collisionArea.getBoundsInLocal().getWidth() != -1) {
-//                gameOver = true;
-//            }
-//        }
-//    }
-//    
-//    private boolean isGrounded(Player player) { // earlier version
-//        double playerY = player.getSprite().getTranslateY();
-//        if ((playerY + playerHeight) >= groundLevel) {
-//            //clamp position
-//            player.getSprite().setTranslateY(groundLevel - playerHeight);
-//
-//            player.setFalling(false);
-//            player.setVelocity(0);
-//
-//            return true;
-//        }
-//        return false;
-//    }
 }

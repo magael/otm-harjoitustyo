@@ -33,4 +33,11 @@ public class InputHandler {
         return buttonsDown;
     }
 
+    public boolean handleRestartInput() {
+        if (buttonsDown.getOrDefault(KeyCode.R, false)) {
+            return true;
+        }
+        return false;
+    }
+
 }

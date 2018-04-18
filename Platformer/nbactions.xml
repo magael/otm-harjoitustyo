@@ -47,6 +47,7 @@
             <actionName>CUSTOM-testikattavuus</actionName>
             <displayName>testikattavuus</displayName>
             <goals>
+                <goal>test</goal>
                 <goal>jacoco:report</goal>
             </goals>
         </action>

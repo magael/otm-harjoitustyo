@@ -16,18 +16,20 @@ public class Player extends GameObject {
 //    public Player(Node sprite, int x, int y) {
     public Player(Shape sprite, int x, int y) {
         super(sprite, x, y);
-        grounded = true; // think about how to init and test this. 
-        falling = false; // think about how to init and test this. 
+        grounded = true;
+        falling = false;
         speed = 1;
         acceleration = 1.5;
         velocity = 0;
         maxVelocity = 15;
     }
 
-    public void jump() {
-        if (grounded) { // unit test this
+    public boolean jump() {
+        if (grounded) { 
             grounded = false;
+            return true;
         }
+        return false;
     }
 
     public void updatePosition() {
@@ -66,5 +68,9 @@ public class Player extends GameObject {
 
     public void setVelocity(double velocity) {
         this.velocity = velocity;
+    }
+
+    public double getMaxVelocity() {
+        return maxVelocity;
     }
 }

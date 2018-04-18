@@ -48,7 +48,7 @@
                 </executions>
                 <configuration>
                     <excludes>
-                        <exclude>mj/platformer/ui*</exclude>
+                        <exclude>mj/platformer/ui/**/*</exclude>
                     </excludes>
                 </configuration>  
             </plugin>

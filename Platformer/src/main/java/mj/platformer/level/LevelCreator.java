@@ -2,7 +2,6 @@ package mj.platformer.level;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import mj.platformer.gameobject.Obstacle;

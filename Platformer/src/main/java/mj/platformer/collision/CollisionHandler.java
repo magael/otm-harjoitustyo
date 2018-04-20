@@ -17,10 +17,10 @@ public class CollisionHandler {
     }
 
     public boolean isGrounded(Player player, int playerHeight, int groundLevel) {
-        double playerY = player.getSprite().getTranslateY();
+        double playerY = player.getY();
         if ((playerY + playerHeight) >= groundLevel) {
             //clamp position
-            player.getSprite().setTranslateY(groundLevel - playerHeight);
+            player.setY(groundLevel - playerHeight);
 
             player.setFalling(false);
             player.setVelocity(0);

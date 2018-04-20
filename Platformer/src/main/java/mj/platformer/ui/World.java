@@ -1,8 +1,11 @@
 package mj.platformer.ui;
 
+import mj.platformer.collision.CollisionHandler;
 import mj.platformer.gameobject.Obstacle;
 import mj.platformer.gameobject.Player;
-import mj.platformer.gameobject.GameObject;
+import mj.platformer.input.InputHandler;
+import mj.platformer.level.LevelCreator;
+import mj.platformer.level.ScoreKeeper;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,10 +19,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import mj.platformer.collision.CollisionHandler;
-import mj.platformer.input.InputHandler;
-import mj.platformer.level.LevelCreator;
-import mj.platformer.level.ScoreKeeper;
 
 // Using javafx.animation.AnimationTimer for the game loop,
 // javafx.scene.layout.Pane as the root node
@@ -173,22 +172,6 @@ public class World extends Application {
         }
     }
 
-    public void initInputHandler(Scene scene) {
-        this.inputHandler = new InputHandler();
-        inputHandler.initInput(scene);
-    }
-
-    private void restart(Pane pane, Scene scene, Stage stage) throws Exception {
-        initWorld();
-        pane = initPane();
-        initText(pane);
-        initGameObjects(pane);
-        scene = initScene(pane, stage);
-        initInputHandler(scene);
-        gameOver = false;
-        gameStart = true;
-    }
-
     private Shape createGround() {
         Shape groundSprite = new Rectangle(canvasWidth, canvasHeight - groundLevel, groundColor);
         groundSprite.setTranslateY(groundLevel);
@@ -198,5 +181,21 @@ public class World extends Application {
     private Player createPlayer() {
         Shape playerSprite = new Rectangle(playerWidth, playerHeight, playerColor);
         return new Player(playerSprite, playerStartX, playerStartY);
+    }
+
+    private void initInputHandler(Scene scene) {
+        this.inputHandler = new InputHandler();
+        inputHandler.initInput(scene);
+    }
+    
+    private void restart(Pane pane, Scene scene, Stage stage) throws Exception {
+        initWorld();
+        pane = initPane();
+        initText(pane);
+        startText.setText("");
+        initGameObjects(pane);
+        scene = initScene(pane, stage);
+        initInputHandler(scene);
+        gameStart = true;
     }
 }

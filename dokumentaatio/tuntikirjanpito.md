@@ -13,4 +13,5 @@
 | 16.4. | 7 | Törmäilyt, esteiden lataus tiedostosta, hyppy, pisteet |
 | 17.4. | 6 | Start & Gameover UI, Checkstyle, refaktorointia, pakkauskaavion alku |
 | 18.4. | 3 | UI:n testiskippailut, Playerin testit, restart(), refaktorointia |
-| yht | 36 |
+| 20.4. | 5 | Levelin luonti uusiksi, jar, refakrotointia |
+| yht | 41 |

@@ -43,7 +43,7 @@ public class Player extends GameObject {
             velocity -= speed * acceleration;
         }
 
-        this.getSprite().setTranslateY(this.getSprite().getTranslateY() - velocity);
+        this.setY(this.getY() - velocity);
     }
 
     public boolean getFalling() {

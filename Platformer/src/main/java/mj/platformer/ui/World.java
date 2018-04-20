@@ -1,12 +1,8 @@
 package mj.platformer.ui;
 
-import java.io.BufferedReader;
 import mj.platformer.gameobject.Obstacle;
 import mj.platformer.gameobject.Player;
 import mj.platformer.gameobject.GameObject;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,13 +12,13 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import mj.platformer.collision.CollisionHandler;
 import mj.platformer.input.InputHandler;
+import mj.platformer.level.LevelCreator;
 import mj.platformer.level.ScoreKeeper;
 
 // Using javafx.animation.AnimationTimer for the game loop,
@@ -42,6 +38,7 @@ public class World extends Application {
     private int obstacleSpeed;
     private Text scoreText;
     private Text startText;
+    private String lvlFilePath;
 
     private Player player;
     private InputHandler inputHandler;
@@ -73,7 +70,6 @@ public class World extends Application {
                     update();
                 } else if (gameOver) {
                     startText.setText("Ouch! Game over.\nPress 'R' to try again.");
-                    // would be nice to have only spacebutton but that might lead to buttonmashers missing the game over ui
                     if (inputHandler.handleRestartInput()) {
                         try {
                             restart(pane, scene, stage);
@@ -122,7 +118,6 @@ public class World extends Application {
         color3 = Color.rgb(58, 113, 89);
         color4 = Color.rgb(139, 192, 114);
         color5 = Color.rgb(222, 244, 208);
-
         playerColor = color4;
         obstacleColor = color3;
         groundColor = color2;
@@ -130,6 +125,7 @@ public class World extends Application {
 
         gameStart = false;
         gameOver = false;
+        lvlFilePath = "leveldata/level1.cfg";
         obstacleSpeed = 5;
         obstacles = new ArrayList<>();
         scoreKeeper = new ScoreKeeper(obstacleSpeed, playerStartX);
@@ -164,11 +160,17 @@ public class World extends Application {
     }
 
     private void initGameObjects(Pane pane) throws Exception {
-        GameObject ground = createGround();
-        pane.getChildren().add(ground.getSprite());
+        pane.getChildren().add(createGround());
+        
         this.player = createPlayer();
         pane.getChildren().add(player.getSprite());
-        readLevelFile(pane);
+        
+        LevelCreator lvlCreator = new LevelCreator(canvasWidth, tileSize, groundLevel, obstacleSpeed, obstacleColor);
+        obstacles = lvlCreator.createObstacles(lvlFilePath);
+        for (Obstacle o : obstacles) {
+            pane.getChildren().add(o.getSprite());
+            scoreKeeper.addPosition((int) o.getX() + tileSize);
+        }
     }
 
     public void initInputHandler(Scene scene) {
@@ -187,60 +189,10 @@ public class World extends Application {
         gameStart = true;
     }
 
-    private void readLevelFile(Pane pane) throws Exception {
-        String lvlDataLine = "";
-        ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        InputStream is = cl.getResourceAsStream("leveldata/level1.cfg");
-
-        obstacles = new ArrayList<>();
-        int obstacleX = canvasWidth + (5 * tileSize);
-
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            while ((lvlDataLine = br.readLine()) != null) {
-                while (lvlDataLine.startsWith("#")) {
-                    lvlDataLine = br.readLine();
-                }
-                for (int j = 0; j < lvlDataLine.length(); j++) {
-                    if (lvlDataLine.charAt(j) == '1') {
-                        obstacleX = fileObstacle(obstacleX, pane);
-                    } else if (lvlDataLine.charAt(j) == '0') {
-                        obstacleX += tileSize;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace(new PrintStream(System.out));
-        } finally {
-            if (is != null) {
-                is.close();
-            }
-        }
-    }
-
-    private int fileObstacle(int obstacleX, Pane pane) {
-        Obstacle p = createObstacle(tileSize, tileSize, obstacleX, groundLevel - tileSize);
-        p.setSpeed(obstacleSpeed);
-        obstacles.add(p);
-        pane.getChildren().add(p.getSprite());
-        obstacleX += tileSize;
-        scoreKeeper.addPosition(obstacleX);
-        return obstacleX;
-    }
-
-    private Obstacle createObstacle(int width, int height, int x, int y) {
-        Polygon obstacleSprite = new Polygon();
-        obstacleSprite.setFill(obstacleColor);
-        obstacleSprite.getPoints().addAll(new Double[]{
-            ((double) tileSize / 2), 0.0,
-            0.0, (double) tileSize,
-            (double) tileSize, (double) tileSize});
-        return new Obstacle(obstacleSprite, x, y, width, height);
-    }
-
-    private GameObject createGround() {
+    private Shape createGround() {
         Shape groundSprite = new Rectangle(canvasWidth, canvasHeight - groundLevel, groundColor);
-        return new Obstacle(groundSprite, 0, groundLevel, canvasWidth, canvasHeight - groundLevel);
+        groundSprite.setTranslateY(groundLevel);
+        return groundSprite;
     }
 
     private Player createPlayer() {

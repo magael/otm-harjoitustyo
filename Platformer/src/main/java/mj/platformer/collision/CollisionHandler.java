@@ -14,23 +14,6 @@ public class CollisionHandler {
             return true;
         }
         return false;
-
-//        // the first version: tested only on Rectangles
-//        double playerX = player.getSprite().getTranslateX();
-//        double playerY = player.getSprite().getTranslateY();
-//        double platformX = platform.getSprite().getTranslateX();
-//        double platformY = platform.getSprite().getTranslateY();
-//        double platformWidth = platform.getWidth();
-//        double platformHeight = platform.getHeight();
-//        
-//        if ((playerY + playerHeight) >= platformY && playerY <= (platformY + platformHeight)) {
-//            player.setGrounded(true);
-//            if ((playerX + playerWidth) >= platformX && playerX <= (platformX + platformWidth)) {
-////                System.out.println("collision");
-////                maybe add blinking player sprite effect
-//                gameOver = true;
-//            }
-//        }
     }
 
     public boolean isGrounded(Player player, int playerHeight, int groundLevel) {

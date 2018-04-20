@@ -45,4 +45,20 @@ public class Obstacle extends GameObject {
         Node sprite = this.getSprite();
         sprite.setTranslateX(sprite.getTranslateX() - speed);
     }
+    
+//    public boolean onScreen() {
+//        // int thisX = this.getSprite.getTranslateX
+//        // if (thisX > 0 && thisX < World.getScreenWidth) return true;
+//        return false;
+//    }
+    
+//    public boolean isClose(Player player) {
+//        double thisX = this.getSprite().getTranslateX();
+//        double playerX = player.getSprite().getTranslateX();
+//        if ((thisX + (double) width) >= playerX
+//                && thisX < (playerX + player.getSprite().getLayoutBounds().getMaxX())) {
+//            return true;
+//        }
+//        return false;
+//    }
 }

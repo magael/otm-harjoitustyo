@@ -6,6 +6,7 @@ import mj.platformer.gameobject.Player;
 import mj.platformer.gameobject.GameObject;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +23,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import mj.platformer.collision.CollisionHandler;
 import mj.platformer.input.InputHandler;
+import mj.platformer.level.ScoreKeeper;
 
 // Using javafx.animation.AnimationTimer for the game loop,
 // javafx.scene.layout.Pane as the root node
@@ -37,16 +39,13 @@ public class World extends Application {
     private boolean gameStart;
     private boolean gameOver;
     private ArrayList<Obstacle> obstacles;
-    private ArrayList<Integer> scoringPositions;
-    private int scoringPositionIndex;
-    private int playerScoringPosition;
-    private int score;
     private int obstacleSpeed;
     private Text scoreText;
     private Text startText;
 
     private Player player;
     private InputHandler inputHandler;
+    private ScoreKeeper scoreKeeper;
 
     public static void main(String[] args) {
         launch(args);
@@ -58,11 +57,8 @@ public class World extends Application {
         Pane pane = initPane();
         initText(pane);
         initGameObjects(pane);
-//        Player player = initGameObjects(pane);
         Scene scene = initScene(pane, stage);
-//        InputHandler inputHandler = new InputHandler();
-        this.inputHandler = new InputHandler();
-        inputHandler.initInput(scene);
+        initInputHandler(scene);
         CollisionHandler collisionHandler = new CollisionHandler();
 
         //The game loop
@@ -104,7 +100,7 @@ public class World extends Application {
 
                 player.setGrounded(collisionHandler.isGrounded(player, playerHeight, groundLevel));
 
-                updateScore();
+                scoreKeeper.updateScore(scoreText, startText, gameStart);
             }
         }.start();
 
@@ -112,7 +108,6 @@ public class World extends Application {
     }
 
     private void initWorld() {
-        // reading these from a file might be nice
         tileSize = 32;
         canvasWidth = 900;
         canvasHeight = 640;
@@ -137,10 +132,7 @@ public class World extends Application {
         gameOver = false;
         obstacleSpeed = 5;
         obstacles = new ArrayList<>();
-        scoringPositions = new ArrayList<>();
-        scoringPositionIndex = 0;
-        playerScoringPosition = playerStartX;
-        score = 0;
+        scoreKeeper = new ScoreKeeper(obstacleSpeed, playerStartX);
 
         scoreText = new Text(26, 42, "");
         scoreText.setFill(color3);
@@ -150,25 +142,17 @@ public class World extends Application {
         startText.setFont(Font.font(26));
     }
 
-    private Scene initScene(Pane pane, Stage stage) {
-        Scene scene = new Scene(pane, backgroundColor);
-        stage.setTitle("Escape Spikeworld");
-        stage.setScene(scene);
-        return scene;
-    }
-
     private Pane initPane() {
         Pane pane = new Pane();
         pane.setPrefSize(canvasWidth, canvasHeight);
         return pane;
     }
 
-    private void initGameObjects(Pane pane) throws Exception {
-        GameObject ground = createGround();
-        pane.getChildren().add(ground.getSprite());
-        this.player = createPlayer();
-        pane.getChildren().add(player.getSprite());
-        readLevelFile(pane);
+    private Scene initScene(Pane pane, Stage stage) {
+        Scene scene = new Scene(pane, backgroundColor);
+        stage.setTitle("Escape Spikeworld");
+        stage.setScene(scene);
+        return scene;
     }
 
     private void initText(Pane pane) {
@@ -179,51 +163,44 @@ public class World extends Application {
         pane.getChildren().add(startText);
     }
 
+    private void initGameObjects(Pane pane) throws Exception {
+        GameObject ground = createGround();
+        pane.getChildren().add(ground.getSprite());
+        this.player = createPlayer();
+        pane.getChildren().add(player.getSprite());
+        readLevelFile(pane);
+    }
+
+    public void initInputHandler(Scene scene) {
+        this.inputHandler = new InputHandler();
+        inputHandler.initInput(scene);
+    }
+
     private void restart(Pane pane, Scene scene, Stage stage) throws Exception {
         initWorld();
         pane = initPane();
         initText(pane);
         initGameObjects(pane);
         scene = initScene(pane, stage);
-        this.inputHandler = new InputHandler();
-        this.inputHandler.initInput(scene);
+        initInputHandler(scene);
         gameOver = false;
         gameStart = true;
-    }
-
-    private void updateScore() {
-        //Add to the score when the player passes another obstacle
-        playerScoringPosition += obstacleSpeed;
-        if (scoringPositionIndex < scoringPositions.size()
-                && playerScoringPosition >= scoringPositions.get(scoringPositionIndex)) {
-            score += 100 * (scoringPositionIndex + 1);
-            scoringPositionIndex += 1;
-            scoreText.setText("Score: " + score);
-            startText.setText("");
-        }
-        if (gameStart && score == 0) {
-            startText.setText("Dodge the spikes!\nPress Space to jump");
-        }
-    }
-
-    static String convertStreamToString(java.io.InputStream is) {
-        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "";
     }
 
     private void readLevelFile(Pane pane) throws Exception {
         String lvlDataLine = "";
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        InputStream is = cl.getResourceAsStream("level1.txt");
+        InputStream is = cl.getResourceAsStream("leveldata/level1.cfg");
 
-        if (!obstacles.isEmpty()) {
-            obstacles = new ArrayList<>();
-        }
+        obstacles = new ArrayList<>();
         int obstacleX = canvasWidth + (5 * tileSize);
 
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             while ((lvlDataLine = br.readLine()) != null) {
+                while (lvlDataLine.startsWith("#")) {
+                    lvlDataLine = br.readLine();
+                }
                 for (int j = 0; j < lvlDataLine.length(); j++) {
                     if (lvlDataLine.charAt(j) == '1') {
                         obstacleX = fileObstacle(obstacleX, pane);
@@ -233,7 +210,7 @@ public class World extends Application {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace(new PrintStream(System.out));
         } finally {
             if (is != null) {
                 is.close();
@@ -247,7 +224,7 @@ public class World extends Application {
         obstacles.add(p);
         pane.getChildren().add(p.getSprite());
         obstacleX += tileSize;
-        scoringPositions.add(obstacleX);
+        scoreKeeper.addPosition(obstacleX);
         return obstacleX;
     }
 

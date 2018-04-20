@@ -1,11 +1,14 @@
 package mj.platformer.ui;
 
+import java.io.BufferedReader;
 import mj.platformer.gameobject.Obstacle;
 import mj.platformer.gameobject.Player;
 import mj.platformer.gameobject.GameObject;
-import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -76,9 +79,12 @@ public class World extends Application {
                     startText.setText("Ouch! Game over.\nPress 'R' to try again.");
                     // would be nice to have only spacebutton but that might lead to buttonmashers missing the game over ui
                     if (inputHandler.handleRestartInput()) {
-                        restart(pane, scene, stage);
+                        try {
+                            restart(pane, scene, stage);
+                        } catch (Exception ex) {
+                            Logger.getLogger(World.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
-//                    restart(pane, player, scene, stage, inputHandler, collisionHandler);
                 }
             }
 
@@ -90,14 +96,9 @@ public class World extends Application {
                 for (Obstacle o : obstacles) {
                     o.move();
 
-                    // hoping it speeds things up to first check if the object is even close to the player
-                    if (o.getSprite().getTranslateX() < playerStartX + playerWidth
-                            && o.getSprite().getTranslateX() > playerStartX) {
-                        // check collisions
-                        gameOver = collisionHandler.handleCollisions(player, o);
-                        if (gameOver) {
-                            break;
-                        }
+                    gameOver = collisionHandler.handleCollisions(player, o);
+                    if (gameOver) {
+                        break;
                     }
                 }
 
@@ -162,43 +163,30 @@ public class World extends Application {
         return pane;
     }
 
-    private void initGameObjects(Pane pane) {
+    private void initGameObjects(Pane pane) throws Exception {
         GameObject ground = createGround();
         pane.getChildren().add(ground.getSprite());
         this.player = createPlayer();
         pane.getChildren().add(player.getSprite());
         readLevelFile(pane);
     }
-//    private Player initGameObjects(Pane pane) {
-//        GameObject ground = createGround();
-//        pane.getChildren().add(ground.getSprite());
-//        Player player = createPlayer();
-//        pane.getChildren().add(player.getSprite());
-//        readLevelFile(pane);
-//        return player;
-//    }
 
     private void initText(Pane pane) {
-        // refactor the text stuff into a method and call from start? maybe even a Score or TextUI object or sumn?
+        // refactor the text stuff into a Score or TextUI object or sumn?
         scoreText.setText("Score: 0");
         startText.setText("Press any key to start");
         pane.getChildren().add(scoreText);
         pane.getChildren().add(startText);
     }
 
-    private void restart(Pane pane, Scene scene, Stage stage) {
-//    private void restart(Pane pane, Player player, Scene scene, Stage stage, InputHandler inputHandler, CollisionHandler collisionHandler) {
+    private void restart(Pane pane, Scene scene, Stage stage) throws Exception {
         initWorld();
         pane = initPane();
         initText(pane);
         initGameObjects(pane);
-//        player = initGameObjects(pane);
         scene = initScene(pane, stage);
-//        inputHandler = new InputHandler();
-//        inputHandler.initInput(scene);
         this.inputHandler = new InputHandler();
         this.inputHandler.initInput(scene);
-//        collisionHandler = new CollisionHandler();
         gameOver = false;
         gameStart = true;
     }
@@ -218,28 +206,39 @@ public class World extends Application {
         }
     }
 
-    private void readLevelFile(Pane pane) {
+    static String convertStreamToString(java.io.InputStream is) {
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
+    }
+
+    private void readLevelFile(Pane pane) throws Exception {
+        String lvlDataLine = "";
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        InputStream is = cl.getResourceAsStream("level1.txt");
+
+        if (!obstacles.isEmpty()) {
+            obstacles = new ArrayList<>();
+        }
+        int obstacleX = canvasWidth + (5 * tileSize);
+
         try {
-            if (!obstacles.isEmpty()) {
-                obstacles = new ArrayList<>();
-            }
-            int obstacleX = canvasWidth + (5 * tileSize);
-            File lvl = new File("src/main/java/mj/platformer/data/level1.txt");
-            Scanner scanner = new Scanner(lvl);
-            while (scanner.hasNextLine()) {
-                String platformData = scanner.nextLine();
-                for (int i = 0; i < platformData.length(); i++) {
-                    if (platformData.charAt(i) == '1') {
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            while ((lvlDataLine = br.readLine()) != null) {
+                for (int j = 0; j < lvlDataLine.length(); j++) {
+                    if (lvlDataLine.charAt(j) == '1') {
                         obstacleX = fileObstacle(obstacleX, pane);
-                    } else if (platformData.charAt(i) == '0') {
+                    } else if (lvlDataLine.charAt(j) == '0') {
                         obstacleX += tileSize;
                     }
                 }
             }
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if (is != null) {
+                is.close();
+            }
         }
-        // if the intention is to loop around, reset obstaclepos & scanner in handle() & edit the above it so it works there
     }
 
     private int fileObstacle(int obstacleX, Pane pane) {
@@ -263,16 +262,12 @@ public class World extends Application {
     }
 
     private GameObject createGround() {
-//        Node groundSprite = new Rectangle(canvasWidth, tileSize / 2, groundColor); // earlier version
         Shape groundSprite = new Rectangle(canvasWidth, canvasHeight - groundLevel, groundColor);
-//        Node groundSprite = new Rectangle(canvasWidth, canvasHeight - groundLevel, groundColor); // earlier version
-//        return new Ground(groundSprite, 0, groundLevel); // earlier version
         return new Obstacle(groundSprite, 0, groundLevel, canvasWidth, canvasHeight - groundLevel);
     }
 
     private Player createPlayer() {
         Shape playerSprite = new Rectangle(playerWidth, playerHeight, playerColor);
-//        Node playerSprite = new Rectangle(playerWidth, playerHeight, playerColor);
         return new Player(playerSprite, playerStartX, playerStartY);
     }
 }

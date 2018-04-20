@@ -12,5 +12,5 @@
 | 10.4. | 1 | Readme:n ja vaatimusmäärittelyn päivitys, pelaajalle testi, refaktorointia |
 | 16.4. | 7 | Törmäilyt, esteiden lataus tiedostosta, hyppy, pisteet |
 | 17.4. | 6 | Start & Gameover UI, Checkstyle, refaktorointia, pakkauskaavion alku |
-| 18.4. | 1 | UI:n testiskippailut, Playerin testit |
-| yht | 34 |
+| 18.4. | 3 | UI:n testiskippailut, Playerin testit, restart(), refaktorointia |
+| yht | 36 |

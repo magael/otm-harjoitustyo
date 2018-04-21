@@ -23,10 +23,12 @@ public class InputHandler {
         });
     }
 
-    public void handlePlayerInput(Player player) {
+    public boolean handlePlayerInput(Player player) {
         if (buttonsDown.getOrDefault(KeyCode.SPACE, false)) {
             player.jump();
+            return true;
         }
+        return false;
     }
 
     public Map<KeyCode, Boolean> getButtonsDown() {

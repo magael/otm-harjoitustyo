@@ -138,6 +138,7 @@ public class World extends Application {
     }
 
     private Pane initPane() {
+//        TilePane tp = new TilePane(); // new discovery, could be useful
         Pane pane = new Pane();
         pane.setPrefSize(canvasWidth, canvasHeight);
         return pane;

@@ -1,6 +1,6 @@
+package mj.platformer.gameobject;
 
-import mj.platformer.gameobject.Player;
-import javafx.scene.Node;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import org.junit.Before;
@@ -9,49 +9,83 @@ import static org.junit.Assert.*;
 
 public class PlayerTest {
 
-//    Node sprite;
     Shape sprite;
     Player player;
+    int x;
+    int y;
 
     @Before
     public void setUp() {
         sprite = new Rectangle(100, 100);
         player = new Player(sprite, 0, 0);
+        x = 10;
+        y = 10;
     }
 
+    //GameObject tests
     @Test
     public void getSpriteWorks() {
-        assertEquals(player.getSprite(), sprite);
+        assertEquals(sprite, player.getSprite());
+    }
+    
+    @Test
+    public void setSpriteWorks() {
+        Circle c = new Circle(x);
+        player.setSprite(c);
+        assertEquals(c, player.getSprite());
+    }
+    
+    @Test
+    public void getXWorks() {
+        assertEquals(player.getSprite().getTranslateX(), player.getX(), 0);
+    }
+    
+    @Test
+    public void getYWorks() {
+        assertEquals(player.getSprite().getTranslateY(), player.getY(), 0);
+    }
+    
+    @Test
+    public void setXWorks() {
+        player.setX(100);
+        assertEquals(100, player.getX(), 0);
+    }
+    
+    @Test
+    public void setYWorks() {
+        player.setY(100);
+        assertEquals(100, player.getY(), 0);
     }
 
+    // Player tests
     @Test
     public void playerStartsGrounded() {
-        assertEquals(player.getGrounded(), true);
+        assertTrue(player.getGrounded());
     }
     
     @Test
     public void jumpDoesNothingIfNotGrounded() {
         player.setGrounded(false);
-        assertEquals(player.jump(), false);
+        assertFalse(player.jump());
     }
 
     @Test
     public void jumpingChangesGroundedToFalse() {
         player.jump();
-        assertEquals(player.getGrounded(), false);
+        assertFalse(player.getGrounded());
     }
 
     @Test
     public void playerStartsNotFalling() {
-        assertEquals(player.getFalling(), false);
+        assertFalse(player.getFalling());
     }
 
     @Test
     public void playerMovesVerticallyByJumping() {
-        double playerStartY = player.getSprite().getTranslateY();
+        double playerStartY = player.getY();
         player.jump();
         player.updatePosition();
-        assertNotEquals(playerStartY, player.getSprite().getTranslateY());
+        assertNotEquals(playerStartY, player.getY());
     }
 
     @Test
@@ -59,31 +93,31 @@ public class PlayerTest {
         player.jump();
         player.setVelocity(player.getMaxVelocity());
         player.updatePosition();
-        assertEquals(player.getFalling(), true);
+        assertTrue(player.getFalling());
     }
     
     @Test
     public void playerStartsWithoutVelocity() {
-        assertEquals(player.getVelocity(), 0, 0);
+        assertEquals(0, player.getVelocity(), 0);
     }
     
     @Test
     public void jumpingChangesVelocity() {
         player.jump();
         player.updatePosition();
-        assertNotEquals(player.getVelocity(), 0, 0);
+        assertNotEquals(0, player.getVelocity(), 0);
     }
 
     //kind of useless tests just to make the report look nicer
     @Test
     public void setGroundedWorks() {
         player.setGrounded(false);
-        assertEquals(player.getGrounded(), false);
+        assertFalse(player.getGrounded());
     }
 
     @Test
     public void setFallingWorks() {
         player.setFalling(true);
-        assertEquals(player.getFalling(), true);
+        assertTrue(player.getFalling());
     }
 }

@@ -39,7 +39,7 @@ public class LevelCreator { // vai GameObjectCreator?
                 }
                 for (int j = 0; j < lvlDataLine.length(); j++) {
                     if (lvlDataLine.charAt(j) == '1') {
-                        obstacles.add(createObstacle(tileSize, tileSize, obstacleX, groundLevel - tileSize));
+                        obstacles.add(createObstacle(obstacleX, groundLevel - tileSize));
                         obstacleX += tileSize;
                     } else if (lvlDataLine.charAt(j) == '0') {
                         obstacleX += tileSize;
@@ -54,14 +54,14 @@ public class LevelCreator { // vai GameObjectCreator?
         return obstacles;
     }
 
-    private Obstacle createObstacle(int width, int height, int x, int y) {
+    private Obstacle createObstacle(int x, int y) {
         Polygon obstacleSprite = new Polygon();
         obstacleSprite.setFill(obstacleColor);
         obstacleSprite.getPoints().addAll(new Double[]{
             ((double) tileSize / 2), 0.0,
             0.0, (double) tileSize,
             (double) tileSize, (double) tileSize});
-        Obstacle o = new Obstacle(obstacleSprite, x, y, width, height);
+        Obstacle o = new Obstacle(obstacleSprite, x, y);
         o.setSpeed(obstacleSpeed);
         return o;
     }

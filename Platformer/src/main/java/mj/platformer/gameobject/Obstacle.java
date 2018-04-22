@@ -20,8 +20,7 @@ public class Obstacle extends GameObject {
     }
 
     public void move() {
-        Shape sprite = this.getSprite();
-        sprite.setTranslateX(sprite.getTranslateX() - speed);
+        this.setX(this.getX() - speed);
     }
 //    
 //    public boolean isClose(Player player, int tileSize) {

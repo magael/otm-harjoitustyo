@@ -14,4 +14,5 @@
 | 17.4. | 6 | Start & Gameover UI, Checkstyle, refaktorointia, pakkauskaavion alku |
 | 18.4. | 3 | UI:n testiskippailut, Playerin testit, restart(), refaktorointia |
 | 20.4. | 5 | Levelin luonti uusiksi, jar, refakrotointia |
-| yht | 41 |
+| 21.3. | 2 | Testejä |
+| yht | 44 |

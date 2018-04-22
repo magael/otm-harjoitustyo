@@ -1,7 +1,6 @@
 # Arkkitehtuurikuvaus
 
 ## Pakkauskaavio
-(Alustava:)</br>
 ![pakkauskaavio](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/pakkauskaavio.png)
 
 ## Sekvenssikaavio

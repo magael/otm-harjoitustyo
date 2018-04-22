@@ -1,8 +1,6 @@
 package mj.platformer.input;
 
-import java.util.HashMap;
 import java.util.Map;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import mj.platformer.gameobject.Player;
 
@@ -10,17 +8,8 @@ public class InputHandler {
     
     private Map<KeyCode, Boolean> buttonsDown;
 
-    public InputHandler() {
-        buttonsDown = new HashMap<>();
-    }
-
-    public void initInput(Scene scene) {
-        scene.setOnKeyPressed(event -> {
-            buttonsDown.put(event.getCode(), Boolean.TRUE);
-        });
-        scene.setOnKeyReleased(event -> {
-            buttonsDown.put(event.getCode(), Boolean.FALSE);
-        });
+    public InputHandler(Map<KeyCode, Boolean> buttonsDown) {
+        this.buttonsDown = buttonsDown;
     }
 
     public boolean handlePlayerInput(Player player) {

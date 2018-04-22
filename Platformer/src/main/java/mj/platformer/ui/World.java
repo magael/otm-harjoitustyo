@@ -19,6 +19,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import mj.platformer.input.InputListener;
 
 // Using javafx.animation.AnimationTimer for the game loop,
 // javafx.scene.layout.Pane as the root node
@@ -29,15 +30,15 @@ public class World extends Application {
     private int canvasWidth, canvasHeight;
     private int groundLevel;
     private int playerWidth, playerHeight, playerStartX, playerStartY;
-    private Color color1, color2, color3, color4, color5;
+    private int obstacleSpeed;
+    private ArrayList<Obstacle> obstacles;
+    private String lvlFilePath;
+    private Color color1, color2, color3, color4;
     private Color playerColor, obstacleColor, groundColor, backgroundColor;
     private boolean gameStart;
     private boolean gameOver;
-    private ArrayList<Obstacle> obstacles;
-    private int obstacleSpeed;
     private Text scoreText;
     private Text startText;
-    private String lvlFilePath;
 
     private Player player;
     private InputHandler inputHandler;
@@ -54,7 +55,7 @@ public class World extends Application {
         initText(pane);
         initGameObjects(pane);
         Scene scene = initScene(pane, stage);
-        initInputHandler(scene);
+        initInput(scene);
         CollisionHandler collisionHandler = new CollisionHandler();
 
         //The game loop
@@ -116,7 +117,6 @@ public class World extends Application {
         color2 = Color.rgb(3, 37, 29);
         color3 = Color.rgb(58, 113, 89);
         color4 = Color.rgb(139, 192, 114);
-        color5 = Color.rgb(222, 244, 208);
         playerColor = color4;
         obstacleColor = color3;
         groundColor = color2;
@@ -124,9 +124,12 @@ public class World extends Application {
 
         gameStart = false;
         gameOver = false;
+        
         lvlFilePath = "leveldata/level1.cfg";
+        
         obstacleSpeed = 5;
         obstacles = new ArrayList<>();
+        
         scoreKeeper = new ScoreKeeper(obstacleSpeed, playerStartX);
 
         scoreText = new Text(26, 42, "");
@@ -152,7 +155,6 @@ public class World extends Application {
     }
 
     private void initText(Pane pane) {
-        // refactor the text stuff into a Score or TextUI object or sumn?
         scoreText.setText("Score: 0");
         startText.setText("Press any key to start");
         pane.getChildren().add(scoreText);
@@ -184,9 +186,9 @@ public class World extends Application {
         return new Player(playerSprite, playerStartX, playerStartY);
     }
 
-    private void initInputHandler(Scene scene) {
-        this.inputHandler = new InputHandler();
-        inputHandler.initInput(scene);
+    private void initInput(Scene scene) {
+        InputListener il = new InputListener();
+        this.inputHandler = new InputHandler(il.initInput(scene));
     }
     
     private void restart(Pane pane, Scene scene, Stage stage) throws Exception {
@@ -196,7 +198,7 @@ public class World extends Application {
         startText.setText("");
         initGameObjects(pane);
         scene = initScene(pane, stage);
-        initInputHandler(scene);
+        initInput(scene);
         gameStart = true;
     }
 }

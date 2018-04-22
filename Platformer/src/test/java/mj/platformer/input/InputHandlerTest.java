@@ -1,5 +1,7 @@
 package mj.platformer.input;
 
+import java.util.HashMap;
+import java.util.Map;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Rectangle;
 import mj.platformer.gameobject.Player;
@@ -8,14 +10,16 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class InputHandlerTest {
+//InputListener has been excluded as part of the UI generation.
 
+public class InputHandlerTest {
     InputHandler ih;
     Player p;
 
     @Before
     public void setUp() {
-        ih = new InputHandler();
+        Map<KeyCode, Boolean> buttonsDown = new HashMap<>();
+        ih = new InputHandler(buttonsDown);
         p = new Player(new Rectangle(64, 64), 0, 0);
     }
 

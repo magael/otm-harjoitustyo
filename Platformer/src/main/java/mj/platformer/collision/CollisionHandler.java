@@ -9,10 +9,12 @@ public class CollisionHandler {
     public boolean handleCollisions(Player player, Obstacle obstacle) {
         // At the moment ends the game on any collision.
         // This version assumes player sprites are JavaFX Shapes.
-        Shape collisionArea = Shape.intersect(player.getSprite(), obstacle.getSprite());
-        if (collisionArea.getBoundsInLocal().getWidth() != -1) {
-            return true;
-        }
+//        if (obstacle.isClose(player, 32)) {
+            Shape collisionArea = Shape.intersect(player.getSprite(), obstacle.getSprite());
+            if (collisionArea.getBoundsInLocal().getWidth() != -1) {
+                return true;
+            }
+//        }
         return false;
     }
 

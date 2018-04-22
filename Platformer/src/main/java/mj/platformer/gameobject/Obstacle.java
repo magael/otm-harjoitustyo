@@ -23,4 +23,14 @@ public class Obstacle extends GameObject {
         Shape sprite = this.getSprite();
         sprite.setTranslateX(sprite.getTranslateX() - speed);
     }
+//    
+//    public boolean isClose(Player player, int tileSize) {
+//        double thisX = this.getX();
+//        double playerX = player.getX();
+//        if ((thisX + (double) tileSize) >= playerX
+//                && thisX < (playerX + (double) tileSize)) {
+//            return true;
+//        }
+//        return false;
+//    }
 }

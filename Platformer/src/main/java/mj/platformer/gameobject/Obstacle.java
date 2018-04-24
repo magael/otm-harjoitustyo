@@ -4,23 +4,26 @@ import javafx.scene.shape.Shape;
 
 public class Obstacle extends GameObject {
 
-    private int speed;
+    GameObjectMover mover;
 
     public Obstacle(Shape sprite, int x, int y) {
         super(sprite, x, y);
-        this.speed = 0;
+        mover = new GameObjectMover(this);
     }
 
-    public int getSpeed() {
-        return speed;
-    }
-    
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public GameObjectMover getMover() {
+        return mover;
     }
 
-    public void move() {
-        this.setX(this.getX() - speed);
+    @Override
+    public void update() {
+        mover.move();
+    }
+
+    @Override
+    public boolean onCollision() {
+        // Returns gameOver = true
+        return true;
     }
 //    
 //    public boolean isClose(Player player, int tileSize) {

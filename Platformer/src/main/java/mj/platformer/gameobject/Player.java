@@ -1,19 +1,17 @@
 package mj.platformer.gameobject;
 
-import javafx.scene.Node;
 import javafx.scene.shape.Shape;
 
 public class Player extends GameObject {
 
-    // speed, velocity...
     private boolean grounded;
     private boolean falling;
     private double speed;
     private double acceleration;
     private double velocity;
     private double maxVelocity;
+    private double progress;
 
-//    public Player(Node sprite, int x, int y) {
     public Player(Shape sprite, int x, int y) {
         super(sprite, x, y);
         grounded = true;
@@ -22,6 +20,7 @@ public class Player extends GameObject {
         acceleration = 1.5;
         velocity = 0;
         maxVelocity = 15;
+        progress = x;
     }
 
     public boolean jump() {
@@ -32,7 +31,8 @@ public class Player extends GameObject {
         return false;
     }
 
-    public void updatePosition() {
+    @Override
+    public void update() {
         if (velocity >= maxVelocity) {
             falling = true;
         }
@@ -72,5 +72,13 @@ public class Player extends GameObject {
 
     public double getMaxVelocity() {
         return maxVelocity;
+    }
+
+    public double getProgress() {
+        return progress;
+    }
+
+    public void setProgress(double progress) {
+        this.progress = progress;
     }
 }

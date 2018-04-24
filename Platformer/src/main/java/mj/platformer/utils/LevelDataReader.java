@@ -18,7 +18,8 @@ public class LevelDataReader {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             while ((lvlDataLine = br.readLine()) != null) {
-                while (lvlDataLine.startsWith("#")) {
+                while ((lvlDataLine = br.readLine()) != null
+                        && lvlDataLine.startsWith("#")) {
                     lvlDataLine = br.readLine();
                 }
                 lvlData.add(lvlDataLine);

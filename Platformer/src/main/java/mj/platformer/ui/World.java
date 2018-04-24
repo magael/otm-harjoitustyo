@@ -7,6 +7,7 @@ import mj.platformer.input.InputHandler;
 import mj.platformer.level.LevelCreator;
 import mj.platformer.level.ScoreKeeper;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
@@ -19,6 +20,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import mj.platformer.gameobject.GameObject;
 import mj.platformer.input.InputListener;
 
 // Using javafx.animation.AnimationTimer for the game loop,
@@ -30,8 +32,8 @@ public class World extends Application {
     private int canvasWidth, canvasHeight;
     private int groundLevel;
     private int playerWidth, playerHeight, playerStartX, playerStartY;
-    private int obstacleSpeed;
-    private ArrayList<Obstacle> obstacles;
+    private int goSpeed;
+    private ArrayList<GameObject> movingObjects;
     private String lvlFilePath;
     private Color color1, color2, color3, color4;
     private Color playerColor, obstacleColor, groundColor, backgroundColor;
@@ -43,6 +45,12 @@ public class World extends Application {
     private Player player;
     private InputHandler inputHandler;
     private ScoreKeeper scoreKeeper;
+
+    //needs refactoring
+    private HashMap<Integer, Integer> groundLevels;
+    private ArrayList<Integer> gameObjectPositions;
+    int groundLevelIndex;
+    //
 
     public static void main(String[] args) {
         launch(args);
@@ -82,18 +90,30 @@ public class World extends Application {
 
             private void update() {
                 if (!player.getGrounded()) {
-                    player.updatePosition();
+                    player.update();
                 }
 
-                for (Obstacle o : obstacles) {
-                    o.move();
+                for (GameObject go : movingObjects) {
+                    go.update();
 
-                    gameOver = collisionHandler.handleCollisions(player, o);
+                    gameOver = collisionHandler.handleCollisions(player, go);
                     if (gameOver) {
                         break;
                     }
                 }
 
+                //new ground testing
+                player.setProgress(player.getProgress() + goSpeed);
+                if (groundLevelIndex < gameObjectPositions.size()
+                        && player.getProgress() >= gameObjectPositions.get(groundLevelIndex)
+                        && groundLevels.containsKey(gameObjectPositions.get(groundLevelIndex))) {
+                    groundLevel = groundLevels.get(gameObjectPositions.get(groundLevelIndex));
+                    groundLevelIndex++;
+                    if (player.getGrounded()) {
+                        player.setFalling(true);
+                    }
+                }
+                //
                 player.setGrounded(collisionHandler.isGrounded(player, playerHeight, groundLevel));
 
                 scoreKeeper.updateScore(scoreText, startText, gameStart);
@@ -101,6 +121,10 @@ public class World extends Application {
         }.start();
 
         stage.show();
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
     }
 
     private void initWorld() {
@@ -124,13 +148,13 @@ public class World extends Application {
 
         gameStart = false;
         gameOver = false;
-        
+
         lvlFilePath = "leveldata/level1.cfg";
-        
-        obstacleSpeed = 5;
-        obstacles = new ArrayList<>();
-        
-        scoreKeeper = new ScoreKeeper(obstacleSpeed, playerStartX);
+
+        goSpeed = 5;
+        movingObjects = new ArrayList<>();
+
+        scoreKeeper = new ScoreKeeper(goSpeed, playerStartX);
 
         scoreText = new Text(26, 42, "");
         scoreText.setFill(color3);
@@ -162,17 +186,22 @@ public class World extends Application {
     }
 
     private void initGameObjects(Pane pane) throws Exception {
+        LevelCreator lvlCreator = new LevelCreator(canvasWidth, tileSize, groundLevel, goSpeed, obstacleColor, groundColor);
+        movingObjects = lvlCreator.createObjects(lvlFilePath);
+        for (GameObject go : movingObjects) {
+            pane.getChildren().add(go.getSprite());
+            scoreKeeper.addPosition((int) go.getX() + tileSize);
+        }
+
+        // new ground testing
+        gameObjectPositions = lvlCreator.getGameObjectPositions();
+        groundLevels = lvlCreator.getGroundLevels();
+        groundLevelIndex = 0;
+
         pane.getChildren().add(createGround());
-        
+
         this.player = createPlayer();
         pane.getChildren().add(player.getSprite());
-        
-        LevelCreator lvlCreator = new LevelCreator(canvasWidth, tileSize, groundLevel, obstacleSpeed, obstacleColor);
-        obstacles = lvlCreator.createObstacles(lvlFilePath);
-        for (Obstacle o : obstacles) {
-            pane.getChildren().add(o.getSprite());
-            scoreKeeper.addPosition((int) o.getX() + tileSize);
-        }
     }
 
     private Shape createGround() {
@@ -190,7 +219,7 @@ public class World extends Application {
         InputListener il = new InputListener();
         this.inputHandler = new InputHandler(il.initInput(scene));
     }
-    
+
     private void restart(Pane pane, Scene scene, Stage stage) throws Exception {
         initWorld();
         pane = initPane();

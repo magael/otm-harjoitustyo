@@ -19,20 +19,28 @@ public abstract class GameObject {
     public void setSprite(Shape sprite) {
         this.sprite = sprite;
     }
-    
+
     public double getX() {
         return sprite.getTranslateX();
     }
-    
+
     public double getY() {
         return sprite.getTranslateY();
     }
-    
+
     public void setX(double value) {
         sprite.setTranslateX(value);
     }
-    
+
     public void setY(double value) {
         sprite.setTranslateY(value);
+    }
+
+    public boolean onCollision() {
+        // Returns gameOver = false
+        return false;
+    }
+
+    public void update() {
     }
 }

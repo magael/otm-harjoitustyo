@@ -1,19 +1,19 @@
 package mj.platformer.collision;
 
 import javafx.scene.shape.Shape;
-import mj.platformer.gameobject.Obstacle;
+import mj.platformer.gameobject.GameObject;
 import mj.platformer.gameobject.Player;
 
 public class CollisionHandler {
 
-    public boolean handleCollisions(Player player, Obstacle obstacle) {
+    public boolean handleCollisions(Player player, GameObject go) {
         // At the moment ends the game on any collision.
         // This version assumes player sprites are JavaFX Shapes.
 //        if (obstacle.isClose(player, 32)) {
-            Shape collisionArea = Shape.intersect(player.getSprite(), obstacle.getSprite());
-            if (collisionArea.getBoundsInLocal().getWidth() != -1) {
-                return true;
-            }
+        Shape collisionArea = Shape.intersect(player.getSprite(), go.getSprite());
+        if (collisionArea.getBoundsInLocal().getWidth() != -1) {
+            return go.onCollision();
+        }
 //        }
         return false;
     }

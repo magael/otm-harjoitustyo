@@ -15,4 +15,6 @@
 | 18.4. | 3 | UI:n testiskippailut, Playerin testit, restart(), refaktorointia |
 | 20.4. | 5 | Levelin luonti uusiksi, jar, refakrotointia |
 | 21.3. | 2 | Testejä |
-| yht | 44 |
+| 22.3. | 1 | Sekvenssikaavio ja muuta pientä |
+| 23.4. | 3 | Alustavat liikkuvat tasot |
+| yht | 48 |

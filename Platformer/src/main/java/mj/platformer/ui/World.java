@@ -32,19 +32,21 @@ public class World extends Application {
     private int groundLevel;
     private int playerWidth, playerHeight, playerStartX, playerStartY;
     private int goSpeed;
-    private ArrayList<GameObject> movingObjects;
+    private int highScore;
     private String lvlFilePath;
-    private Color color1, color2, color3, color4;
-    private Color playerColor, obstacleColor, groundColor, backgroundColor;
+    private ArrayList<GameObject> movingObjects;
     private boolean gameStart;
     private boolean gameOver;
-    private Text scoreText;
+    private Color color1, color2, color3, color4;
+    private Color playerColor, obstacleColor, groundColor, backgroundColor;
     private Text startText;
+    private Text scoreText;
+    private Text highScoreText;
 
     private Player player;
     private InputHandler inputHandler;
     private ScoreKeeper scoreKeeper;
-    private GroundLevelHandler glh;
+    private GroundLevelHandler groundLevelHandler;
 
     public static void main(String[] args) {
         launch(args);
@@ -54,12 +56,13 @@ public class World extends Application {
     public void start(Stage stage) throws Exception {
         initWorld();
         Pane pane = initPane();
-        initText(pane);
         initGameObjects(pane);
+        initText(pane);
         Scene scene = initScene(pane, stage);
         initInput(scene);
         CollisionHandler collisionHandler = new CollisionHandler();
-
+        highScore = 0;
+        
         //The game loop
         new AnimationTimer() {
             @Override
@@ -71,13 +74,23 @@ public class World extends Application {
                     inputHandler.handlePlayerInput(player);
                     update();
                 } else if (gameOver) {
-                    startText.setText("Ouch! Game over.\nPress 'R' to try again.");
-                    if (inputHandler.handleRestartInput()) {
-                        try {
-                            restart(pane, scene, stage);
-                        } catch (Exception ex) {
-                            Logger.getLogger(World.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                    gameOverEvent();
+                }
+            }
+
+            private void gameOverEvent() {
+                int score = scoreKeeper.getScore();
+                if (score > highScore) {
+                    highScore = score;
+                }
+                highScoreText.setText("Your score: " + score + "\nHigh score: " + highScore);
+
+                startText.setText("Ouch! Game over.\nPress 'R' to try again.");
+                if (inputHandler.handleRestartInput()) {
+                    try {
+                        restart(pane, scene, stage);
+                    } catch (Exception ex) {
+                        Logger.getLogger(World.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -95,8 +108,8 @@ public class World extends Application {
                         break;
                     }
                 }
-                
-                groundLevel = glh.setGroundLevel(groundLevel, goSpeed, player);
+
+                groundLevel = groundLevelHandler.setGroundLevel(groundLevel, goSpeed, player);
                 player.setGrounded(collisionHandler.isGrounded(player, playerHeight, groundLevel));
 
                 scoreKeeper.updateScore(scoreText, startText, gameStart);
@@ -115,11 +128,24 @@ public class World extends Application {
         canvasWidth = 900;
         canvasHeight = 640;
         groundLevel = (int) (canvasHeight / 1.618);
+        
         playerWidth = tileSize;
         playerHeight = tileSize;
         playerStartX = canvasWidth - (playerWidth / 2) - (int) (canvasWidth / 1.618);
         playerStartY = groundLevel - playerHeight;
+        goSpeed = 5;
 
+        initColors();
+
+        gameStart = false;
+        gameOver = false;
+
+        lvlFilePath = "leveldata/level1.cfg";
+
+        scoreKeeper = new ScoreKeeper(goSpeed, playerStartX);
+    }
+
+    private void initColors() {
         color1 = Color.rgb(8, 28, 37);
         color2 = Color.rgb(3, 37, 29);
         color3 = Color.rgb(58, 113, 89);
@@ -128,23 +154,6 @@ public class World extends Application {
         obstacleColor = color3;
         groundColor = color2;
         backgroundColor = color1;
-
-        gameStart = false;
-        gameOver = false;
-
-        lvlFilePath = "leveldata/level1.cfg";
-
-        goSpeed = 5;
-        movingObjects = new ArrayList<>();
-
-        scoreKeeper = new ScoreKeeper(goSpeed, playerStartX);
-
-        scoreText = new Text(26, 42, "");
-        scoreText.setFill(color3);
-        scoreText.setFont(Font.font(26));
-        startText = new Text((canvasWidth / 2) - 120, 100, "");
-        startText.setFill(color4);
-        startText.setFont(Font.font(26));
     }
 
     private Pane initPane() {
@@ -161,13 +170,24 @@ public class World extends Application {
     }
 
     private void initText(Pane pane) {
-        scoreText.setText("Score: 0");
-        startText.setText("Press any key to start");
+        scoreText = new Text(26, 42, "Score: 0");
+        scoreText.setFill(color3);
+        scoreText.setFont(Font.font(26));
         pane.getChildren().add(scoreText);
+
+        startText = new Text((canvasWidth / 2) - 120, 100, "Press any key to start");
+        startText.setFill(color4);
+        startText.setFont(Font.font(26));
         pane.getChildren().add(startText);
+
+        highScoreText = new Text((canvasWidth / 2) - 120, canvasHeight - ((canvasHeight - groundLevel) / 2), "");
+        highScoreText.setFill(color4);
+        highScoreText.setFont(Font.font(26));
+        pane.getChildren().add(highScoreText);
     }
 
     private void initGameObjects(Pane pane) throws Exception {
+        movingObjects = new ArrayList<>();
         LevelCreator lvlCreator = new LevelCreator(canvasWidth, tileSize, groundLevel, goSpeed, obstacleColor, groundColor);
         movingObjects = lvlCreator.createObjects(lvlFilePath);
         for (GameObject go : movingObjects) {
@@ -175,8 +195,8 @@ public class World extends Application {
             scoreKeeper.addPosition((int) go.getX() + tileSize);
         }
 
-        glh = new GroundLevelHandler(lvlCreator);
-        
+        groundLevelHandler = new GroundLevelHandler(lvlCreator);
+
         pane.getChildren().add(createGround());
 
         this.player = createPlayer();
@@ -202,9 +222,9 @@ public class World extends Application {
     private void restart(Pane pane, Scene scene, Stage stage) throws Exception {
         initWorld();
         pane = initPane();
+        initGameObjects(pane);
         initText(pane);
         startText.setText("");
-        initGameObjects(pane);
         scene = initScene(pane, stage);
         initInput(scene);
         gameStart = true;

@@ -22,6 +22,11 @@ public class ScoreKeeper {
     
     public void updateScore(Text scoreText, Text startText, boolean gameStart) {
         playerScoringPosition += obstacleSpeed;
+        System.out.println("playerscoringposition: " + playerScoringPosition);
+        System.out.println("obstaclespeed: " + obstacleSpeed);
+        System.out.println("scoringPositionIndex: " + scoringPositionIndex);
+        System.out.println("scoringPositions.get(scoringPositionIndex): " + scoringPositions.get(scoringPositionIndex));
+        System.out.println("score: " + score);
         if (scoringPositionIndex < scoringPositions.size()
                 && playerScoringPosition >= scoringPositions.get(scoringPositionIndex)) {
             score += 100 * (scoringPositionIndex + 1);
@@ -36,5 +41,9 @@ public class ScoreKeeper {
 
     public void addPosition(int obstacleX) {
         scoringPositions.add(obstacleX);
+    }
+
+    public int getScore() {
+        return score;
     }
 }

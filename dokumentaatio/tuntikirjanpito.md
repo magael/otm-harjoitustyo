@@ -17,4 +17,5 @@
 | 21.3. | 2 | Testejä |
 | 22.3. | 1 | Sekvenssikaavio ja muuta pientä |
 | 23.4. | 3 | Alustavat liikkuvat tasot |
-| yht | 48 |
+| 24.4. | 4 | Refaktorointia, testejä, yhden pelisession huipputulos, release |
+| yht | 52 |

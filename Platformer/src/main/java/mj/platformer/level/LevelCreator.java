@@ -3,7 +3,6 @@ package mj.platformer.level;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
@@ -18,6 +17,8 @@ public class LevelCreator { // vai GameObjectCreator?
     int tileSize;
     int groundLevel;
     int goSpeed;
+    int platformHeight;
+    int platformWidth;
     HashMap<Integer, Integer> groundLevels;
     ArrayList<Integer> gameObjectPositions;
     //maybe colors could be determined in this class, rather than passed from World?
@@ -31,14 +32,16 @@ public class LevelCreator { // vai GameObjectCreator?
         this.goSpeed = goSpeed;
         this.obstacleColor = obstacleColor;
         this.groundColor = groundColor;
-        this.groundLevels = new HashMap<>();
-        this.gameObjectPositions = new ArrayList<>();
+        groundLevels = new HashMap<>();
+        gameObjectPositions = new ArrayList<>();
+        platformHeight = tileSize;
+        platformWidth = tileSize;
     }
 
     public ArrayList<Integer> getGameObjectPositions() {
         return gameObjectPositions;
     }
-    
+
     public HashMap<Integer, Integer> getGroundLevels() {
         return groundLevels;
     }
@@ -48,31 +51,29 @@ public class LevelCreator { // vai GameObjectCreator?
         String lvlDataLine = "";
         int i = 0;
         int obstacleX = canvasWidth + (5 * tileSize);
-        int platformHeight = tileSize;
-        int platformWidth = tileSize;
-//        Random random = new Random();
+        boolean previousWasPlatform = false;
 
         try {
             LevelDataReader lvlReader = new LevelDataReader();
             ArrayList<String> lvlData = lvlReader.readLevelFile(filePath);
             while (i < lvlData.size() && (lvlDataLine = lvlData.get(i)) != null) {
                 for (int j = 0; j < lvlDataLine.length(); j++) {
-//                    int rand = 1 + random.nextInt(2);
-//                    int platformHeight = tileSize * rand;
-                    if (lvlDataLine.charAt(j) == '2') {
-                        objects.add(createPlatform(obstacleX, groundLevel - platformHeight, platformWidth, platformHeight));
-                        obstacleX += platformWidth;
-                        //to add: if last was platform, don't put into groundlvls, don't add into positions
-                        groundLevels.put(obstacleX, groundLevel - platformHeight);
-                    } else if (lvlDataLine.charAt(j) == '1') {
+                    char c = lvlDataLine.charAt(j);
+                    if (c == '1') {
                         objects.add(createObstacle(obstacleX, groundLevel - tileSize));
-                        obstacleX += tileSize;
-                        groundLevels.put(obstacleX, groundLevel);
-                    } else if (lvlDataLine.charAt(j) == '0') {
-                        obstacleX += tileSize;
-                        groundLevels.put(obstacleX, groundLevel);
                     }
-                    gameObjectPositions.add(obstacleX);
+                    if (c == '2') {
+                        objects.add(createPlatform(obstacleX, groundLevel - platformHeight, platformWidth, platformHeight));
+                        if (!previousWasPlatform) {
+                            addGroundLevelPosition(obstacleX, groundLevel - platformHeight);
+                        }
+                        obstacleX += platformWidth;
+                        previousWasPlatform = true;
+                    } else if (c == '0' || c == '1') {
+                        obstacleX += tileSize;
+                        addGroundLevelPosition(obstacleX, groundLevel);
+                        previousWasPlatform = false;
+                    }
                 }
                 i++;
             }
@@ -81,6 +82,11 @@ public class LevelCreator { // vai GameObjectCreator?
         }
 
         return objects;
+    }
+
+    private void addGroundLevelPosition(int obstacleX, int groundLevel) {
+        groundLevels.put(obstacleX, groundLevel);
+        gameObjectPositions.add(obstacleX);
     }
 
     private Obstacle createObstacle(int x, int y) {

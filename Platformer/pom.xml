@@ -50,6 +50,7 @@
                     <excludes>
                         <exclude>mj/platformer/ui/**/*</exclude>
                         <exclude>mj/platformer/input/InputListener.class</exclude>
+                        <exclude>mj/platformer/level/ScoreKeeper.class</exclude>
                     </excludes>
                 </configuration>  
             </plugin>

@@ -37,5 +37,4 @@ public class ScoreKeeper {
     public void addPosition(int obstacleX) {
         scoringPositions.add(obstacleX);
     }
-    
 }

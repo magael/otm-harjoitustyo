@@ -14,6 +14,10 @@ public class Platform extends GameObject {
     public GameObjectMover getMover() {
         return mover;
     }
+    
+    public void setMover(GameObjectMover mover) {
+        this.mover = mover;
+    }
 
     @Override
     public void update() {

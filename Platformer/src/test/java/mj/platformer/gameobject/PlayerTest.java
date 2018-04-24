@@ -84,7 +84,7 @@ public class PlayerTest {
     public void playerMovesVerticallyByJumping() {
         double playerStartY = player.getY();
         player.jump();
-        player.updatePosition();
+        player.update();
         assertNotEquals(playerStartY, player.getY());
     }
 
@@ -92,7 +92,7 @@ public class PlayerTest {
     public void playerStartsFallingAfterPeakVelocity() {
         player.jump();
         player.setVelocity(player.getMaxVelocity());
-        player.updatePosition();
+        player.update();
         assertTrue(player.getFalling());
     }
     
@@ -104,11 +104,10 @@ public class PlayerTest {
     @Test
     public void jumpingChangesVelocity() {
         player.jump();
-        player.updatePosition();
+        player.update();
         assertNotEquals(0, player.getVelocity(), 0);
     }
 
-    //kind of useless tests just to make the report look nicer
     @Test
     public void setGroundedWorks() {
         player.setGrounded(false);
@@ -119,5 +118,11 @@ public class PlayerTest {
     public void setFallingWorks() {
         player.setFalling(true);
         assertTrue(player.getFalling());
+    }
+    
+    @Test
+    public void setProgressWorks() {
+        player.setProgress(10);
+        assertEquals(10, player.getProgress(), 0);
     }
 }

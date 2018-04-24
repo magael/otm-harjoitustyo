@@ -15,6 +15,10 @@ public class Obstacle extends GameObject {
         return mover;
     }
 
+    public void setMover(GameObjectMover mover) {
+        this.mover = mover;
+    }
+
     @Override
     public void update() {
         mover.move();
@@ -25,14 +29,4 @@ public class Obstacle extends GameObject {
         // Returns gameOver = true
         return true;
     }
-//    
-//    public boolean isClose(Player player, int tileSize) {
-//        double thisX = this.getX();
-//        double playerX = player.getX();
-//        if ((thisX + (double) tileSize) >= playerX
-//                && thisX < (playerX + (double) tileSize)) {
-//            return true;
-//        }
-//        return false;
-//    }
 }

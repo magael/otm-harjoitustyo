@@ -1,13 +1,11 @@
 package mj.platformer.ui;
 
 import mj.platformer.collision.CollisionHandler;
-import mj.platformer.gameobject.Obstacle;
 import mj.platformer.gameobject.Player;
 import mj.platformer.input.InputHandler;
 import mj.platformer.level.LevelCreator;
 import mj.platformer.level.ScoreKeeper;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
@@ -22,6 +20,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import mj.platformer.gameobject.GameObject;
 import mj.platformer.input.InputListener;
+import mj.platformer.level.GroundLevelHandler;
 
 // Using javafx.animation.AnimationTimer for the game loop,
 // javafx.scene.layout.Pane as the root node
@@ -45,12 +44,7 @@ public class World extends Application {
     private Player player;
     private InputHandler inputHandler;
     private ScoreKeeper scoreKeeper;
-
-    //needs refactoring
-    private HashMap<Integer, Integer> groundLevels;
-    private ArrayList<Integer> gameObjectPositions;
-    int groundLevelIndex;
-    //
+    private GroundLevelHandler glh;
 
     public static void main(String[] args) {
         launch(args);
@@ -101,19 +95,8 @@ public class World extends Application {
                         break;
                     }
                 }
-
-                //new ground testing
-                player.setProgress(player.getProgress() + goSpeed);
-                if (groundLevelIndex < gameObjectPositions.size()
-                        && player.getProgress() >= gameObjectPositions.get(groundLevelIndex)
-                        && groundLevels.containsKey(gameObjectPositions.get(groundLevelIndex))) {
-                    groundLevel = groundLevels.get(gameObjectPositions.get(groundLevelIndex));
-                    groundLevelIndex++;
-                    if (player.getGrounded()) {
-                        player.setFalling(true);
-                    }
-                }
-                //
+                
+                groundLevel = glh.setGroundLevel(groundLevel, goSpeed, player);
                 player.setGrounded(collisionHandler.isGrounded(player, playerHeight, groundLevel));
 
                 scoreKeeper.updateScore(scoreText, startText, gameStart);
@@ -165,7 +148,6 @@ public class World extends Application {
     }
 
     private Pane initPane() {
-//        TilePane tp = new TilePane(); // new discovery, could be useful
         Pane pane = new Pane();
         pane.setPrefSize(canvasWidth, canvasHeight);
         return pane;
@@ -193,11 +175,8 @@ public class World extends Application {
             scoreKeeper.addPosition((int) go.getX() + tileSize);
         }
 
-        // new ground testing
-        gameObjectPositions = lvlCreator.getGameObjectPositions();
-        groundLevels = lvlCreator.getGroundLevels();
-        groundLevelIndex = 0;
-
+        glh = new GroundLevelHandler(lvlCreator);
+        
         pane.getChildren().add(createGround());
 
         this.player = createPlayer();

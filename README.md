@@ -10,6 +10,10 @@ Peli on niin sanottu "endless runner", eli eteneminen on automaattista, pelaajan
 
 [Työaikakirjanpito](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/tuntikirjanpito.md)
 
+## Releaset
+
+[Viikko 5](https://github.com/magael/otm-harjoitustyo/releases/tag/viikko5)
+
 ## Komentorivitoiminnot
 
 ### Testaus

@@ -84,7 +84,7 @@ public class LevelCreator { // vai GameObjectCreator?
         return objects;
     }
 
-    private void addGroundLevelPosition(int obstacleX, int groundLevel) {
+    public void addGroundLevelPosition(int obstacleX, int groundLevel) {
         groundLevels.put(obstacleX, groundLevel);
         gameObjectPositions.add(obstacleX);
     }

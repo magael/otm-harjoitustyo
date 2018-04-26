@@ -2,6 +2,13 @@ package mj.platformer.gameobject;
 
 import javafx.scene.shape.Shape;
 
+/**
+ * The player's "avatar" class, that is a subclass of the abstract class GameObject.
+ * 
+ * @see mj.platformer.gameobject.GameObject
+ * 
+ * @author Maguel
+ */
 public class Player extends GameObject {
 
     private boolean grounded;
@@ -12,6 +19,16 @@ public class Player extends GameObject {
     private double maxVelocity;
     private double progress;
 
+    /**
+     * Constructor for the Player class.
+     * Besides the usual GameObejct parameters, Player requires an integer
+     * to store the sprite's width.
+     * 
+     * @param sprite
+     * @param x
+     * @param y
+     * @param width 
+     */
     public Player(Shape sprite, int x, int y, int width) {
         super(sprite, x, y);
         grounded = true;
@@ -23,6 +40,11 @@ public class Player extends GameObject {
         progress = x + width;
     }
 
+    /**
+     * The player is set airborne.
+     * 
+     * @return true if the player was able to jump, otherwise false
+     */
     public boolean jump() {
         if (grounded) { 
             grounded = false;
@@ -31,6 +53,9 @@ public class Player extends GameObject {
         return false;
     }
 
+    /**
+     * Controls the jumping-related momentum and position of the player character.
+     */
     @Override
     public void update() {
         if (velocity >= maxVelocity) {

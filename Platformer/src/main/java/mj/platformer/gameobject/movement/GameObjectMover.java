@@ -1,4 +1,6 @@
-package mj.platformer.gameobject;
+package mj.platformer.gameobject.movement;
+
+import mj.platformer.gameobject.GameObject;
 
 public class GameObjectMover {
 

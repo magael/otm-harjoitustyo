@@ -1,5 +1,6 @@
 package mj.platformer.gameobject;
 
+import mj.platformer.gameobject.movement.GameObjectMover;
 import javafx.scene.shape.Shape;
 
 public class Platform extends GameObject {

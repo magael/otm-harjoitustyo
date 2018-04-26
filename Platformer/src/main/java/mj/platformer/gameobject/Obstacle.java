@@ -1,11 +1,26 @@
 package mj.platformer.gameobject;
 
+import mj.platformer.gameobject.movement.GameObjectMover;
 import javafx.scene.shape.Shape;
 
+/**
+ * The obstacle class, which the player is supposed to avoid touching.
+ * A subclass of the abstract class GameObject (in the same package).
+ * 
+ * @author Maguel
+ */
 public class Obstacle extends GameObject {
 
-    GameObjectMover mover;
+    private GameObjectMover mover;
 
+    /**
+     * Constructor for the Obstacle class.
+     * Initializes the GameObjectMover used by this instance.
+     * 
+     * @param sprite
+     * @param x
+     * @param y 
+     */
     public Obstacle(Shape sprite, int x, int y) {
         super(sprite, x, y);
         mover = new GameObjectMover(this);
@@ -19,14 +34,22 @@ public class Obstacle extends GameObject {
         this.mover = mover;
     }
 
+    /**
+     * The obstacle is moved according to how the instance of the
+     * GameObjectMover is configured.
+     */
     @Override
     public void update() {
         mover.move();
     }
 
+    /**
+     * When the player collides with an obstacle, it's gameOver = true.
+     * 
+     * @return true
+     */
     @Override
     public boolean onCollision() {
-        // Returns gameOver = true
         return true;
     }
 }

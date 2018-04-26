@@ -18,4 +18,5 @@
 | 22.3. | 1 | Sekvenssikaavio ja muuta pientä |
 | 23.4. | 3 | Alustavat liikkuvat tasot |
 | 24.4. | 4 | Refaktorointia, testejä, yhden pelisession huipputulos, release |
-| yht | 52 |
+| 26.4. | 3 | JavaDocit viidellle luokalle, törmäilylogiikan hiomista, testilevelin ja ulkoasun muokkausta |
+| yht | 55 |

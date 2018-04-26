@@ -12,7 +12,7 @@ public class Player extends GameObject {
     private double maxVelocity;
     private double progress;
 
-    public Player(Shape sprite, int x, int y) {
+    public Player(Shape sprite, int x, int y, int width) {
         super(sprite, x, y);
         grounded = true;
         falling = false;
@@ -20,7 +20,7 @@ public class Player extends GameObject {
         acceleration = 1.5;
         velocity = 0;
         maxVelocity = 15;
-        progress = x;
+        progress = x + width;
     }
 
     public boolean jump() {

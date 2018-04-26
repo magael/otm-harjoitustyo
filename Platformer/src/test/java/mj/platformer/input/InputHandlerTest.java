@@ -20,7 +20,7 @@ public class InputHandlerTest {
     public void setUp() {
         Map<KeyCode, Boolean> buttonsDown = new HashMap<>();
         ih = new InputHandler(buttonsDown);
-        p = new Player(new Rectangle(64, 64), 0, 0);
+        p = new Player(new Rectangle(64, 64), 0, 0, 64);
     }
 
     @Test

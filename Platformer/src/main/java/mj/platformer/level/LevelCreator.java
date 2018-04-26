@@ -96,6 +96,7 @@ public class LevelCreator { // vai GameObjectCreator?
             ((double) tileSize / 2), 0.0,
             0.0, (double) tileSize,
             (double) tileSize, (double) tileSize});
+        obstacleSprite.setStroke(groundColor);
         Obstacle o = new Obstacle(obstacleSprite, x, y);
         o.getMover().setSpeed(goSpeed);
         return o;

@@ -19,7 +19,7 @@ public class CollisonHandlerTest {
     @Before
     public void setUp() {
         tileSize = 16;
-        player = new Player(new Rectangle(tileSize, tileSize), 0, 10);
+        player = new Player(new Rectangle(tileSize, tileSize), 0, 10, tileSize);
         obstacle = new Obstacle(new Rectangle(tileSize, tileSize), 20, 10);
         groundLevel = tileSize;
         ch = new CollisionHandler();

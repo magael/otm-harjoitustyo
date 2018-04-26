@@ -22,9 +22,12 @@ import mj.platformer.gameobject.GameObject;
 import mj.platformer.input.InputListener;
 import mj.platformer.level.GroundLevelHandler;
 
-// Using javafx.animation.AnimationTimer for the game loop,
-// javafx.scene.layout.Pane as the root node
-// and methods of javafx.scene.Node for updating position.
+/**
+ * The main class for the platforming game.
+ * Initializes the UI, entities and systems.
+ * Contains the game loop.
+ * @author Maguel
+ */
 public class World extends Application {
 
     private int tileSize;
@@ -48,10 +51,21 @@ public class World extends Application {
     private ScoreKeeper scoreKeeper;
     private GroundLevelHandler groundLevelHandler;
 
+    /**
+     * Launches the application, calling the start(Stage) method.
+     * 
+     * @param args 
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Initializations and the game loop.
+     * 
+     * @param stage
+     * @throws Exception 
+     */
     @Override
     public void start(Stage stage) throws Exception {
         initWorld();
@@ -62,9 +76,15 @@ public class World extends Application {
         initInput(scene);
         CollisionHandler collisionHandler = new CollisionHandler();
         highScore = 0;
-        
-        //The game loop
+
+        /**
+         * The game loop is based on javafx.animation.AnimationTimer.
+         */
         new AnimationTimer() {
+            /**
+             * 
+             * @param currentTime 
+             */
             @Override
             public void handle(long currentTime) {
                 if (!inputHandler.getButtonsDown().isEmpty()) {
@@ -99,7 +119,9 @@ public class World extends Application {
                 if (!player.getGrounded()) {
                     player.update();
                 }
-
+                groundLevel = groundLevelHandler.setGroundLevel(groundLevel, goSpeed, player);
+                player.setGrounded(collisionHandler.isGrounded(player, playerHeight, groundLevel));
+                
                 for (GameObject go : movingObjects) {
                     go.update();
 
@@ -109,9 +131,6 @@ public class World extends Application {
                     }
                 }
 
-                groundLevel = groundLevelHandler.setGroundLevel(groundLevel, goSpeed, player);
-                player.setGrounded(collisionHandler.isGrounded(player, playerHeight, groundLevel));
-
                 scoreKeeper.updateScore(scoreText, startText, gameStart);
             }
         }.start();
@@ -119,16 +138,21 @@ public class World extends Application {
         stage.show();
     }
 
+    /**
+     * The game over boolean can be altered from a Game Object's onCollision()-method.
+     * 
+     * @param gameOver 
+     */
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
-
+    
     private void initWorld() {
         tileSize = 32;
         canvasWidth = 900;
         canvasHeight = 640;
         groundLevel = (int) (canvasHeight / 1.618);
-        
+
         playerWidth = tileSize;
         playerHeight = tileSize;
         playerStartX = canvasWidth - (playerWidth / 2) - (int) (canvasWidth / 1.618);
@@ -146,10 +170,11 @@ public class World extends Application {
     }
 
     private void initColors() {
-        color1 = Color.rgb(8, 28, 37);
-        color2 = Color.rgb(3, 37, 29);
-        color3 = Color.rgb(58, 113, 89);
-        color4 = Color.rgb(139, 192, 114);
+        color1 = Color.web("#7BC1BA");
+        color2 = Color.web("#191919");
+        color3 = Color.web("#D6D3BD");
+        color4 = Color.web("#EE4466");
+
         playerColor = color4;
         obstacleColor = color3;
         groundColor = color2;
@@ -171,12 +196,12 @@ public class World extends Application {
 
     private void initText(Pane pane) {
         scoreText = new Text(26, 42, "Score: 0");
-        scoreText.setFill(color3);
+        scoreText.setFill(color2);
         scoreText.setFont(Font.font(26));
         pane.getChildren().add(scoreText);
 
         startText = new Text((canvasWidth / 2) - 120, 100, "Press any key to start");
-        startText.setFill(color4);
+        startText.setFill(color2);
         startText.setFont(Font.font(26));
         pane.getChildren().add(startText);
 
@@ -211,7 +236,7 @@ public class World extends Application {
 
     private Player createPlayer() {
         Shape playerSprite = new Rectangle(playerWidth, playerHeight, playerColor);
-        return new Player(playerSprite, playerStartX, playerStartY);
+        return new Player(playerSprite, playerStartX, playerStartY, playerWidth);
     }
 
     private void initInput(Scene scene) {

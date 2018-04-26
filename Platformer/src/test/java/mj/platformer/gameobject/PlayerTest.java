@@ -17,7 +17,7 @@ public class PlayerTest {
     @Before
     public void setUp() {
         sprite = new Rectangle(100, 100);
-        player = new Player(sprite, 0, 0);
+        player = new Player(sprite, 0, 0, 100);
         x = 10;
         y = 10;
     }

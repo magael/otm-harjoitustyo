@@ -30,7 +30,7 @@ public class Player extends GameObject {
      * @param width 
      */
     public Player(Shape sprite, int x, int y, int width) {
-        super(sprite, x, y);
+        super(sprite, x, y, width);
         grounded = true;
         falling = false;
         speed = 1;

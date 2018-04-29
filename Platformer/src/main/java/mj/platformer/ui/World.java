@@ -119,7 +119,7 @@ public class World extends Application {
                 if (!scoreKeeper.getGameWon()) {
                     startText.setText("Ouch! Game over.\nPress 'R' to try again.");
                 }
-                
+
                 if (inputHandler.handleRestartInput()) {
                     try {
                         restart(pane, scene, stage);
@@ -139,7 +139,9 @@ public class World extends Application {
                 for (GameObject go : movingObjects) {
                     go.update();
 
+                    if (go.getX() <= playerStartX + playerWidth && go.getX() + tileSize >= playerStartX) {
                     gameOver = collisionHandler.handleCollisions(player, go);
+                    }
                     if (gameOver) {
                         break;
                     }

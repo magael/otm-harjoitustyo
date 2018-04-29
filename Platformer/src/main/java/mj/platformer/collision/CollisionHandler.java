@@ -5,33 +5,39 @@ import mj.platformer.gameobject.GameObject;
 import mj.platformer.gameobject.Player;
 
 /**
- * 
+ *
  * @author Maguel
  */
 public class CollisionHandler {
 
     /**
-     * Determines if there is a collision, and what to do in that case.
-     * This version assumes the sprites are JavaFX Shapes.
-     * 
+     * Determines if there is a collision, and what to do in that case. This
+     * version assumes the sprites are JavaFX Shapes.
+     *
      * @param player
      * @param go
      * @return true if the game should end due to a particular collision,
      * otherwise false
      */
     public boolean handleCollisions(Player player, GameObject go) {
+//        if (isClose(player, go)) {
         Shape collisionArea = Shape.intersect(player.getSprite(), go.getSprite());
         if (collisionArea.getBoundsInLocal().getWidth() != -1) {
             return go.onCollision();
         }
+//        }
         return false;
     }
 
+//    public boolean isClose(Player player, GameObject go) {
+//        return go.getX() <= player.getX() + player.getWidth()
+//                && go.getX() + go.getWidth() >= player.getX();
+//    }
     /**
-     * If the player sprite's bottom side is at ground level or below, the
-     * y position is set at ground level and variables are changed to indicate
-     * the lack of motion.
-     * 
+     * If the player sprite's bottom side is at ground level or below, the y
+     * position is set at ground level and variables are changed to indicate the
+     * lack of motion.
+     *
      * @param player
      * @param playerHeight
      * @param groundLevel

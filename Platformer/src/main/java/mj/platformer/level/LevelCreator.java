@@ -97,14 +97,14 @@ public class LevelCreator { // vai GameObjectCreator?
             0.0, (double) tileSize,
             (double) tileSize, (double) tileSize});
         obstacleSprite.setStroke(groundColor);
-        Obstacle o = new Obstacle(obstacleSprite, x, y);
+        Obstacle o = new Obstacle(obstacleSprite, x, y, tileSize);
         o.getMover().setSpeed(goSpeed);
         return o;
     }
 
-    private Platform createPlatform(int x, int y, double width, double height) {
+    private Platform createPlatform(int x, int y, int width, int height) {
         Rectangle sprite = new Rectangle(width, height, groundColor);
-        Platform p = new Platform(sprite, x, y);
+        Platform p = new Platform(sprite, x, y, width);
         p.getMover().setSpeed(goSpeed);
         return p;
     }

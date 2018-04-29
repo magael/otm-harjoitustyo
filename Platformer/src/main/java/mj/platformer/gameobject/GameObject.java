@@ -11,6 +11,7 @@ import javafx.scene.shape.Shape;
 public abstract class GameObject {
 
     private Shape sprite;
+    private int width;
 
     /**
      * The constructor for the class GameObject. Initializes the position. The
@@ -20,10 +21,11 @@ public abstract class GameObject {
      * @param x
      * @param y
      */
-    public GameObject(Shape sprite, int x, int y) {
+    public GameObject(Shape sprite, int x, int y, int width) {
         this.sprite = sprite;
         this.sprite.setTranslateX(x);
         this.sprite.setTranslateY(y);
+        this.width = width;
     }
 
     public Shape getSprite() {
@@ -40,6 +42,10 @@ public abstract class GameObject {
 
     public double getY() {
         return sprite.getTranslateY();
+    }
+
+    public int getWidth() {
+        return width;
     }
 
     /**
@@ -63,10 +69,10 @@ public abstract class GameObject {
     }
 
     /**
-     * The default is that colliding with a particular Game Object "does nothing".
-     * The method is overwritten in any subclass that wishes to trigger an event
-     * on collision, such as setting the gameOver = true.
-     * 
+     * The default is that colliding with a particular Game Object "does
+     * nothing". The method is overwritten in any subclass that wishes to
+     * trigger an event on collision, such as setting the gameOver = true.
+     *
      * @return boolean value to be used by the World class' gameOver variable.
      */
     public boolean onCollision() {

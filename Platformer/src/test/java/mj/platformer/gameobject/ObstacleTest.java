@@ -23,7 +23,7 @@ public class ObstacleTest {
         x = 10;
         y = 10;
         speed = 10;
-        o = new Obstacle(sprite, x, y);
+        o = new Obstacle(sprite, x, y, 10);
         o.setMover(new GameObjectMover(o));
         mover = o.getMover();
     }

@@ -22,7 +22,7 @@ public class PlatformTest {
         x = 20;
         y = 20;
         speed = 20;
-        p = new Platform(sprite, x, y);
+        p = new Platform(sprite, x, y, 10);
         p.setMover(new GameObjectMover(p));
         mover = p.getMover();
     }

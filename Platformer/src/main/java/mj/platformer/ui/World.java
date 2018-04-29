@@ -1,17 +1,6 @@
 package mj.platformer.ui;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import mj.platformer.collision.CollisionHandler;
-import mj.platformer.gameobject.Player;
-import mj.platformer.input.InputHandler;
-import mj.platformer.level.LevelCreator;
-import mj.platformer.level.ScoreKeeper;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,9 +14,15 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import mj.platformer.collision.CollisionHandler;
+import mj.platformer.gameobject.Player;
 import mj.platformer.gameobject.GameObject;
 import mj.platformer.input.InputListener;
+import mj.platformer.input.InputHandler;
+import mj.platformer.level.LevelCreator;
 import mj.platformer.level.GroundLevelHandler;
+import mj.platformer.score.ScoreKeeper;
+import mj.platformer.score.HighScoreHandler;
 
 /**
  * The main class for the platforming game. Initializes the UI, entities and
@@ -42,7 +37,6 @@ public class World extends Application {
     private int groundLevel;
     private int playerWidth, playerHeight, playerStartX, playerStartY;
     private int goSpeed;
-    private int highScore;
     private String lvlFilePath;
     private String title;
     private ArrayList<GameObject> movingObjects;
@@ -83,10 +77,11 @@ public class World extends Application {
         Scene scene = initScene(pane, stage);
         initInput(scene);
         CollisionHandler collisionHandler = new CollisionHandler();
+        HighScoreHandler highScoreHandler = new HighScoreHandler();
         try {
-            readHighScore(title + "-highscore.txt");
+            highScoreHandler.readHighScore(title.replace(" ", "_") + "_highscore.txt");
         } catch (Exception e) {
-            highScore = 0;
+            highScoreHandler.setHighScore(0);
         }
 
         /**
@@ -112,19 +107,19 @@ public class World extends Application {
 
             private void gameOverEvent() {
                 int score = scoreKeeper.getScore();
-                if (score > highScore) {
-                    highScore = score;
+                if (score > highScoreHandler.getHighScore()) {
+                    highScoreHandler.setHighScore(score);
                     try {
-                        writeHighScore(title + "-highscore.txt");
+                        highScoreHandler.writeHighScore(title.replace(" ", "_") + "_highscore.txt");
                     } catch (IOException ex) {
                         System.out.println(ex);
                     }
                 }
-                highScoreText.setText("Your score: " + score + "\nHigh score: " + highScore);
-
+                highScoreText.setText("Your score: " + score + "\nHigh score: " + highScoreHandler.getHighScore());
                 if (!scoreKeeper.getGameWon()) {
                     startText.setText("Ouch! Game over.\nPress 'R' to try again.");
                 }
+                
                 if (inputHandler.handleRestartInput()) {
                     try {
                         restart(pane, scene, stage);
@@ -242,34 +237,6 @@ public class World extends Application {
 
         this.player = createPlayer();
         pane.getChildren().add(player.getSprite());
-    }
-
-    private void writeHighScore(String filePath) throws IOException {
-        try {
-            // Create a new file if one is not found at project / executable root
-            FileWriter writer = new FileWriter(filePath);
-            BufferedWriter out = new BufferedWriter(writer);
-            out.write(Integer.toString(highScore));
-            // Close the output stream
-            out.close();
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
-        }
-    }
-
-    private void readHighScore(String filePath) {
-        try {
-            FileInputStream stream = new FileInputStream(filePath);
-            InputStreamReader reader = new InputStreamReader(stream, Charset.forName("UTF-8"));
-            BufferedReader br = new BufferedReader(reader);
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                highScore = Integer.parseInt(line);
-            }
-            br.close();
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-        }
     }
 
     private Shape createGround() {

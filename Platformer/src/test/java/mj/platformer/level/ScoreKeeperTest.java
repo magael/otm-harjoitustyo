@@ -1,6 +1,7 @@
 
 package mj.platformer.level;
 
+import mj.platformer.score.ScoreKeeper;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

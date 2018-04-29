@@ -1,5 +1,5 @@
 
-package mj.platformer.level;
+package mj.platformer.score;
 
 import java.util.ArrayList;
 

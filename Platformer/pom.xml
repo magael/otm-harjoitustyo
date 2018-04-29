@@ -18,6 +18,11 @@
             <version>1.3</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.6.1</version>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -50,7 +55,6 @@
                     <excludes>
                         <exclude>mj/platformer/ui/**/*</exclude>
                         <exclude>mj/platformer/input/InputListener.class</exclude>
-                        <exclude>mj/platformer/level/ScoreKeeper.class</exclude>
                     </excludes>
                 </configuration>  
             </plugin>

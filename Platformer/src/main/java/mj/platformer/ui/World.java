@@ -1,5 +1,12 @@
 package mj.platformer.ui;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import mj.platformer.collision.CollisionHandler;
 import mj.platformer.gameobject.Player;
 import mj.platformer.input.InputHandler;
@@ -23,9 +30,9 @@ import mj.platformer.input.InputListener;
 import mj.platformer.level.GroundLevelHandler;
 
 /**
- * The main class for the platforming game.
- * Initializes the UI, entities and systems.
- * Contains the game loop.
+ * The main class for the platforming game. Initializes the UI, entities and
+ * systems. Contains the game loop.
+ *
  * @author Maguel
  */
 public class World extends Application {
@@ -37,6 +44,7 @@ public class World extends Application {
     private int goSpeed;
     private int highScore;
     private String lvlFilePath;
+    private String title;
     private ArrayList<GameObject> movingObjects;
     private boolean gameStart;
     private boolean gameOver;
@@ -53,8 +61,8 @@ public class World extends Application {
 
     /**
      * Launches the application, calling the start(Stage) method.
-     * 
-     * @param args 
+     *
+     * @param args
      */
     public static void main(String[] args) {
         launch(args);
@@ -62,9 +70,9 @@ public class World extends Application {
 
     /**
      * Initializations and the game loop.
-     * 
+     *
      * @param stage
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public void start(Stage stage) throws Exception {
@@ -75,15 +83,19 @@ public class World extends Application {
         Scene scene = initScene(pane, stage);
         initInput(scene);
         CollisionHandler collisionHandler = new CollisionHandler();
-        highScore = 0;
+        try {
+            readHighScore(title + "-highscore.txt");
+        } catch (Exception e) {
+            highScore = 0;
+        }
 
         /**
          * The game loop is based on javafx.animation.AnimationTimer.
          */
         new AnimationTimer() {
             /**
-             * 
-             * @param currentTime 
+             *
+             * @param currentTime
              */
             @Override
             public void handle(long currentTime) {
@@ -102,10 +114,17 @@ public class World extends Application {
                 int score = scoreKeeper.getScore();
                 if (score > highScore) {
                     highScore = score;
+                    try {
+                        writeHighScore(title + "-highscore.txt");
+                    } catch (IOException ex) {
+                        System.out.println(ex);
+                    }
                 }
                 highScoreText.setText("Your score: " + score + "\nHigh score: " + highScore);
 
-                startText.setText("Ouch! Game over.\nPress 'R' to try again.");
+                if (!scoreKeeper.getGameWon()) {
+                    startText.setText("Ouch! Game over.\nPress 'R' to try again.");
+                }
                 if (inputHandler.handleRestartInput()) {
                     try {
                         restart(pane, scene, stage);
@@ -121,7 +140,7 @@ public class World extends Application {
                 }
                 groundLevel = groundLevelHandler.setGroundLevel(groundLevel, goSpeed, player);
                 player.setGrounded(collisionHandler.isGrounded(player, playerHeight, groundLevel));
-                
+
                 for (GameObject go : movingObjects) {
                     go.update();
 
@@ -131,22 +150,18 @@ public class World extends Application {
                     }
                 }
 
-                scoreKeeper.updateScore(scoreText, startText, gameStart);
+                scoreKeeper.updateScore(gameStart);
+                scoreText.setText("Score: " + scoreKeeper.getScore());
+                startText.setText(scoreKeeper.getStartText());
+                if (!gameOver) {
+                    gameOver = scoreKeeper.getGameWon();
+                }
             }
         }.start();
 
         stage.show();
     }
 
-    /**
-     * The game over boolean can be altered from a Game Object's onCollision()-method.
-     * 
-     * @param gameOver 
-     */
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
-    }
-    
     private void initWorld() {
         tileSize = 32;
         canvasWidth = 900;
@@ -189,7 +204,8 @@ public class World extends Application {
 
     private Scene initScene(Pane pane, Stage stage) {
         Scene scene = new Scene(pane, backgroundColor);
-        stage.setTitle("Escape Spikeworld");
+        title = "Escape Spikeworld";
+        stage.setTitle(title);
         stage.setScene(scene);
         return scene;
     }
@@ -228,6 +244,34 @@ public class World extends Application {
         pane.getChildren().add(player.getSprite());
     }
 
+    private void writeHighScore(String filePath) throws IOException {
+        try {
+            // Create a new file if one is not found at project / executable root
+            FileWriter writer = new FileWriter(filePath);
+            BufferedWriter out = new BufferedWriter(writer);
+            out.write(Integer.toString(highScore));
+            // Close the output stream
+            out.close();
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    private void readHighScore(String filePath) {
+        try {
+            FileInputStream stream = new FileInputStream(filePath);
+            InputStreamReader reader = new InputStreamReader(stream, Charset.forName("UTF-8"));
+            BufferedReader br = new BufferedReader(reader);
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                highScore = Integer.parseInt(line);
+            }
+            br.close();
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        }
+    }
+
     private Shape createGround() {
         Shape groundSprite = new Rectangle(canvasWidth, canvasHeight - groundLevel, groundColor);
         groundSprite.setTranslateY(groundLevel);
@@ -236,6 +280,7 @@ public class World extends Application {
 
     private Player createPlayer() {
         Shape playerSprite = new Rectangle(playerWidth, playerHeight, playerColor);
+        playerSprite.setStroke(color2);
         return new Player(playerSprite, playerStartX, playerStartY, playerWidth);
     }
 

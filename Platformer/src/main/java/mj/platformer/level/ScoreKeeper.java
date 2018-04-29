@@ -2,15 +2,16 @@
 package mj.platformer.level;
 
 import java.util.ArrayList;
-import javafx.scene.text.Text;
 
 public class ScoreKeeper {
     
-    int score;
-    int obstacleSpeed;
-    int playerScoringPosition;
-    int scoringPositionIndex;
-    ArrayList<Integer> scoringPositions;
+    private int score;
+    private int obstacleSpeed;
+    private int playerScoringPosition;
+    private int scoringPositionIndex;
+    private ArrayList<Integer> scoringPositions;
+    private String startText;
+    private boolean gameWon;
 
     public ScoreKeeper(int obstacleSpeed, int playerStartX) {
         score = 0;
@@ -18,19 +19,23 @@ public class ScoreKeeper {
         scoringPositions = new ArrayList<>();
         scoringPositionIndex = 0;
         playerScoringPosition = playerStartX;
+        startText = "";
+        gameWon = false;
     }
     
-    public void updateScore(Text scoreText, Text startText, boolean gameStart) {
+    public void updateScore(boolean gameStart) {
         playerScoringPosition += obstacleSpeed;
         if (scoringPositionIndex < scoringPositions.size()
                 && playerScoringPosition >= scoringPositions.get(scoringPositionIndex)) {
             score += 100 * (scoringPositionIndex + 1);
             scoringPositionIndex += 1;
-            scoreText.setText("Score: " + score);
-            startText.setText("");
+            startText = "";
         }
         if (gameStart && score == 0) {
-            startText.setText("Dodge the spikes!\nPress Space to jump");
+            startText = "Dodge the spikes!\nPress Space to jump";
+        } else if (playerScoringPosition > scoringPositions.get(scoringPositions.size() - 1)) {
+            startText = "Congratulations!\nLevel cleared!\nPress 'R' to play again.";
+            gameWon = true;
         }
     }
 
@@ -40,5 +45,13 @@ public class ScoreKeeper {
 
     public int getScore() {
         return score;
+    }
+
+    public String getStartText() {
+        return startText;
+    }
+    
+    public boolean getGameWon() {
+        return gameWon;
     }
 }

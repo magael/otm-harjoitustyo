@@ -67,8 +67,6 @@ public abstract class GameObject {
      * The method is overwritten in any subclass that wishes to trigger an event
      * on collision, such as setting the gameOver = true.
      * 
-     * @see mj.platformer.ui.World#setGameOver(boolean)
-     * 
      * @return boolean value to be used by the World class' gameOver variable.
      */
     public boolean onCollision() {

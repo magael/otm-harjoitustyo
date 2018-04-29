@@ -9,7 +9,7 @@ import javafx.scene.shape.Rectangle;
 import mj.platformer.gameobject.GameObject;
 import mj.platformer.gameobject.Obstacle;
 import mj.platformer.gameobject.Platform;
-import mj.platformer.utils.LevelDataReader;
+import mj.platformer.utils.CustomFileReader;
 
 public class LevelCreator { // vai GameObjectCreator?
 
@@ -54,13 +54,13 @@ public class LevelCreator { // vai GameObjectCreator?
         boolean previousWasPlatform = false;
 
         try {
-            LevelDataReader lvlReader = new LevelDataReader();
-            ArrayList<String> lvlData = lvlReader.readLevelFile(filePath);
+            CustomFileReader lvlReader = new CustomFileReader();
+            ArrayList<String> lvlData = lvlReader.readFile(filePath);
             while (i < lvlData.size() && (lvlDataLine = lvlData.get(i)) != null) {
                 for (int j = 0; j < lvlDataLine.length(); j++) {
                     char c = lvlDataLine.charAt(j);
                     if (c == '1') {
-                        objects.add(createObstacle(obstacleX, groundLevel - tileSize));
+                        objects.add(createObstacle(obstacleX, groundLevel - (tileSize - 4)));
                     }
                     if (c == '2') {
                         objects.add(createPlatform(obstacleX, groundLevel - platformHeight, platformWidth, platformHeight));

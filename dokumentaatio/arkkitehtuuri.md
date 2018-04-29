@@ -1,7 +1,7 @@
 # Arkkitehtuurikuvaus
 
 ## Pakkauskaavio
-![pakkauskaavio](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/pakkauskaavio.png)
+![pakkauskaavio](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/luokka-pakkauskaavio.png)
 
 ## Sekvenssikaavio
 World-luokan AnimationTimerin silmukassa esteiden liikuttelu:</br>

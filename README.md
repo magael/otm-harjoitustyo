@@ -14,8 +14,9 @@ Peli on niin sanottu "endless runner", eli eteneminen on automaattista, pelaajan
 
 ## Releaset
 
-[Viikko 5](https://github.com/magael/otm-harjoitustyo/releases/tag/viikko5)</br>
 [Viikko 6](https://github.com/magael/otm-harjoitustyo/releases/tag/viikko6)
+
+[Viikko 5](https://github.com/magael/otm-harjoitustyo/releases/tag/viikko5)
 
 ## Komentorivitoiminnot
 

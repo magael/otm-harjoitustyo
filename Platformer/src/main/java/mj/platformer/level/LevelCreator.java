@@ -1,6 +1,5 @@
 package mj.platformer.level;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.scene.paint.Color;
@@ -11,19 +10,21 @@ import mj.platformer.gameobject.Obstacle;
 import mj.platformer.gameobject.Platform;
 import mj.platformer.utils.CustomFileReader;
 
-public class LevelCreator { // vai GameObjectCreator?
+public class LevelCreator {
 
-    int canvasWidth;
-    int tileSize;
-    int groundLevel;
-    int goSpeed;
-    int platformHeight;
-    int platformWidth;
-    HashMap<Integer, Integer> groundLevels;
-    ArrayList<Integer> gameObjectPositions;
-    //maybe colors could be determined in this class, rather than passed from World?
-    Color obstacleColor;
-    Color groundColor;
+    private int canvasWidth;
+    private int tileSize;
+    private int groundLevel;
+    private int goSpeed;
+    private int platformHeight;
+    private int platformWidth;
+    private int obstacleX;
+    private HashMap<Integer, Integer> groundLevels;
+    private ArrayList<Integer> gameObjectPositions;
+    private Color obstacleColor;
+    private Color groundColor;
+    private ArrayList<GameObject> objects;
+    boolean previousWasPlatform;
 
     public LevelCreator(int canvasWidth, int tileSize, int groundLevel, int goSpeed, Color obstacleColor, Color groundColor) {
         this.canvasWidth = canvasWidth;
@@ -36,6 +37,9 @@ public class LevelCreator { // vai GameObjectCreator?
         gameObjectPositions = new ArrayList<>();
         platformHeight = tileSize;
         platformWidth = tileSize;
+        objects = new ArrayList<>();
+        previousWasPlatform = false;
+        obstacleX = canvasWidth + (5 * tileSize);
     }
 
     public ArrayList<Integer> getGameObjectPositions() {
@@ -46,42 +50,57 @@ public class LevelCreator { // vai GameObjectCreator?
         return groundLevels;
     }
 
-    public ArrayList<GameObject> createObjects(String filePath) {
-        ArrayList<GameObject> objects = new ArrayList<>();
+    public ArrayList<GameObject> getObjects() {
+        return objects;
+    }
+
+    public void createObjectsFromFile(String filePath) {
         String lvlDataLine = "";
         int i = 0;
-        int obstacleX = canvasWidth + (5 * tileSize);
-        boolean previousWasPlatform = false;
-
-        try {
-            CustomFileReader lvlReader = new CustomFileReader();
-            ArrayList<String> lvlData = lvlReader.readFile(filePath);
-            while (i < lvlData.size() && (lvlDataLine = lvlData.get(i)) != null) {
-                for (int j = 0; j < lvlDataLine.length(); j++) {
-                    char c = lvlDataLine.charAt(j);
-                    if (c == '1') {
-                        objects.add(createObstacle(obstacleX, groundLevel - (tileSize - 4)));
-                    }
-                    if (c == '2') {
-                        objects.add(createPlatform(obstacleX, groundLevel - platformHeight, platformWidth, platformHeight));
-                        if (!previousWasPlatform) {
-                            addGroundLevelPosition(obstacleX, groundLevel - platformHeight);
-                        }
-                        obstacleX += platformWidth;
-                        previousWasPlatform = true;
-                    } else if (c == '0' || c == '1') {
-                        obstacleX += tileSize;
-                        addGroundLevelPosition(obstacleX, groundLevel);
-                        previousWasPlatform = false;
-                    }
-                }
-                i++;
-            }
-        } catch (Exception e) {
-            e.printStackTrace(new PrintStream(System.out));
+        CustomFileReader lvlReader = new CustomFileReader();
+        ArrayList<String> lvlData = lvlReader.readFile(filePath);
+        while (i < lvlData.size() && (lvlDataLine = lvlData.get(i)) != null) {
+            createObjectsFromLine(lvlDataLine);
+            i++;
         }
+    }
 
-        return objects;
+    public void createObjectsFromLine(String lvlDataLine) {
+        for (int j = 0; j < lvlDataLine.length(); j++) {
+            switch (lvlDataLine.charAt(j)) {
+                case '0':
+                    addGround();
+                    break;
+                case '1':
+                    addObstacle();
+                    break;
+                case '2':
+                    addPlatform();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public void addGround() {
+        obstacleX += tileSize;
+        addGroundLevelPosition(obstacleX, groundLevel);
+        previousWasPlatform = false;
+    }
+
+    public void addPlatform() {
+        objects.add(createPlatform(obstacleX, groundLevel - platformHeight, platformWidth, platformHeight));
+        if (!previousWasPlatform) {
+            addGroundLevelPosition(obstacleX, groundLevel - platformHeight);
+        }
+        obstacleX += platformWidth;
+        previousWasPlatform = true;
+    }
+
+    public void addObstacle() {
+        objects.add(createObstacle(obstacleX, groundLevel - (tileSize - 4)));
+        addGround();
     }
 
     public void addGroundLevelPosition(int obstacleX, int groundLevel) {
@@ -96,7 +115,6 @@ public class LevelCreator { // vai GameObjectCreator?
             ((double) tileSize / 2), 0.0,
             0.0, (double) tileSize,
             (double) tileSize, (double) tileSize});
-        obstacleSprite.setStroke(groundColor);
         Obstacle o = new Obstacle(obstacleSprite, x, y, tileSize);
         o.getMover().setSpeed(goSpeed);
         return o;

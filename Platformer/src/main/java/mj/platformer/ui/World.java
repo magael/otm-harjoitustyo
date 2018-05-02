@@ -1,6 +1,5 @@
 package mj.platformer.ui;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -8,6 +7,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.effect.Reflection;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -38,6 +38,7 @@ public class World extends Application {
     private int playerWidth, playerHeight, playerStartX, playerStartY;
     private int goSpeed;
     private String lvlFilePath;
+    private String highScoreFilePath;
     private String title;
     private ArrayList<GameObject> movingObjects;
     private boolean gameStart;
@@ -47,6 +48,9 @@ public class World extends Application {
     private Text startText;
     private Text scoreText;
     private Text highScoreText;
+    
+    private Reflection playerReflection;
+    private boolean reflectionOn;
 
     private Player player;
     private InputHandler inputHandler;
@@ -66,10 +70,9 @@ public class World extends Application {
      * Initializations and the game loop.
      *
      * @param stage
-     * @throws Exception
      */
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         initWorld();
         Pane pane = initPane();
         initGameObjects(pane);
@@ -79,7 +82,7 @@ public class World extends Application {
         CollisionHandler collisionHandler = new CollisionHandler();
         HighScoreHandler highScoreHandler = new HighScoreHandler();
         try {
-            highScoreHandler.readHighScore(title.replace(" ", "_") + "_highscore.txt");
+            highScoreHandler.readHighScore(highScoreFilePath);
         } catch (Exception e) {
             highScoreHandler.setHighScore(0);
         }
@@ -109,11 +112,7 @@ public class World extends Application {
                 int score = scoreKeeper.getScore();
                 if (score > highScoreHandler.getHighScore()) {
                     highScoreHandler.setHighScore(score);
-                    try {
-                        highScoreHandler.writeHighScore(title.replace(" ", "_") + "_highscore.txt");
-                    } catch (IOException ex) {
-                        System.out.println(ex);
-                    }
+                    highScoreHandler.writeHighScore(highScoreFilePath);
                 }
                 highScoreText.setText("Your score: " + score + "\nHigh score: " + highScoreHandler.getHighScore());
                 if (!scoreKeeper.getGameWon()) {
@@ -135,15 +134,13 @@ public class World extends Application {
                 }
                 groundLevel = groundLevelHandler.setGroundLevel(groundLevel, goSpeed, player);
                 player.setGrounded(collisionHandler.isGrounded(player, playerHeight, groundLevel));
+                updatePlayerEffect();
 
                 for (GameObject go : movingObjects) {
                     go.update();
 
                     if (go.getX() <= playerStartX + playerWidth && go.getX() + tileSize >= playerStartX) {
-                    gameOver = collisionHandler.handleCollisions(player, go);
-                    }
-                    if (gameOver) {
-                        break;
+                        gameOver = collisionHandler.handleCollisions(player, go);
                     }
                 }
 
@@ -160,23 +157,26 @@ public class World extends Application {
     }
 
     private void initWorld() {
+        lvlFilePath = "leveldata/level1.cfg";
+        title = "Escape Spikeworld";
+        highScoreFilePath = title.replace(" ", "_") + "_highscore.txt";
+        
         tileSize = 32;
         canvasWidth = 900;
         canvasHeight = 640;
         groundLevel = (int) (canvasHeight / 1.618);
+        
+        goSpeed = 5;
+        
+        initColors();
 
         playerWidth = tileSize;
         playerHeight = tileSize;
         playerStartX = canvasWidth - (playerWidth / 2) - (int) (canvasWidth / 1.618);
         playerStartY = groundLevel - playerHeight;
-        goSpeed = 5;
-
-        initColors();
 
         gameStart = false;
         gameOver = false;
-
-        lvlFilePath = "leveldata/level1.cfg";
 
         scoreKeeper = new ScoreKeeper(goSpeed, playerStartX);
     }
@@ -187,8 +187,8 @@ public class World extends Application {
         color3 = Color.web("#D6D3BD");
         color4 = Color.web("#EE4466");
 
-        playerColor = color4;
-        obstacleColor = color3;
+        playerColor = Color.web("#6AB583");
+        obstacleColor = color4;
         groundColor = color2;
         backgroundColor = color1;
     }
@@ -201,7 +201,6 @@ public class World extends Application {
 
     private Scene initScene(Pane pane, Stage stage) {
         Scene scene = new Scene(pane, backgroundColor);
-        title = "Escape Spikeworld";
         stage.setTitle(title);
         stage.setScene(scene);
         return scene;
@@ -224,10 +223,11 @@ public class World extends Application {
         pane.getChildren().add(highScoreText);
     }
 
-    private void initGameObjects(Pane pane) throws Exception {
+    private void initGameObjects(Pane pane) {
         movingObjects = new ArrayList<>();
         LevelCreator lvlCreator = new LevelCreator(canvasWidth, tileSize, groundLevel, goSpeed, obstacleColor, groundColor);
-        movingObjects = lvlCreator.createObjects(lvlFilePath);
+        lvlCreator.createObjectsFromFile(lvlFilePath);
+        movingObjects = lvlCreator.getObjects();
         for (GameObject go : movingObjects) {
             pane.getChildren().add(go.getSprite());
             scoreKeeper.addPosition((int) go.getX() + tileSize);
@@ -238,6 +238,7 @@ public class World extends Application {
         pane.getChildren().add(createGround());
 
         this.player = createPlayer();
+        player.getSprite().setEffect(new Reflection());
         pane.getChildren().add(player.getSprite());
     }
 
@@ -250,6 +251,7 @@ public class World extends Application {
     private Player createPlayer() {
         Shape playerSprite = new Rectangle(playerWidth, playerHeight, playerColor);
         playerSprite.setStroke(color2);
+        playerSprite.setStrokeWidth(2);
         return new Player(playerSprite, playerStartX, playerStartY, playerWidth);
     }
 
@@ -267,5 +269,16 @@ public class World extends Application {
         scene = initScene(pane, stage);
         initInput(scene);
         gameStart = true;
+    }
+    
+    private void updatePlayerEffect() {
+        if (!player.getGrounded()) {
+            playerReflection = null;
+            reflectionOn = false;
+        } else if (!reflectionOn){
+            playerReflection = new Reflection();
+            reflectionOn = true;
+        }
+        player.getSprite().setEffect(playerReflection);
     }
 }

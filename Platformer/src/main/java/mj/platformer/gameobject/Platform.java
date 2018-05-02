@@ -5,7 +5,7 @@ import javafx.scene.shape.Shape;
 
 public class Platform extends GameObject {
 
-    GameObjectMover mover;
+    private GameObjectMover mover;
 
     public Platform(Shape sprite, int x, int y, int width) {
         super(sprite, x, y, width);

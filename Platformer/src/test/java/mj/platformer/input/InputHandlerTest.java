@@ -13,8 +13,8 @@ import static org.junit.Assert.*;
 //InputListener has been excluded as part of the UI generation.
 
 public class InputHandlerTest {
-    InputHandler ih;
-    Player p;
+    private InputHandler ih;
+    private Player p;
 
     @Before
     public void setUp() {

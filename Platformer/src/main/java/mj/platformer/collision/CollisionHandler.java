@@ -20,19 +20,14 @@ public class CollisionHandler {
      * otherwise false
      */
     public boolean handleCollisions(Player player, GameObject go) {
-//        if (isClose(player, go)) {
         Shape collisionArea = Shape.intersect(player.getSprite(), go.getSprite());
         if (collisionArea.getBoundsInLocal().getWidth() != -1) {
             return go.onCollision();
         }
-//        }
+
         return false;
     }
 
-//    public boolean isClose(Player player, GameObject go) {
-//        return go.getX() <= player.getX() + player.getWidth()
-//                && go.getX() + go.getWidth() >= player.getX();
-//    }
     /**
      * If the player sprite's bottom side is at ground level or below, the y
      * position is set at ground level and variables are changed to indicate the

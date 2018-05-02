@@ -81,9 +81,7 @@ public abstract class GameObject {
     }
 
     /**
-     * Updating does nothing by default. The method's functionality is unique to
-     * each subclass of GameObject.
+     * The update method's functionality is unique to each subclass of GameObject.
      */
-    public void update() {
-    }
+    public abstract void update();
 }

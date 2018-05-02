@@ -7,9 +7,9 @@ import static org.junit.Assert.*;
 
 public class LevelCreatorTest {
 
-    int groundLevel;
-    int obstacleX;
-    LevelCreator lc;    
+    private int groundLevel;
+    private int obstacleX;
+    private LevelCreator lc;    
     
     @Before
     public void setUp() {

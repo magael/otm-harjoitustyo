@@ -19,4 +19,7 @@
 | 23.4. | 3 | Alustavat liikkuvat tasot |
 | 24.4. | 4 | Refaktorointia, testejä, yhden pelisession huipputulos, release |
 | 26.4. | 3 | JavaDocit viidellle luokalle, törmäilylogiikan hiomista, testilevelin ja ulkoasun muokkausta |
-| yht | 55 |
+| 29.3. | 4 | Paikallisesti säilyvä highscore |
+| 30.3. | 4 | Kaavioiden päivitystä, testejä, optimointikokeilua, levelin säätöä |
+| 2.5. | 4 | Highscore-testi, LevelCreatorin pilkkomista, väreillä sun muilla leikkimistä |
+| yht | 67 |

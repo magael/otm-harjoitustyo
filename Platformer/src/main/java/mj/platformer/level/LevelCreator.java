@@ -12,22 +12,20 @@ import mj.platformer.utils.CustomFileReader;
 
 public class LevelCreator {
 
-    private int canvasWidth;
     private int tileSize;
     private int groundLevel;
-    private int goSpeed;
+    private double goSpeed;
     private int platformHeight;
     private int platformWidth;
-    private int obstacleX;
-    private HashMap<Integer, Integer> groundLevels;
-    private ArrayList<Integer> gameObjectPositions;
+    private double obstacleX;
+    private HashMap<Double, Integer> groundLevels;
+    private ArrayList<Double> gameObjectPositions;
     private Color obstacleColor;
     private Color groundColor;
     private ArrayList<GameObject> objects;
     boolean previousWasPlatform;
 
-    public LevelCreator(int canvasWidth, int tileSize, int groundLevel, int goSpeed, Color obstacleColor, Color groundColor) {
-        this.canvasWidth = canvasWidth;
+    public LevelCreator(int canvasWidth, int tileSize, int groundLevel, double goSpeed, Color obstacleColor, Color groundColor) {
         this.tileSize = tileSize;
         this.groundLevel = groundLevel;
         this.goSpeed = goSpeed;
@@ -39,14 +37,14 @@ public class LevelCreator {
         platformWidth = tileSize;
         objects = new ArrayList<>();
         previousWasPlatform = false;
-        obstacleX = canvasWidth + (5 * tileSize);
+        obstacleX = canvasWidth + (10 * tileSize); // starting 5 tiles off screen
     }
 
-    public ArrayList<Integer> getGameObjectPositions() {
+    public ArrayList<Double> getGameObjectPositions() {
         return gameObjectPositions;
     }
 
-    public HashMap<Integer, Integer> getGroundLevels() {
+    public HashMap<Double, Integer> getGroundLevels() {
         return groundLevels;
     }
 
@@ -103,12 +101,12 @@ public class LevelCreator {
         addGround();
     }
 
-    public void addGroundLevelPosition(int obstacleX, int groundLevel) {
+    public void addGroundLevelPosition(double obstacleX, int groundLevel) {
         groundLevels.put(obstacleX, groundLevel);
         gameObjectPositions.add(obstacleX);
     }
 
-    private Obstacle createObstacle(int x, int y) {
+    private Obstacle createObstacle(double x, int y) {
         Polygon obstacleSprite = new Polygon();
         obstacleSprite.setFill(obstacleColor);
         obstacleSprite.getPoints().addAll(new Double[]{
@@ -120,7 +118,7 @@ public class LevelCreator {
         return o;
     }
 
-    private Platform createPlatform(int x, int y, int width, int height) {
+    private Platform createPlatform(double x, int y, int width, int height) {
         Rectangle sprite = new Rectangle(width, height, groundColor);
         Platform p = new Platform(sprite, x, y, width);
         p.getMover().setSpeed(goSpeed);

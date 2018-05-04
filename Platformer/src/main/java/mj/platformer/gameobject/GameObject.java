@@ -21,7 +21,7 @@ public abstract class GameObject {
      * @param x
      * @param y
      */
-    public GameObject(Shape sprite, int x, int y, int width) {
+    public GameObject(Shape sprite, double x, int y, int width) {
         this.sprite = sprite;
         this.sprite.setTranslateX(x);
         this.sprite.setTranslateY(y);

@@ -30,5 +30,21 @@ public class InputHandler {
         }
         return false;
     }
+    
+    public int handleLevelInput() {
+        if (buttonsDown.getOrDefault(KeyCode.DIGIT1, false)) {
+            return 1;
+        }
+        if (buttonsDown.getOrDefault(KeyCode.DIGIT2, false)) {
+            return 2;
+        }
+        return 0;
+    }
 
+    public boolean handleBackToMenuInput() {
+        if (buttonsDown.getOrDefault(KeyCode.B, false)) {
+            return true;
+        }
+        return false;
+    }
 }

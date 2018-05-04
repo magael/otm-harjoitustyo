@@ -36,21 +36,23 @@ public class World extends Application {
     private int canvasWidth, canvasHeight;
     private int groundLevel;
     private int playerWidth, playerHeight, playerStartX, playerStartY;
-    private int goSpeed;
+    private double goSpeed;
     private String lvlFilePath;
     private String highScoreFilePath;
     private String title;
     private ArrayList<GameObject> movingObjects;
-    private boolean gameStart;
+    private boolean startSceneOn;
+    private boolean gameStarted;
     private boolean gameOver;
     private Color color1, color2, color3, color4;
     private Color playerColor, obstacleColor, groundColor, backgroundColor;
     private Text startText;
     private Text scoreText;
     private Text highScoreText;
-    
     private Reflection playerReflection;
     private boolean reflectionOn;
+    private Pane mainPane;
+    private Scene mainScene;
 
     private Player player;
     private InputHandler inputHandler;
@@ -74,11 +76,18 @@ public class World extends Application {
     @Override
     public void start(Stage stage) {
         initWorld();
-        Pane pane = initPane();
-        initGameObjects(pane);
-        initText(pane);
-        Scene scene = initScene(pane, stage);
-        initInput(scene);
+
+        // Start scene
+        Pane startPane = initPane();
+        Scene startScene = initScene(startPane, stage);
+        initInput(startScene);
+        initStartSceneText(startPane);
+        startSceneOn = true;
+
+        // Main Scene
+        mainPane = initPane();
+        mainScene = initScene(mainPane, stage);
+        initText(mainPane);
         CollisionHandler collisionHandler = new CollisionHandler();
         HighScoreHandler highScoreHandler = new HighScoreHandler();
         try {
@@ -97,14 +106,23 @@ public class World extends Application {
              */
             @Override
             public void handle(long currentTime) {
-                if (!inputHandler.getButtonsDown().isEmpty()) {
-                    gameStart = true;
-                }
-                if (gameStart && !gameOver) {
-                    inputHandler.handlePlayerInput(player);
-                    update();
-                } else if (gameOver) {
-                    gameOverEvent();
+                if (startSceneOn) {
+                    if (inputHandler.handleLevelInput() == 1) {
+                        setMainScene(stage, "leveldata/level1.cfg");
+                    }
+                    if (inputHandler.handleLevelInput() == 2) {
+                        setMainScene(stage, "leveldata/level2.cfg");
+                    }
+                } else {
+//                    if (!inputHandler.getButtonsDown().isEmpty()) {
+                    gameStarted = true;
+//                    }
+                    if (gameStarted && !gameOver) {
+                        inputHandler.handlePlayerInput(player);
+                        update();
+                    } else if (gameOver) {
+                        gameOverEvent();
+                    }
                 }
             }
 
@@ -114,17 +132,23 @@ public class World extends Application {
                     highScoreHandler.setHighScore(score);
                     highScoreHandler.writeHighScore(highScoreFilePath);
                 }
-                highScoreText.setText("Your score: " + score + "\nHigh score: " + highScoreHandler.getHighScore());
+                highScoreText.setText("Your score: " + score + "\nHigh score: "
+                        + highScoreHandler.getHighScore());
                 if (!scoreKeeper.getGameWon()) {
-                    startText.setText("Ouch! Game over.\nPress 'R' to try again.");
+                    startText.setText("Ouch! Game over.\nPress 'R' to try again"
+                            + "\nor 'B' to go back to the menu.");
                 }
 
                 if (inputHandler.handleRestartInput()) {
                     try {
-                        restart(pane, scene, stage);
+                        restart(mainPane, mainScene, stage);
                     } catch (Exception ex) {
                         Logger.getLogger(World.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                }
+
+                if (inputHandler.handleBackToMenuInput()) {
+                    setStartScene(stage, startScene);
                 }
             }
 
@@ -144,7 +168,7 @@ public class World extends Application {
                     }
                 }
 
-                scoreKeeper.updateScore(gameStart);
+                scoreKeeper.updateScore(gameStarted);
                 scoreText.setText("Score: " + scoreKeeper.getScore());
                 startText.setText(scoreKeeper.getStartText());
                 if (!gameOver) {
@@ -153,21 +177,44 @@ public class World extends Application {
             }
         }.start();
 
+        stage.setScene(startScene);
         stage.show();
     }
 
+    private void setStartScene(Stage stage, Scene startScene) {
+        stage.setScene(startScene);
+        startSceneOn = true;
+        initInput(startScene);
+    }
+
+    private void setMainScene(Stage stage, String lvlFilePath) {
+        this.lvlFilePath = lvlFilePath;
+        startSceneOn = false;
+        
+        if (gameOver) {
+            try {
+                restart(mainPane, mainScene, stage);
+            } catch (Exception ex) {
+                Logger.getLogger(World.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            initGameObjects(mainPane);
+            stage.setScene(mainScene);
+            initInput(mainScene);
+        }
+    }
+
     private void initWorld() {
-        lvlFilePath = "leveldata/level1.cfg";
         title = "Escape Spikeworld";
         highScoreFilePath = title.replace(" ", "_") + "_highscore.txt";
-        
+
         tileSize = 32;
         canvasWidth = 900;
         canvasHeight = 640;
         groundLevel = (int) (canvasHeight / 1.618);
-        
+
         goSpeed = 5;
-        
+
         initColors();
 
         playerWidth = tileSize;
@@ -175,7 +222,7 @@ public class World extends Application {
         playerStartX = canvasWidth - (playerWidth / 2) - (int) (canvasWidth / 1.618);
         playerStartY = groundLevel - playerHeight;
 
-        gameStart = false;
+        gameStarted = false;
         gameOver = false;
 
         scoreKeeper = new ScoreKeeper(goSpeed, playerStartX);
@@ -184,10 +231,10 @@ public class World extends Application {
     private void initColors() {
         color1 = Color.web("#7BC1BA");
         color2 = Color.web("#191919");
-        color3 = Color.web("#D6D3BD");
+        color3 = Color.web("#6AB583");
         color4 = Color.web("#EE4466");
 
-        playerColor = Color.web("#6AB583");
+        playerColor = color3;
         obstacleColor = color4;
         groundColor = color2;
         backgroundColor = color1;
@@ -212,10 +259,11 @@ public class World extends Application {
         scoreText.setFont(Font.font(26));
         pane.getChildren().add(scoreText);
 
-        startText = new Text((canvasWidth / 2) - 120, 100, "Press any key to start");
+        startText = new Text((canvasWidth / 2) - 120, 100, "");
         startText.setFill(color2);
         startText.setFont(Font.font(26));
         pane.getChildren().add(startText);
+//        startText.setText("Press any key to start");
 
         highScoreText = new Text((canvasWidth / 2) - 120, canvasHeight - ((canvasHeight - groundLevel) / 2), "");
         highScoreText.setFill(color4);
@@ -268,17 +316,24 @@ public class World extends Application {
         startText.setText("");
         scene = initScene(pane, stage);
         initInput(scene);
-        gameStart = true;
+        gameStarted = true;
     }
-    
+
     private void updatePlayerEffect() {
         if (!player.getGrounded()) {
             playerReflection = null;
             reflectionOn = false;
-        } else if (!reflectionOn){
+        } else if (!reflectionOn) {
             playerReflection = new Reflection();
             reflectionOn = true;
         }
         player.getSprite().setEffect(playerReflection);
+    }
+
+    private void initStartSceneText(Pane pane) {
+        startText = new Text((canvasWidth / 2) - 120, 100, "Choose a level.\nPress 1 for Level 1: Easy.\nPress 2 for Level 2: Hard.");
+        startText.setFill(color2);
+        startText.setFont(Font.font(26));
+        pane.getChildren().add(startText);
     }
 }

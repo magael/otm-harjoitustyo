@@ -6,14 +6,14 @@ import java.util.ArrayList;
 public class ScoreKeeper {
     
     private int score;
-    private int obstacleSpeed;
+    private double obstacleSpeed;
     private int playerScoringPosition;
     private int scoringPositionIndex;
     private ArrayList<Integer> scoringPositions;
     private String startText;
     private boolean gameWon;
 
-    public ScoreKeeper(int obstacleSpeed, int playerStartX) {
+    public ScoreKeeper(double obstacleSpeed, int playerStartX) {
         score = 0;
         this.obstacleSpeed = obstacleSpeed;
         scoringPositions = new ArrayList<>();

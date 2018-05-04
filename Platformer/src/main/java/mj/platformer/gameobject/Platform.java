@@ -7,7 +7,7 @@ public class Platform extends GameObject {
 
     private GameObjectMover mover;
 
-    public Platform(Shape sprite, int x, int y, int width) {
+    public Platform(Shape sprite, double x, int y, int width) {
         super(sprite, x, y, width);
         mover = new GameObjectMover(this);
     }

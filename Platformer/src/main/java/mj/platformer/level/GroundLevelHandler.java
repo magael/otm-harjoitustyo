@@ -6,8 +6,8 @@ import mj.platformer.gameobject.Player;
 
 public class GroundLevelHandler {
 
-    private HashMap<Integer, Integer> groundLevels;
-    private ArrayList<Integer> gameObjectPositions;
+    private HashMap<Double, Integer> groundLevels;
+    private ArrayList<Double> gameObjectPositions;
     int groundLevelIndex;
 
     public GroundLevelHandler(LevelCreator lvlCreator) {
@@ -16,7 +16,7 @@ public class GroundLevelHandler {
         groundLevelIndex = 0;
     }
 
-    public int setGroundLevel(int groundLevel, int goSpeed, Player player) {
+    public int setGroundLevel(int groundLevel, double goSpeed, Player player) {
         player.setProgress(player.getProgress() + goSpeed);
         if (groundLevelIndex < gameObjectPositions.size()
                 && player.getProgress() >= gameObjectPositions.get(groundLevelIndex)

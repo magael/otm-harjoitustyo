@@ -5,18 +5,18 @@ import mj.platformer.gameobject.GameObject;
 public class GameObjectMover {
 
     private GameObject go;
-    private int speed;
+    private double speed;
 
     public GameObjectMover(GameObject go) {
         this.go = go;
         this.speed = 0;
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
 

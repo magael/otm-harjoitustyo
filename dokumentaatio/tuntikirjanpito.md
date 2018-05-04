@@ -22,4 +22,5 @@
 | 29.3. | 4 | Paikallisesti säilyvä highscore |
 | 30.3. | 4 | Kaavioiden päivitystä, testejä, optimointikokeilua, levelin säätöä |
 | 2.5. | 4 | Highscore-testi, LevelCreatorin pilkkomista, väreillä sun muilla leikkimistä |
-| yht | 67 |
+| 5.5. | 3 | Start-näkymä, kaksi eri tasoa, hylättyjä pelimekaniikkakokeiluja |
+| yht | 70 |

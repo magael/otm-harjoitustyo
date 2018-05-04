@@ -44,13 +44,13 @@ public class World extends Application {
     private boolean startSceneOn;
     private boolean gameStarted;
     private boolean gameOver;
+    private boolean reflectionOn;
+    private Reflection playerReflection;
     private Color color1, color2, color3, color4;
     private Color playerColor, obstacleColor, groundColor, backgroundColor;
     private Text startText;
     private Text scoreText;
     private Text highScoreText;
-    private Reflection playerReflection;
-    private boolean reflectionOn;
     private Pane mainPane;
     private Scene mainScene;
 
@@ -76,18 +76,6 @@ public class World extends Application {
     @Override
     public void start(Stage stage) {
         initWorld();
-
-        // Start scene
-        Pane startPane = initPane();
-        Scene startScene = initScene(startPane, stage);
-        initInput(startScene);
-        initStartSceneText(startPane);
-        startSceneOn = true;
-
-        // Main Scene
-        mainPane = initPane();
-        mainScene = initScene(mainPane, stage);
-        initText(mainPane);
         CollisionHandler collisionHandler = new CollisionHandler();
         HighScoreHandler highScoreHandler = new HighScoreHandler();
         try {
@@ -95,6 +83,18 @@ public class World extends Application {
         } catch (Exception e) {
             highScoreHandler.setHighScore(0);
         }
+
+        // Start scene
+        Pane startPane = initPane();
+        Scene startScene = initScene(startPane, stage, groundColor);
+        initInput(startScene);
+        initStartSceneText(startPane);
+        startSceneOn = true;
+
+        // Main Scene
+        mainPane = initPane();
+        mainScene = initScene(mainPane, stage, backgroundColor);
+        initText(mainPane);
 
         /**
          * The game loop is based on javafx.animation.AnimationTimer.
@@ -107,10 +107,10 @@ public class World extends Application {
             @Override
             public void handle(long currentTime) {
                 if (startSceneOn) {
-                    if (inputHandler.handleLevelInput() == 1) {
+                    if (inputHandler.levelInput() == 1) {
                         setMainScene(stage, "leveldata/level1.cfg");
                     }
-                    if (inputHandler.handleLevelInput() == 2) {
+                    if (inputHandler.levelInput() == 2) {
                         setMainScene(stage, "leveldata/level2.cfg");
                     }
                 } else {
@@ -118,7 +118,7 @@ public class World extends Application {
                     gameStarted = true;
 //                    }
                     if (gameStarted && !gameOver) {
-                        inputHandler.handlePlayerInput(player);
+                        inputHandler.playerInput(player);
                         update();
                     } else if (gameOver) {
                         gameOverEvent();
@@ -139,7 +139,7 @@ public class World extends Application {
                             + "\nor 'B' to go back to the menu.");
                 }
 
-                if (inputHandler.handleRestartInput()) {
+                if (inputHandler.restartInput()) {
                     try {
                         restart(mainPane, mainScene, stage);
                     } catch (Exception ex) {
@@ -147,7 +147,7 @@ public class World extends Application {
                     }
                 }
 
-                if (inputHandler.handleBackToMenuInput()) {
+                if (inputHandler.backToMenuInput()) {
                     setStartScene(stage, startScene);
                 }
             }
@@ -246,8 +246,8 @@ public class World extends Application {
         return pane;
     }
 
-    private Scene initScene(Pane pane, Stage stage) {
-        Scene scene = new Scene(pane, backgroundColor);
+    private Scene initScene(Pane pane, Stage stage, Color bgcolor) {
+        Scene scene = new Scene(pane, bgcolor);
         stage.setTitle(title);
         stage.setScene(scene);
         return scene;
@@ -269,6 +269,19 @@ public class World extends Application {
         highScoreText.setFill(color4);
         highScoreText.setFont(Font.font(26));
         pane.getChildren().add(highScoreText);
+    }
+
+    private void initStartSceneText(Pane pane) {
+        startText = new Text(canvasWidth / 3, (canvasHeight - (int) (canvasHeight / 1.618)),
+                "Choose a level.\nPress 1 for Level 1: Easy.\nPress 2 for Level 2: Hard.");
+        startText.setFill(color1);
+        startText.setFont(Font.font(26));
+        pane.getChildren().add(startText);
+    }
+    
+    private void initInput(Scene scene) {
+        InputListener il = new InputListener();
+        this.inputHandler = new InputHandler(il.initInput(scene));
     }
 
     private void initGameObjects(Pane pane) {
@@ -303,22 +316,6 @@ public class World extends Application {
         return new Player(playerSprite, playerStartX, playerStartY, playerWidth);
     }
 
-    private void initInput(Scene scene) {
-        InputListener il = new InputListener();
-        this.inputHandler = new InputHandler(il.initInput(scene));
-    }
-
-    private void restart(Pane pane, Scene scene, Stage stage) throws Exception {
-        initWorld();
-        pane = initPane();
-        initGameObjects(pane);
-        initText(pane);
-        startText.setText("");
-        scene = initScene(pane, stage);
-        initInput(scene);
-        gameStarted = true;
-    }
-
     private void updatePlayerEffect() {
         if (!player.getGrounded()) {
             playerReflection = null;
@@ -330,10 +327,14 @@ public class World extends Application {
         player.getSprite().setEffect(playerReflection);
     }
 
-    private void initStartSceneText(Pane pane) {
-        startText = new Text((canvasWidth / 2) - 120, 100, "Choose a level.\nPress 1 for Level 1: Easy.\nPress 2 for Level 2: Hard.");
-        startText.setFill(color2);
-        startText.setFont(Font.font(26));
-        pane.getChildren().add(startText);
+    private void restart(Pane pane, Scene scene, Stage stage) throws Exception {
+        initWorld();
+        pane = initPane();
+        initGameObjects(pane);
+        initText(pane);
+        startText.setText("");
+        scene = initScene(pane, stage, backgroundColor);
+        initInput(scene);
+        gameStarted = true;
     }
 }

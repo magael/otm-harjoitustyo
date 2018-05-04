@@ -31,22 +31,22 @@ public class InputHandlerTest {
     @Test
     public void registersPlayerJumpInput() {
         ih.getButtonsDown().put(KeyCode.SPACE, Boolean.TRUE);
-        assertTrue(ih.handlePlayerInput(p));
+        assertTrue(ih.playerInput(p));
     }
     
     @Test
     public void handlePlayerInputDoesNothingIfThereIsNoJumpInput() {
-        assertFalse(ih.handlePlayerInput(p));
+        assertFalse(ih.playerInput(p));
     }
     
     @Test
     public void registersRestartInput() {
         ih.getButtonsDown().put(KeyCode.R, Boolean.TRUE);
-        assertTrue(ih.handleRestartInput());
+        assertTrue(ih.restartInput());
     }
     
     @Test
     public void restartInputDoesNothingIfThereIsNoRestartInput() {
-        assertFalse(ih.handleRestartInput());
+        assertFalse(ih.restartInput());
     }
 }

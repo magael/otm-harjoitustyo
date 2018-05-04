@@ -12,7 +12,11 @@ public class InputHandler {
         this.buttonsDown = buttonsDown;
     }
 
-    public boolean handlePlayerInput(Player player) {
+    public Map<KeyCode, Boolean> getButtonsDown() {
+        return buttonsDown;
+    }
+
+    public boolean playerInput(Player player) {
         if (buttonsDown.getOrDefault(KeyCode.SPACE, false)) {
             player.jump();
             return true;
@@ -20,18 +24,14 @@ public class InputHandler {
         return false;
     }
 
-    public Map<KeyCode, Boolean> getButtonsDown() {
-        return buttonsDown;
-    }
-
-    public boolean handleRestartInput() {
+    public boolean restartInput() {
         if (buttonsDown.getOrDefault(KeyCode.R, false)) {
             return true;
         }
         return false;
     }
     
-    public int handleLevelInput() {
+    public int levelInput() {
         if (buttonsDown.getOrDefault(KeyCode.DIGIT1, false)) {
             return 1;
         }
@@ -41,7 +41,7 @@ public class InputHandler {
         return 0;
     }
 
-    public boolean handleBackToMenuInput() {
+    public boolean backToMenuInput() {
         if (buttonsDown.getOrDefault(KeyCode.B, false)) {
             return true;
         }

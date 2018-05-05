@@ -6,16 +6,14 @@ import java.util.ArrayList;
 public class ScoreKeeper {
     
     private int score;
-    private double obstacleSpeed;
     private int playerScoringPosition;
     private int scoringPositionIndex;
     private ArrayList<Integer> scoringPositions;
     private String startText;
     private boolean gameWon;
 
-    public ScoreKeeper(double obstacleSpeed, int playerStartX) {
+    public ScoreKeeper(int playerStartX) {
         score = 0;
-        this.obstacleSpeed = obstacleSpeed;
         scoringPositions = new ArrayList<>();
         scoringPositionIndex = 0;
         playerScoringPosition = playerStartX;
@@ -23,8 +21,8 @@ public class ScoreKeeper {
         gameWon = false;
     }
     
-    public void updateScore(boolean gameStart) {
-        playerScoringPosition += obstacleSpeed;
+    public void updateScore(boolean gameStart, double gameObjectSpeed) {
+        playerScoringPosition += gameObjectSpeed;
         if (scoringPositionIndex < scoringPositions.size()
                 && playerScoringPosition >= scoringPositions.get(scoringPositionIndex)) {
             score += 100 * (scoringPositionIndex + 1);
@@ -34,7 +32,8 @@ public class ScoreKeeper {
         if (gameStart && score == 0) {
             startText = "Dodge the spikes!\nPress Space to jump";
         } else if (playerScoringPosition > scoringPositions.get(scoringPositions.size() - 1)) {
-            startText = "Congratulations!\nLevel cleared!\nPress 'R' to play again.";
+            startText = "Congratulations!\nLevel cleared!\nPress 'R' to play again."
+                    + "\nor 'B' to go back to the menu.";
             gameWon = true;
         }
     }

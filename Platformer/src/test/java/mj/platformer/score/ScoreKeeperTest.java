@@ -7,12 +7,13 @@ import static org.junit.Assert.*;
 public class ScoreKeeperTest {
 
     private ScoreKeeper sk;
+    private int gameObjectSpeed;
 
     @Before
     public void setUp() {
-        int obstaclespeed = 5;
+        gameObjectSpeed = 5;
         int playerStartX = 0;
-        sk = new ScoreKeeper(obstaclespeed, playerStartX);
+        sk = new ScoreKeeper(playerStartX);
     }
     
     @Test
@@ -23,15 +24,16 @@ public class ScoreKeeperTest {
     @Test
     public void gameWonIfPlayerClearsLevel() {
         sk.addPosition(-1);
-        sk.updateScore(true);
+        sk.updateScore(true, gameObjectSpeed);
         assertTrue(sk.getGameWon());
     }
     
     @Test
     public void startTextIsWinTextIfPlayerClearsLevel() {
         sk.addPosition(-1);
-        sk.updateScore(true);
-        assertEquals("Congratulations!\nLevel cleared!\nPress 'R' to play again.", sk.getStartText());
+        sk.updateScore(true, gameObjectSpeed);
+        assertEquals("Congratulations!\nLevel cleared!\nPress 'R' to play again."
+                + "\nor 'B' to go back to the menu.", sk.getStartText());
     }
 
     @Test
@@ -42,13 +44,13 @@ public class ScoreKeeperTest {
     @Test
     public void scoreIncreasedWhenPlayerPassesScoringPosition() {
         sk.addPosition(5);
-        sk.updateScore(true);
+        sk.updateScore(true, gameObjectSpeed);
         assertTrue(sk.getScore() > 0);
     }
 
     @Test
     public void scoreNotIncreasedIfPlayerNotPastScoringPosition() {
-        sk.updateScore(true);
+        sk.updateScore(true, gameObjectSpeed);
         assertEquals(0, sk.getScore(), 0);
     }
 
@@ -60,13 +62,13 @@ public class ScoreKeeperTest {
     @Test
     public void startTextEmptyWhenPlayerPassesScoringPosition() {
         sk.addPosition(5);
-        sk.updateScore(true);
+        sk.updateScore(true, gameObjectSpeed);
         assertEquals("", sk.getStartText());
     }
 
     @Test
     public void startTextIsHelpTextIfPlayerNotPastScoringPosition() {
-        sk.updateScore(true);
+        sk.updateScore(true, gameObjectSpeed);
         assertEquals("Dodge the spikes!\nPress Space to jump", sk.getStartText());
     }
 }

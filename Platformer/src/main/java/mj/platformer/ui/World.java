@@ -1,8 +1,6 @@
 package mj.platformer.ui;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -36,12 +34,12 @@ public class World extends Application {
     private int canvasWidth, canvasHeight;
     private int groundLevel;
     private int playerWidth, playerHeight, playerStartX, playerStartY;
+    private int level;
     private double goSpeed;
+    private ArrayList<GameObject> movingObjects;
     private String lvlFilePath;
     private String highScoreFilePath;
     private String title;
-    private ArrayList<GameObject> movingObjects;
-    private boolean startSceneOn;
     private boolean gameStarted;
     private boolean gameOver;
     private boolean reflectionOn;
@@ -78,23 +76,17 @@ public class World extends Application {
         initWorld();
         CollisionHandler collisionHandler = new CollisionHandler();
         HighScoreHandler highScoreHandler = new HighScoreHandler();
-        try {
-            highScoreHandler.readHighScore(highScoreFilePath);
-        } catch (Exception e) {
-            highScoreHandler.setHighScore(0);
-        }
+        highScoreHandler.readHighScore(highScoreFilePath, 2); // if no highscore, highscore = 0
 
         // Start scene
         Pane startPane = initPane();
         Scene startScene = initScene(startPane, stage, groundColor);
         initInput(startScene);
         initStartSceneText(startPane);
-        startSceneOn = true;
 
         // Main Scene
         mainPane = initPane();
         mainScene = initScene(mainPane, stage, backgroundColor);
-        initText(mainPane);
 
         /**
          * The game loop is based on javafx.animation.AnimationTimer.
@@ -106,17 +98,16 @@ public class World extends Application {
              */
             @Override
             public void handle(long currentTime) {
-                if (startSceneOn) {
+                if (!gameStarted) {
                     if (inputHandler.levelInput() == 1) {
                         setMainScene(stage, "leveldata/level1.cfg");
+                        level = 1;
                     }
                     if (inputHandler.levelInput() == 2) {
                         setMainScene(stage, "leveldata/level2.cfg");
+                        level = 2;
                     }
                 } else {
-//                    if (!inputHandler.getButtonsDown().isEmpty()) {
-                    gameStarted = true;
-//                    }
                     if (gameStarted && !gameOver) {
                         inputHandler.playerInput(player);
                         update();
@@ -128,23 +119,19 @@ public class World extends Application {
 
             private void gameOverEvent() {
                 int score = scoreKeeper.getScore();
-                if (score > highScoreHandler.getHighScore()) {
-                    highScoreHandler.setHighScore(score);
-                    highScoreHandler.writeHighScore(highScoreFilePath);
+                if (score > highScoreHandler.getHighScore(level)) {
+                    highScoreHandler.setHighScore(score, level);
+                    highScoreHandler.writeHighScore(highScoreFilePath, 2);
                 }
                 highScoreText.setText("Your score: " + score + "\nHigh score: "
-                        + highScoreHandler.getHighScore());
+                        + highScoreHandler.getHighScore(level));
                 if (!scoreKeeper.getGameWon()) {
                     startText.setText("Ouch! Game over.\nPress 'R' to try again"
                             + "\nor 'B' to go back to the menu.");
                 }
 
                 if (inputHandler.restartInput()) {
-                    try {
-                        restart(mainPane, mainScene, stage);
-                    } catch (Exception ex) {
-                        Logger.getLogger(World.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    restart(mainPane, mainScene, stage);
                 }
 
                 if (inputHandler.backToMenuInput()) {
@@ -168,7 +155,7 @@ public class World extends Application {
                     }
                 }
 
-                scoreKeeper.updateScore(gameStarted);
+                scoreKeeper.updateScore(gameStarted, goSpeed);
                 scoreText.setText("Score: " + scoreKeeper.getScore());
                 startText.setText(scoreKeeper.getStartText());
                 if (!gameOver) {
@@ -183,22 +170,19 @@ public class World extends Application {
 
     private void setStartScene(Stage stage, Scene startScene) {
         stage.setScene(startScene);
-        startSceneOn = true;
+        gameStarted = false;
         initInput(startScene);
     }
 
     private void setMainScene(Stage stage, String lvlFilePath) {
         this.lvlFilePath = lvlFilePath;
-        startSceneOn = false;
-        
+        gameStarted = true;
+
         if (gameOver) {
-            try {
-                restart(mainPane, mainScene, stage);
-            } catch (Exception ex) {
-                Logger.getLogger(World.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            restart(mainPane, mainScene, stage);
         } else {
             initGameObjects(mainPane);
+            initText(mainPane);
             stage.setScene(mainScene);
             initInput(mainScene);
         }
@@ -222,10 +206,9 @@ public class World extends Application {
         playerStartX = canvasWidth - (playerWidth / 2) - (int) (canvasWidth / 1.618);
         playerStartY = groundLevel - playerHeight;
 
-        gameStarted = false;
         gameOver = false;
 
-        scoreKeeper = new ScoreKeeper(goSpeed, playerStartX);
+        scoreKeeper = new ScoreKeeper(playerStartX);
     }
 
     private void initColors() {
@@ -263,7 +246,6 @@ public class World extends Application {
         startText.setFill(color2);
         startText.setFont(Font.font(26));
         pane.getChildren().add(startText);
-//        startText.setText("Press any key to start");
 
         highScoreText = new Text((canvasWidth / 2) - 120, canvasHeight - ((canvasHeight - groundLevel) / 2), "");
         highScoreText.setFill(color4);
@@ -278,7 +260,7 @@ public class World extends Application {
         startText.setFont(Font.font(26));
         pane.getChildren().add(startText);
     }
-    
+
     private void initInput(Scene scene) {
         InputListener il = new InputListener();
         this.inputHandler = new InputHandler(il.initInput(scene));
@@ -327,7 +309,7 @@ public class World extends Application {
         player.getSprite().setEffect(playerReflection);
     }
 
-    private void restart(Pane pane, Scene scene, Stage stage) throws Exception {
+    private void restart(Pane pane, Scene scene, Stage stage) {
         initWorld();
         pane = initPane();
         initGameObjects(pane);
@@ -335,6 +317,5 @@ public class World extends Application {
         startText.setText("");
         scene = initScene(pane, stage, backgroundColor);
         initInput(scene);
-        gameStarted = true;
     }
 }

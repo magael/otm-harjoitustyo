@@ -1,6 +1,6 @@
 # Platformer
 
-OTM-kurssin harjoitustyö: Tasohyppelypeli.</br>
+Ohjelmistotekniikan menetelmät -kurssin harjoitustyö: Tasohyppelypeli.</br>
 Peli on niin sanottu "endless runner", eli eteneminen on automaattista, pelaajan tarvitsee vain hypätä oikeissa kohdissa. Pisteitä saa etenemisestä ja peli päättyy, jos pelaaja osuu piikkeihin.
   
 ## Dokumentaatio

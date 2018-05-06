@@ -22,7 +22,6 @@ public class CustomFileReader {
      * @return the file data in a String ArrayList
      */
     public ArrayList<String> readFile(String filePath) {
-        String dataLine = "";
         ArrayList<String> stringDataList = new ArrayList<>();
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
 

@@ -1,11 +1,10 @@
-
 package mj.platformer.score;
 
 import java.util.ArrayList;
 
 public class ScoreKeeper {
-    
-    private int score;
+
+    private long score;
     private int playerScoringPosition;
     private int scoringPositionIndex;
     private ArrayList<Integer> scoringPositions;
@@ -20,7 +19,7 @@ public class ScoreKeeper {
         startText = "";
         gameWon = false;
     }
-    
+
     public void updateScore(boolean gameStart, double gameObjectSpeed) {
         playerScoringPosition += gameObjectSpeed;
         if (scoringPositionIndex < scoringPositions.size()
@@ -42,14 +41,14 @@ public class ScoreKeeper {
         scoringPositions.add(obstacleX);
     }
 
-    public int getScore() {
+    public long getScore() {
         return score;
     }
 
     public String getStartText() {
         return startText;
     }
-    
+
     public boolean getGameWon() {
         return gameWon;
     }

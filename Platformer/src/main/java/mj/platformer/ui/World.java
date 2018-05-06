@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import mj.platformer.collision.CollisionHandler;
 import mj.platformer.gameobject.Player;
@@ -35,6 +36,7 @@ public class World extends Application {
     private int groundLevel;
     private int playerWidth, playerHeight, playerStartX, playerStartY;
     private int level;
+    private int levelCount;
     private double goSpeed;
     private ArrayList<GameObject> movingObjects;
     private String lvlFilePath;
@@ -100,13 +102,9 @@ public class World extends Application {
             @Override
             public void handle(long currentTime) {
                 if (!gameStarted) {
-                    if (inputHandler.levelInput() == 1) {
-                        level = 1;
-                        setMainScene(stage, "leveldata/level1.cfg");
-                    }
-                    if (inputHandler.levelInput() == 2) {
-                        level = 2;
-                        setMainScene(stage, "leveldata/level2.cfg");
+                    level = inputHandler.levelInput();
+                    if (level > 0 && level <= levelCount) {
+                        setMainScene(stage, "leveldata/level" + Integer.toString(level) + ".cfg");
                     }
                 } else {
                     if (gameStarted && !gameOver) {
@@ -119,10 +117,10 @@ public class World extends Application {
             }
 
             private void gameOverEvent() {
-                int score = scoreKeeper.getScore();
+                long score = scoreKeeper.getScore();
                 if (score > highScoreHandler.getHighScore(level)) {
                     highScoreHandler.setHighScore(score, level);
-                    highScoreHandler.writeHighScore(highScoreFilePath, 2);
+                    highScoreHandler.writeHighScore(highScoreFilePath, levelCount);
                 }
                 highScoreText.setText("Your score: " + score + "\nHigh score: "
                         + highScoreHandler.getHighScore(level));
@@ -151,7 +149,8 @@ public class World extends Application {
                 for (GameObject go : movingObjects) {
                     go.update();
 
-                    if (go.getX() <= playerStartX + playerWidth && go.getX() + tileSize >= playerStartX) {
+                    if (go.getX() <= playerStartX + playerWidth
+                            && go.getX() + tileSize >= playerStartX) {
                         gameOver = collisionHandler.handleCollisions(player, go);
                     }
                 }
@@ -182,17 +181,16 @@ public class World extends Application {
         if (gameOver) {
             restart(mainPane, mainScene, stage);
         } else {
-            initGameObjects(mainPane);
-            initText(mainPane);
             stage.setScene(mainScene);
-            initInput(mainScene);
-            levelText.setText("Level: " + level);
+            initObjectsTextAndInput(mainPane, mainScene);
         }
     }
 
     private void initWorld() {
         title = "Escape Spikeworld";
         highScoreFilePath = title.replace(" ", "_") + "_highscore.txt";
+        
+        levelCount = 2;
 
         tileSize = 32;
         canvasWidth = 900;
@@ -238,6 +236,13 @@ public class World extends Application {
         return scene;
     }
 
+    private void initObjectsTextAndInput(Pane pane, Scene scene) {
+        initGameObjects(pane);
+        initText(pane);
+        initInput(scene);
+        levelText.setText("Level: " + level);
+    }
+
     private void initText(Pane pane) {
         scoreText = new Text(26, 42, "Score: 0");
         scoreText.setFill(color2);
@@ -253,7 +258,7 @@ public class World extends Application {
         highScoreText.setFill(color4);
         highScoreText.setFont(Font.font(26));
         pane.getChildren().add(highScoreText);
-        
+
         levelText = new Text(canvasWidth - 120, 42, "");
         levelText.setFill(color2);
         levelText.setFont(Font.font(26));
@@ -261,8 +266,14 @@ public class World extends Application {
     }
 
     private void initStartSceneText(Pane pane) {
-        startText = new Text(canvasWidth / 3, (canvasHeight - (int) (canvasHeight / 1.618)),
-                "Choose a level.\nPress 1 for Level 1: Easy.\nPress 2 for Level 2: Hard.");
+        Text titleText = new Text(200, 200, title);
+        titleText.setFill(color4);
+        titleText.setFont(Font.font("", FontWeight.BOLD, 40));
+        pane.getChildren().add(titleText);
+
+        startText = new Text(200, 300, "Select a level.\n\n"
+                + "Press 1 for Level 1 (Easy).\n\n"
+                + "Press 2 for Level 2 (Hard).");
         startText.setFill(color1);
         startText.setFont(Font.font(26));
         pane.getChildren().add(startText);
@@ -319,11 +330,8 @@ public class World extends Application {
     private void restart(Pane pane, Scene scene, Stage stage) {
         initWorld();
         pane = initPane();
-        initGameObjects(pane);
-        initText(pane);
-        startText.setText("");
         scene = initScene(pane, stage, backgroundColor);
-        initInput(scene);
-        levelText.setText("Level: " + level);
+        initObjectsTextAndInput(pane, scene);
+        startText.setText("");
     }
 }

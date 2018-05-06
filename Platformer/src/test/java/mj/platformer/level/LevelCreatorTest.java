@@ -1,6 +1,8 @@
 package mj.platformer.level;
 
+import java.util.ArrayList;
 import javafx.scene.paint.Color;
+import mj.platformer.gameobject.GameObject;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -31,5 +33,12 @@ public class LevelCreatorTest {
     public void addingToGameObjectPositionsWorks() {
         lc.addGroundLevelPosition(obstacleX, groundLevel);
         assertTrue(lc.getGameObjectPositions().contains(obstacleX));
+    }
+    
+    @Test
+    public void gameRunsWithNoLevelObjectsIfBadFilePath() {
+        String filePath = "wrong/no_file.bad";
+        lc.createObjectsFromFile(filePath);
+        assertEquals(new ArrayList<GameObject>(), lc.getObjects());
     }
 }

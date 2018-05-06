@@ -56,6 +56,11 @@ public class PlayerTest {
         player.setY(100);
         assertEquals(100, player.getY(), 0);
     }
+    
+    @Test
+    public void getWidthWorks() {
+        assertEquals(player.getWidth(), 100);
+    }
 
     // Player tests
     @Test

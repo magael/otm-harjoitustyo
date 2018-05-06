@@ -11,29 +11,29 @@ import java.util.HashMap;
 
 public class HighScoreHandler {
 
-    private int highScore;
-    private HashMap<Integer, Integer> highScores;
+    private long highScore;
+    private HashMap<Integer, Long> highScores;
 
     public HighScoreHandler() {
         this.highScores = new HashMap<>();
     }
 
-    public int getHighScore() {
+    public long getHighScore() {
         return highScore;
     }
 
-    public int getHighScore(int level) {
+    public long getHighScore(int level) {
         if (highScores.containsKey(level)) {
             return highScores.get(level);
         }
         return 0;
     }
 
-    public void setHighScore(int highScore) {
+    public void setHighScore(long highScore) {
         this.highScore = highScore;
     }
 
-    public void setHighScore(int score, int level) {
+    public void setHighScore(long score, int level) {
         highScores.put(level, score);
     }
 
@@ -44,10 +44,10 @@ public class HighScoreHandler {
             BufferedWriter bw = new BufferedWriter(writer);
 
             if (levelCount < 2) {
-                bw.write(Integer.toString(highScore));
+                bw.write(Long.toString(highScore));
             } else {
                 for (int i = 1; i <= levelCount; i++) {
-                    bw.write(Integer.toString(highScores.get(i)) + "\n");
+                    bw.write(Long.toString(highScores.get(i)) + "\n");
                 }
             }
             
@@ -75,7 +75,7 @@ public class HighScoreHandler {
     private void noFileFound(int levelCount) {
         if (levelCount > 1) {
             for (int i = 1; i <= levelCount; i++) {
-                highScores.put(i, 0);
+                highScores.put(i, (long) 0);
             }
         } else {
             highScore = 0;
@@ -92,7 +92,7 @@ public class HighScoreHandler {
                 highScore = Integer.parseInt(line);
                 break;
             }
-            highScores.put(i, Integer.parseInt(line));
+            highScores.put(i, Long.parseLong(line));
             i++;
         }
     }

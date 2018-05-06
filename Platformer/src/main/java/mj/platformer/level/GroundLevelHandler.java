@@ -8,7 +8,7 @@ public class GroundLevelHandler {
 
     private HashMap<Double, Integer> groundLevels;
     private ArrayList<Double> gameObjectPositions;
-    int groundLevelIndex;
+    private int groundLevelIndex;
 
     public GroundLevelHandler(LevelCreator lvlCreator) {
         gameObjectPositions = lvlCreator.getGameObjectPositions();

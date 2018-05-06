@@ -49,6 +49,7 @@ public class World extends Application {
     private Text startText;
     private Text scoreText;
     private Text highScoreText;
+    private Text levelText;
     private Pane mainPane;
     private Scene mainScene;
 
@@ -100,12 +101,12 @@ public class World extends Application {
             public void handle(long currentTime) {
                 if (!gameStarted) {
                     if (inputHandler.levelInput() == 1) {
-                        setMainScene(stage, "leveldata/level1.cfg");
                         level = 1;
+                        setMainScene(stage, "leveldata/level1.cfg");
                     }
                     if (inputHandler.levelInput() == 2) {
-                        setMainScene(stage, "leveldata/level2.cfg");
                         level = 2;
+                        setMainScene(stage, "leveldata/level2.cfg");
                     }
                 } else {
                     if (gameStarted && !gameOver) {
@@ -185,6 +186,7 @@ public class World extends Application {
             initText(mainPane);
             stage.setScene(mainScene);
             initInput(mainScene);
+            levelText.setText("Level: " + level);
         }
     }
 
@@ -251,6 +253,11 @@ public class World extends Application {
         highScoreText.setFill(color4);
         highScoreText.setFont(Font.font(26));
         pane.getChildren().add(highScoreText);
+        
+        levelText = new Text(canvasWidth - 120, 42, "");
+        levelText.setFill(color2);
+        levelText.setFont(Font.font(26));
+        pane.getChildren().add(levelText);
     }
 
     private void initStartSceneText(Pane pane) {
@@ -317,5 +324,6 @@ public class World extends Application {
         startText.setText("");
         scene = initScene(pane, stage, backgroundColor);
         initInput(scene);
+        levelText.setText("Level: " + level);
     }
 }

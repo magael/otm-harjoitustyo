@@ -66,13 +66,13 @@ public class ObstacleTest {
     //Obstacle tests
     @Test
     public void startsWithZeroSpeed() {
-        assertEquals(0, mover.getSpeed());
+        assertEquals(0, mover.getSpeed(), 0.0);
     }
 
     @Test
     public void setSpeedWorks() {
         mover.setSpeed(speed);
-        assertEquals(speed, mover.getSpeed());
+        assertEquals(speed, mover.getSpeed(), 0.0);
     }
     
     @Test

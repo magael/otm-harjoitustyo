@@ -155,7 +155,7 @@ public class World extends Application {
                     }
                 }
 
-                scoreKeeper.updateScore(gameStarted, goSpeed);
+                scoreKeeper.updateScore(gameStarted, goSpeed, level);
                 scoreText.setText("Score: " + scoreKeeper.getScore());
                 startText.setText(scoreKeeper.getStartText());
                 if (!gameOver) {

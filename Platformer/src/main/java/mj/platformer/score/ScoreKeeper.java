@@ -20,11 +20,11 @@ public class ScoreKeeper {
         gameWon = false;
     }
 
-    public void updateScore(boolean gameStart, double gameObjectSpeed) {
+    public void updateScore(boolean gameStart, double gameObjectSpeed, int level) {
         playerScoringPosition += gameObjectSpeed;
         if (scoringPositionIndex < scoringPositions.size()
                 && playerScoringPosition >= scoringPositions.get(scoringPositionIndex)) {
-            score += 100 * (scoringPositionIndex + 1);
+            score += 50 * level * (scoringPositionIndex + 1);
             scoringPositionIndex += 1;
             startText = "";
         }

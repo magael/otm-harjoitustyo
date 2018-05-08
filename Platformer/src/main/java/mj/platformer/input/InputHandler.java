@@ -18,8 +18,7 @@ public class InputHandler {
 
     public boolean playerInput(Player player) {
         if (buttonsDown.getOrDefault(KeyCode.SPACE, false)) {
-            player.jump();
-            return true;
+            return player.jump();
         }
         return false;
     }
@@ -43,6 +42,13 @@ public class InputHandler {
 
     public boolean backToMenuInput() {
         if (buttonsDown.getOrDefault(KeyCode.B, false)) {
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean pauseInput() {
+        if (buttonsDown.getOrDefault(KeyCode.P, false)) {
             return true;
         }
         return false;

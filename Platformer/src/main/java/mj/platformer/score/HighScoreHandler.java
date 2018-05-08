@@ -54,7 +54,7 @@ public class HighScoreHandler {
             // Close the output stream
             bw.close();
         } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
+            System.err.println("Error when attempting to write to or create a high score file: " + e.getMessage());
         }
     }
 

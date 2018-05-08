@@ -31,7 +31,7 @@ public class CustomFileReader {
             addLines(br, stringDataList);
             is.close();
         } catch (Exception e) {
-            e.printStackTrace(new PrintStream(System.out));
+            System.out.println("Error when attempting to read a file into an array: " + e.getMessage());
         }
 
         return stringDataList;

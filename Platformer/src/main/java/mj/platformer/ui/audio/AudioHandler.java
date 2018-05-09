@@ -1,13 +1,10 @@
 package mj.platformer.ui.audio;
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.HashMap;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
 
 public class AudioHandler {
 
@@ -46,6 +43,10 @@ public class AudioHandler {
     public void playMusic() {
         musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         musicPlayer.play();
+    }
+    
+    public void stopMusic() {
+        musicPlayer.stop();
     }
 
 }

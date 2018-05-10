@@ -2,6 +2,11 @@ package mj.platformer.score;
 
 import java.util.ArrayList;
 
+/**
+ * The score and winning state handling class.
+ * 
+ * @author Maguel
+ */
 public class ScoreKeeper {
 
     private long score;
@@ -11,6 +16,11 @@ public class ScoreKeeper {
     private String startText;
     private boolean gameWon;
 
+    /**
+     * Constructor for the ScoreKeeper class.
+     * 
+     * @param playerStartX
+     */
     public ScoreKeeper(int playerStartX) {
         score = 0;
         scoringPositions = new ArrayList<>();
@@ -20,6 +30,17 @@ public class ScoreKeeper {
         gameWon = false;
     }
 
+    /**
+     * The score is updated when the player passes a moving GameObject.
+     * This is simulated with the playerScoringPosition, that moves towards the
+     * original positions of each gameObject on the actual gameObjectSpeed.
+     * The score is increased more the larger the level and the further ahead
+     * in the level the passing object is.
+     * 
+     * @param gameStart whether the actual game is running
+     * @param gameObjectSpeed
+     * @param level
+     */
     public void updateScore(boolean gameStart, double gameObjectSpeed, int level) {
         playerScoringPosition += gameObjectSpeed;
         if (scoringPositionIndex < scoringPositions.size()
@@ -31,8 +52,12 @@ public class ScoreKeeper {
         setState(gameStart);
     }
 
-    public void addPosition(int obstacleX) {
-        scoringPositions.add(obstacleX);
+    /**
+     * Adds the object's x position to the list of GameObject positions.
+     * @param objectX
+     */
+    public void addPosition(int objectX) {
+        scoringPositions.add(objectX);
     }
 
     public long getScore() {

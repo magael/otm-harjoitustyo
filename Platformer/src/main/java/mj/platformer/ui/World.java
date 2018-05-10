@@ -1,7 +1,6 @@
 package mj.platformer.ui;
 
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -23,13 +22,14 @@ import javafx.scene.text.Text;
 import mj.platformer.collision.CollisionHandler;
 import mj.platformer.gameobject.Player;
 import mj.platformer.gameobject.GameObject;
+import mj.platformer.ui.audio.AudioHandler;
 import mj.platformer.ui.input.InputListener;
 import mj.platformer.ui.input.InputHandler;
 import mj.platformer.level.LevelCreator;
 import mj.platformer.level.GroundLevelHandler;
 import mj.platformer.score.ScoreKeeper;
 import mj.platformer.score.HighScoreHandler;
-import mj.platformer.ui.audio.AudioHandler;
+import org.apache.commons.math3.random.RandomDataGenerator;
 
 /**
  * The main class for the platforming game. Initializes the UI, entities and
@@ -127,19 +127,19 @@ public class World extends Application {
             @Override
             public void handle(long currentTime) {
                 if (!gameStarted) { // start scene loop
-                    // level selection
+                    // level selection input
                     level = inputHandler.levelInput();
                     if (level > 0 && level <= levelCount) {
                         setMainScene(stage, "leveldata/level" + Integer.toString(level) + ".cfg");
                     }
 
-                    // options
+                    // "options" input
                     if (inputHandler.optionsInput()) {
                         initOptionsUI(optionsPane);
                         setScene(stage, optionsScene);
                     }
 
-                    // information
+                    // "information" input
                     if (inputHandler.infoInput()) {
                         initInfoUI(infoPane);
                         setScene(stage, infoScene);
@@ -391,8 +391,8 @@ public class World extends Application {
                 + highScoreFilePath + ".\n\n"
                 + "Credits:\n"
                 + "Game by Mikael Jaakkola,\n"
-                + "licensed under the GNU General Public License v3.0.\n"
-                + "Background Music by PlayOnLoop.com,\n"
+                + "licensed under the MIT License.\n"
+                + "Background music by PlayOnLoop.com,\n"
                 + "licensed under Creative Commons By Attribution 3.0.");
         info.setFill(playerColor);
         info.setFont(Font.font(18));
@@ -469,8 +469,7 @@ public class World extends Application {
             lvlCreator.createObjectsFromFile(lvlFilePath);
         } catch (Exception e) {
             System.out.println("Error when attempting to read the level data file:\n"
-                    + e + "\n"
-                    + "Application closing.");
+                    + e + "\nApplication closing.");
             quit();
         }
         movingObjects = lvlCreator.getObjects();
@@ -527,9 +526,10 @@ public class World extends Application {
         scoreKeeper = new ScoreKeeper(playerStartX);
     }
 
-    // apply pseudorandom vertical offset to the player and other object sprites
+    // apply a pseudorandom vertical offset to the player and other object sprites
     private void screenShake() {
-        int random = ThreadLocalRandom.current().nextInt(-shake, shake + 1);
+        // using Apache Commons Math library
+        int random = new RandomDataGenerator().nextInt(-shake, shake + 1);
 
         player.setX(player.getX() + random);
         for (GameObject go : movingObjects) {

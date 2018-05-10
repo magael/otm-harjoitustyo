@@ -1,7 +1,6 @@
 package mj.platformer.gameobject;
 
 import mj.platformer.gameobject.movement.GameObjectMover;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import org.junit.Before;
@@ -10,12 +9,12 @@ import static org.junit.Assert.*;
 
 public class ObstacleTest {
 
-    Obstacle o;
-    Shape sprite;
-    int x;
-    int y;
-    int speed;
-    GameObjectMover mover;
+    private Obstacle o;
+    private Shape sprite;
+    private int x;
+    private int y;
+    private int speed;
+    private GameObjectMover mover;
 
     @Before
     public void setUp() {
@@ -23,7 +22,7 @@ public class ObstacleTest {
         x = 10;
         y = 10;
         speed = 10;
-        o = new Obstacle(sprite, x, y, 10);
+        o = new Obstacle(sprite, x, y);
         o.setMover(new GameObjectMover(o));
         mover = o.getMover();
     }
@@ -32,35 +31,6 @@ public class ObstacleTest {
     @Test
     public void getSpriteWorks() {
         assertEquals(sprite, o.getSprite());
-    }
-    
-    @Test
-    public void setSpriteWorks() {
-        Circle c = new Circle(x);
-        o.setSprite(c);
-        assertEquals(c, o.getSprite());
-    }
-    
-    @Test
-    public void getXWorks() {
-        assertEquals(o.getSprite().getTranslateX(), o.getX(), 0);
-    }
-    
-    @Test
-    public void getYWorks() {
-        assertEquals(o.getSprite().getTranslateY(), o.getY(), 0);
-    }
-    
-    @Test
-    public void setXWorks() {
-        o.setX(100);
-        assertEquals(100, o.getX(), 0);
-    }
-    
-    @Test
-    public void setYWorks() {
-        o.setY(100);
-        assertEquals(100, o.getY(), 0);
     }
     
     //Obstacle tests

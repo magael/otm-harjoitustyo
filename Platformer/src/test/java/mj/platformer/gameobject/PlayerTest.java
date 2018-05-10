@@ -1,6 +1,5 @@
 package mj.platformer.gameobject;
 
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import org.junit.Before;
@@ -9,10 +8,10 @@ import static org.junit.Assert.*;
 
 public class PlayerTest {
 
-    Shape sprite;
-    Player player;
-    int x;
-    int y;
+    private Shape sprite;
+    private Player player;
+    private int x;
+    private int y;
 
     @Before
     public void setUp() {
@@ -26,40 +25,6 @@ public class PlayerTest {
     @Test
     public void getSpriteWorks() {
         assertEquals(sprite, player.getSprite());
-    }
-    
-    @Test
-    public void setSpriteWorks() {
-        Circle c = new Circle(x);
-        player.setSprite(c);
-        assertEquals(c, player.getSprite());
-    }
-    
-    @Test
-    public void getXWorks() {
-        assertEquals(player.getSprite().getTranslateX(), player.getX(), 0);
-    }
-    
-    @Test
-    public void getYWorks() {
-        assertEquals(player.getSprite().getTranslateY(), player.getY(), 0);
-    }
-    
-    @Test
-    public void setXWorks() {
-        player.setX(100);
-        assertEquals(100, player.getX(), 0);
-    }
-    
-    @Test
-    public void setYWorks() {
-        player.setY(100);
-        assertEquals(100, player.getY(), 0);
-    }
-    
-    @Test
-    public void getWidthWorks() {
-        assertEquals(player.getWidth(), 100);
     }
 
     // Player tests

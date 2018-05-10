@@ -19,7 +19,7 @@ public class CustomFileReader {
      *
      * @param filePath
      * @return the file data in a String ArrayList
-     * @throws java.io.IOException
+     * @throws java.lang.Exception
      */
     public ArrayList<String> readFile(String filePath) throws Exception {
         ArrayList<String> stringDataList = new ArrayList<>();

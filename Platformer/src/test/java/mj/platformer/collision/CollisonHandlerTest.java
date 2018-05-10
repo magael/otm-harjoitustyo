@@ -9,17 +9,17 @@ import static org.junit.Assert.*;
 
 public class CollisonHandlerTest {
 
-    CollisionHandler ch;
-    Player player;
-    Obstacle obstacle;
-    int groundLevel;
-    int tileSize;
+    private CollisionHandler ch;
+    private Player player;
+    private Obstacle obstacle;
+    private int groundLevel;
+    private int tileSize;
     
     @Before
     public void setUp() {
         tileSize = 16;
         player = new Player(new Rectangle(tileSize, tileSize), 0, 10, tileSize);
-        obstacle = new Obstacle(new Rectangle(tileSize, tileSize), 20, 10, tileSize);
+        obstacle = new Obstacle(new Rectangle(tileSize, tileSize), 20, 10);
         groundLevel = tileSize;
         ch = new CollisionHandler();
     }

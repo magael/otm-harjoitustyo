@@ -21,8 +21,8 @@ public class Obstacle extends GameObject {
      * @param x
      * @param y 
      */
-    public Obstacle(Shape sprite, double x, int y, int width) {
-        super(sprite, x, y, width);
+    public Obstacle(Shape sprite, double x, int y) {
+        super(sprite, x, y);
         mover = new GameObjectMover(this);
     }
 

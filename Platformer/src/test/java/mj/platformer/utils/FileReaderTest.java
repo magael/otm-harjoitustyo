@@ -24,4 +24,10 @@ public class FileReaderTest {
         assertEquals("asdasd", dataArray.get(2));
         assertEquals(3, dataArray.size());
     }
+    
+    @Test(expected = Exception.class)
+    public void throwsExceptionIfBadFilePath() throws Exception {
+        String filePath = "wrong/no_file.bad";
+        ArrayList<String> dataArray = fr.readFile(filePath);
+    }
 }

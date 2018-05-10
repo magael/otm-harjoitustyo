@@ -9,12 +9,12 @@ import static org.junit.Assert.*;
 
 public class PlatformTest {
 
-    Platform p;
-    Shape sprite;
-    int x;
-    int y;
-    int speed;
-    GameObjectMover mover;
+    private Platform p;
+    private Shape sprite;
+    private int x;
+    private int y;
+    private int speed;
+    private GameObjectMover mover;
 
     @Before
     public void setUp() {
@@ -22,7 +22,7 @@ public class PlatformTest {
         x = 20;
         y = 20;
         speed = 20;
-        p = new Platform(sprite, x, y, 10);
+        p = new Platform(sprite, x, y);
         p.setMover(new GameObjectMover(p));
         mover = p.getMover();
     }
@@ -31,35 +31,6 @@ public class PlatformTest {
     @Test
     public void getSpriteWorks() {
         assertEquals(sprite, p.getSprite());
-    }
-    
-    @Test
-    public void setSpriteWorks() {
-        Rectangle r = new Rectangle(x, x);
-        p.setSprite(r);
-        assertEquals(r, p.getSprite());
-    }
-    
-    @Test
-    public void getXWorks() {
-        assertEquals(p.getSprite().getTranslateX(), p.getX(), 0);
-    }
-    
-    @Test
-    public void getYWorks() {
-        assertEquals(p.getSprite().getTranslateY(), p.getY(), 0);
-    }
-    
-    @Test
-    public void setXWorks() {
-        p.setX(100);
-        assertEquals(100, p.getX(), 0);
-    }
-    
-    @Test
-    public void setYWorks() {
-        p.setY(100);
-        assertEquals(100, p.getY(), 0);
     }
     
     //Platform tests

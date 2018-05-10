@@ -11,7 +11,6 @@ import javafx.scene.shape.Shape;
 public abstract class GameObject {
 
     private Shape sprite;
-    private int width;
 
     /**
      * The constructor for the class GameObject. Initializes the position. The
@@ -21,19 +20,14 @@ public abstract class GameObject {
      * @param x
      * @param y
      */
-    public GameObject(Shape sprite, double x, int y, int width) {
+    public GameObject(Shape sprite, double x, int y) {
         this.sprite = sprite;
         this.sprite.setTranslateX(x);
         this.sprite.setTranslateY(y);
-        this.width = width;
     }
 
     public Shape getSprite() {
         return sprite;
-    }
-
-    public void setSprite(Shape sprite) {
-        this.sprite = sprite;
     }
 
     public double getX() {
@@ -42,10 +36,6 @@ public abstract class GameObject {
 
     public double getY() {
         return sprite.getTranslateY();
-    }
-
-    public int getWidth() {
-        return width;
     }
 
     /**

@@ -9,19 +9,15 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
-public class HighScoreHandler {
+public class HighScoreHandler implements HighScoreDao {
 
-    private long highScore;
     private HashMap<Integer, Long> highScores;
 
     public HighScoreHandler() {
         this.highScores = new HashMap<>();
     }
 
-    public long getHighScore() {
-        return highScore;
-    }
-
+    @Override
     public long getHighScore(int level) {
         if (highScores.containsKey(level)) {
             return highScores.get(level);
@@ -29,28 +25,22 @@ public class HighScoreHandler {
         return 0;
     }
 
-    public void setHighScore(long highScore) {
-        this.highScore = highScore;
-    }
-
+    @Override
     public void setHighScore(long score, int level) {
         highScores.put(level, score);
     }
 
+    @Override
     public void writeHighScore(String filePath, int levelCount) {
         try {
             // Create a new file if one is not found at project / executable root
             FileWriter writer = new FileWriter(filePath);
             BufferedWriter bw = new BufferedWriter(writer);
 
-            if (levelCount < 2) {
-                bw.write(Long.toString(highScore));
-            } else {
-                for (int i = 1; i <= levelCount; i++) {
-                    bw.write(Long.toString(highScores.get(i)) + "\n");
-                }
+            for (int i = 1; i <= levelCount; i++) {
+                bw.write(Long.toString(highScores.get(i)) + "\n");
             }
-            
+
             // Close the output stream
             bw.close();
         } catch (Exception e) {
@@ -58,13 +48,14 @@ public class HighScoreHandler {
         }
     }
 
+    @Override
     public void readHighScore(String filePath, int levelCount) {
         try {
             FileInputStream stream = new FileInputStream(filePath);
             InputStreamReader reader = new InputStreamReader(stream, Charset.forName("UTF-8"));
             BufferedReader br = new BufferedReader(reader);
 
-            readScores(br, levelCount);
+            readScores(br);
 
             br.close();
         } catch (Exception e) {
@@ -73,25 +64,17 @@ public class HighScoreHandler {
     }
 
     private void noFileFound(int levelCount) {
-        if (levelCount > 1) {
-            for (int i = 1; i <= levelCount; i++) {
-                highScores.put(i, (long) 0);
-            }
-        } else {
-            highScore = 0;
+        for (int i = 1; i <= levelCount; i++) {
+            highScores.put(i, (long) 0);
         }
 
         System.out.println("No viable high score file found. High score set to 0.");
     }
 
-    private void readScores(BufferedReader br, int levelCount) throws IOException, NumberFormatException {
+    private void readScores(BufferedReader br) throws IOException, NumberFormatException {
         String line = "";
         int i = 1;
         while ((line = br.readLine()) != null) {
-            if (levelCount < 2) {
-                highScore = Integer.parseInt(line);
-                break;
-            }
             highScores.put(i, Long.parseLong(line));
             i++;
         }

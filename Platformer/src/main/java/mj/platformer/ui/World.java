@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -22,8 +23,8 @@ import javafx.scene.text.Text;
 import mj.platformer.collision.CollisionHandler;
 import mj.platformer.gameobject.Player;
 import mj.platformer.gameobject.GameObject;
-import mj.platformer.input.InputListener;
-import mj.platformer.input.InputHandler;
+import mj.platformer.ui.input.InputListener;
+import mj.platformer.ui.input.InputHandler;
 import mj.platformer.level.LevelCreator;
 import mj.platformer.level.GroundLevelHandler;
 import mj.platformer.score.ScoreKeeper;
@@ -107,6 +108,10 @@ public class World extends Application {
         Pane optionsPane = initPane();
         Scene optionsScene = initScene(optionsPane, stage);
 
+        // Info scene
+        Pane infoPane = initPane();
+        Scene infoScene = initScene(infoPane, stage);
+
         // Main Scene
         mainPane = initPane();
         mainScene = initScene(mainPane, stage);
@@ -131,12 +136,18 @@ public class World extends Application {
                     // options
                     if (inputHandler.optionsInput()) {
                         initOptionsUI(optionsPane);
-                        setOptionsScene(stage, optionsScene);
+                        setScene(stage, optionsScene);
                     }
+
+                    // information
+                    if (inputHandler.infoInput()) {
+                        initInfoUI(infoPane);
+                        setScene(stage, infoScene);
+                    }
+
                     if (inputHandler.backToMenuInput()) {
                         setStartScene(stage, startScene);
                     }
-
                 } else { // main scene loop
                     // possible pause input
                     if (inputHandler.pauseInput()) {
@@ -159,6 +170,9 @@ public class World extends Application {
                     } else if (gameOver) {
                         gameOverEvent();
                     }
+                }
+                if (inputHandler.quitInput()) {
+                    quit();
                 }
             }
 
@@ -224,15 +238,19 @@ public class World extends Application {
         stage.show();
     }
 
-    private void setStartScene(Stage stage, Scene startScene) {
-        stage.setScene(startScene);
-        gameStarted = false;
-        initInput(startScene);
+    private void quit() {
+        Platform.exit();
+        System.exit(0);
     }
 
-    private void setOptionsScene(Stage stage, Scene optionsScene) {
-        stage.setScene(optionsScene);
-        initInput(optionsScene);
+    private void setStartScene(Stage stage, Scene startScene) {
+        gameStarted = false;
+        setScene(stage, startScene);
+    }
+
+    private void setScene(Stage stage, Scene scene) {
+        stage.setScene(scene);
+        initInput(scene);
     }
 
     private void setMainScene(Stage stage, String lvlFilePath) {
@@ -262,13 +280,12 @@ public class World extends Application {
         playerStartY = groundLevel - playerHeight;
 
         levelCount = 2;
-
         goSpeed = 5;
-
         maxShake = 12;
+        musicOn = false;
+        sfxOn = false;
 
         initColors();
-
         newGame();
     }
 
@@ -289,8 +306,9 @@ public class World extends Application {
         AudioHandler audioHandler = new AudioHandler();
         audioHandler.addClip(jumpSound);
         audioHandler.addMusic("audio/POL-ninja-panda-short.wav");
-        musicOn = true;
-        sfxOn = true;
+        if (musicOn) {
+            audioHandler.playMusic();
+        }
         return audioHandler;
     }
 
@@ -312,7 +330,7 @@ public class World extends Application {
         // title
         Text optionsText = new Text("Options");
         optionsText.setFill(playerColor);
-        
+
         // screen shake on/off
         HBox shakeRow = new HBox(10);
         shakeRow.setPadding(new Insets(10));
@@ -329,7 +347,7 @@ public class World extends Application {
 
         // music on/off
         HBox musicRow = new HBox(10);
-        musicRow.setPadding(new Insets(10));      
+        musicRow.setPadding(new Insets(10));
         Label music = new Label("Music");
         Button musicButton = new Button("On/Off");
         musicButton.setOnAction(e -> {
@@ -341,7 +359,7 @@ public class World extends Application {
             musicOn = !musicOn;
         });
         musicRow.getChildren().addAll(music, musicButton);
-        
+
         // sfx on/off
         HBox sfxRow = new HBox(10);
         musicRow.setPadding(new Insets(10));
@@ -351,16 +369,39 @@ public class World extends Application {
             sfxOn = !sfxOn;
         });
         sfxRow.getChildren().addAll(sfx, sfxButton);
-        
+
         // back to menu text
         Text backText = new Text("Press 'B' to go back to the main menu.");
         backText.setFill(backgroundColor);
-        
+
         // adding everything together
         VBox vBox = new VBox(30);
         vBox.setPadding(new Insets(100));
         vBox.getChildren().addAll(optionsText, shakeRow, musicRow, sfxRow, backText);
         pane.getChildren().add(vBox);
+    }
+
+    private void initInfoUI(Pane pane) {
+        Text info = new Text(200, 150, "Controls:\n"
+                + "Jumping: Spacebar.\n"
+                + "After game over: R to retry, B to return to the menu.\n"
+                + "Pause: P.\n"
+                + "Quit: Q or close the window.\n\n"
+                + "The high score for each level will be stored at\n"
+                + highScoreFilePath + ".\n\n"
+                + "Credits:\n"
+                + "Game by Mikael Jaakkola,\n"
+                + "licensed under the GNU General Public License v3.0.\n"
+                + "Background Music by PlayOnLoop.com,\n"
+                + "licensed under Creative Commons By Attribution 3.0.");
+        info.setFill(playerColor);
+        info.setFont(Font.font(18));
+        
+        Text back = new Text(200, 550, "Press 'B' to go back to the menu.");
+        back.setFill(backgroundColor);
+        back.setFont(Font.font(18));
+        
+        pane.getChildren().addAll(info, back);
     }
 
     private void initObjectsTextAndInput(Pane pane, Scene scene) {
@@ -386,26 +427,30 @@ public class World extends Application {
         levelText = new Text(canvasWidth - 120, 42, "");
         levelText.setFill(color2);
         levelText.setFont(Font.font(26));
-        
+
         pane.getChildren().addAll(scoreText, startText, highScoreText, levelText);
     }
 
     private void initStartText(Pane pane) {
-        Text titleText = new Text(200, 200, title);
+        Text titleText = new Text(200, 150, title);
         titleText.setFill(color4);
         titleText.setFont(Font.font("", FontWeight.BOLD, 40));
 
-        startText = new Text(200, 300, "Select a level.\n\n"
+        startText = new Text(200, 250, "Select a level.\n\n"
                 + "Press 1 for Level 1 (Easy).\n\n"
                 + "Press 2 for Level 2 (Hard).");
         startText.setFill(color1);
         startText.setFont(Font.font(26));
-        
-        Text optionsText = new Text(200, 550, "Press 'O' for options.");
+
+        Text optionsText = new Text(200, 475, "Press 'O' for options.");
         optionsText.setFill(playerColor);
-        optionsText.setFont(Font.font(26));
-        
-        pane.getChildren().addAll(titleText, startText, optionsText);
+        optionsText.setFont(Font.font(18));
+
+        Text infoText = new Text(200, 525, "Press 'I' for information.");
+        infoText.setFill(playerColor);
+        infoText.setFont(Font.font(18));
+
+        pane.getChildren().addAll(titleText, startText, optionsText, infoText);
     }
 
     private void initInput(Scene scene) {
@@ -420,7 +465,14 @@ public class World extends Application {
         //init platforms and obstacles
         movingObjects = new ArrayList<>();
         lvlCreator = new LevelCreator(canvasWidth, tileSize, groundLevel, goSpeed, obstacleColor, groundColor);
-        lvlCreator.createObjectsFromFile(lvlFilePath);
+        try {
+            lvlCreator.createObjectsFromFile(lvlFilePath);
+        } catch (Exception e) {
+            System.out.println("Error when attempting to read the level data file:\n"
+                    + e + "\n"
+                    + "Application closing.");
+            quit();
+        }
         movingObjects = lvlCreator.getObjects();
         for (GameObject go : movingObjects) {
             pane.getChildren().add(go.getSprite());
@@ -433,7 +485,6 @@ public class World extends Application {
 
         //init the player
         this.player = createPlayer();
-        player.getSprite().setEffect(new Reflection());
         pane.getChildren().add(player.getSprite());
     }
 
@@ -447,6 +498,7 @@ public class World extends Application {
         Shape playerSprite = new Rectangle(playerWidth, playerHeight, playerColor);
         playerSprite.setStroke(color2);
         playerSprite.setStrokeWidth(2);
+        playerSprite.setEffect(new Reflection());
         return new Player(playerSprite, playerStartX, playerStartY, playerWidth);
     }
 

@@ -1,5 +1,6 @@
 package mj.platformer.level;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.scene.paint.Color;
@@ -52,7 +53,7 @@ public class LevelCreator {
         return objects;
     }
 
-    public void createObjectsFromFile(String filePath) {
+    public void createObjectsFromFile(String filePath) throws Exception {
         String lvlDataLine = "";
         int i = 0;
         CustomFileReader lvlReader = new CustomFileReader();
@@ -109,13 +110,17 @@ public class LevelCreator {
     private Obstacle createObstacle(double x, int y) {
         Polygon obstacleSprite = new Polygon();
         obstacleSprite.setFill(obstacleColor);
+        setObstacleGeometry(obstacleSprite);
+        Obstacle o = new Obstacle(obstacleSprite, x, y, tileSize);
+        o.getMover().setSpeed(goSpeed);
+        return o;
+    }
+
+    private void setObstacleGeometry(Polygon obstacleSprite) {
         obstacleSprite.getPoints().addAll(new Double[]{
             ((double) tileSize / 2), 0.0,
             0.0, (double) tileSize,
             (double) tileSize, (double) tileSize});
-        Obstacle o = new Obstacle(obstacleSprite, x, y, tileSize);
-        o.getMover().setSpeed(goSpeed);
-        return o;
     }
 
     private Platform createPlatform(double x, int y, int width, int height) {

@@ -18,16 +18,27 @@ public class GroundLevelHandler {
 
     public int setGroundLevel(int groundLevel, double goSpeed, Player player) {
         player.setProgress(player.getProgress() + goSpeed);
+        
         if (groundLevelIndex < gameObjectPositions.size()
                 && player.getProgress() >= gameObjectPositions.get(groundLevelIndex)
                 && groundLevels.containsKey(gameObjectPositions.get(groundLevelIndex))) {
-            groundLevel = groundLevels.get(gameObjectPositions.get(groundLevelIndex));
-            groundLevelIndex++;
-            if (player.getGrounded()) {
-                player.setFalling(true);
-            }
+            groundLevel = updateGroundLevel();
+            applyGravity(player);
         }
         return groundLevel;
+    }
+
+    private int updateGroundLevel() {
+        int groundLevel;
+        groundLevel = groundLevels.get(gameObjectPositions.get(groundLevelIndex));
+        groundLevelIndex++;
+        return groundLevel;
+    }
+
+    private void applyGravity(Player player) {
+        if (player.getGrounded()) {
+            player.setFalling(true);
+        }
     }
 
 }

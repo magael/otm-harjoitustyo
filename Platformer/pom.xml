@@ -54,7 +54,6 @@
                 <configuration>
                     <excludes>
                         <exclude>mj/platformer/ui/**/*</exclude>
-                        <exclude>mj/platformer/input/InputListener.class</exclude>
                     </excludes>
                 </configuration>  
             </plugin>

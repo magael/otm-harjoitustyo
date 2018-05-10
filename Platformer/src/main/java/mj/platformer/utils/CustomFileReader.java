@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.util.ArrayList;
 
 /**
@@ -20,24 +19,21 @@ public class CustomFileReader {
      *
      * @param filePath
      * @return the file data in a String ArrayList
+     * @throws java.io.IOException
      */
-    public ArrayList<String> readFile(String filePath) {
+    public ArrayList<String> readFile(String filePath) throws Exception {
         ArrayList<String> stringDataList = new ArrayList<>();
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
-        try {
-            InputStream is = cl.getResourceAsStream(filePath);
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            addLines(br, stringDataList);
-            is.close();
-        } catch (Exception e) {
-            System.out.println("Error when attempting to read a file into an array: " + e.getMessage());
-        }
+        InputStream is = cl.getResourceAsStream(filePath);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        addLines(br, stringDataList);
+        is.close();
 
         return stringDataList;
     }
 
-    public void addLines(BufferedReader br, ArrayList<String> stringDataList) throws IOException {
+    private void addLines(BufferedReader br, ArrayList<String> stringDataList) throws IOException {
         String dataLine;
         while ((dataLine = br.readLine()) != null) {
             if (!dataLine.startsWith("#")) {

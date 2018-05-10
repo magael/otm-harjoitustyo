@@ -1,5 +1,5 @@
 
-package mj.platformer.input;
+package mj.platformer.ui.input;
 
 import java.util.HashMap;
 import java.util.Map;

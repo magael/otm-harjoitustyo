@@ -1,8 +1,7 @@
 package mj.platformer.level;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import javafx.scene.paint.Color;
-import mj.platformer.gameobject.GameObject;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -11,8 +10,8 @@ public class LevelCreatorTest {
 
     private int groundLevel;
     private double obstacleX;
-    private LevelCreator lc;    
-    
+    private LevelCreator lc;
+
     @Before
     public void setUp() {
         int canvasWidth = 800;
@@ -28,17 +27,16 @@ public class LevelCreatorTest {
         lc.addGroundLevelPosition(obstacleX, groundLevel);
         assertEquals(groundLevel, lc.getGroundLevels().get(obstacleX), 0);
     }
-    
+
     @Test
     public void addingToGameObjectPositionsWorks() {
         lc.addGroundLevelPosition(obstacleX, groundLevel);
         assertTrue(lc.getGameObjectPositions().contains(obstacleX));
     }
-    
-    @Test
-    public void gameRunsWithNoLevelObjectsIfBadFilePath() {
+
+    @Test(expected = Exception.class)
+    public void throwsExceptionIfBadFilePath() throws Exception {
         String filePath = "wrong/no_file.bad";
         lc.createObjectsFromFile(filePath);
-        assertEquals(new ArrayList<GameObject>(), lc.getObjects());
     }
 }

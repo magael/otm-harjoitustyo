@@ -1,4 +1,4 @@
-package mj.platformer.input;
+package mj.platformer.ui.input;
 
 import java.util.Map;
 import javafx.scene.input.KeyCode;
@@ -85,6 +85,22 @@ public class InputHandler {
      */
     public boolean optionsInput() {
         return genericInput(KeyCode.O);
+    }
+    
+    /**
+     *
+     * @return true if key pressed, else false
+     */
+    public boolean quitInput() {
+        return genericInput(KeyCode.Q);
+    }
+    
+    /**
+     *
+     * @return true if key pressed, else false
+     */
+    public boolean infoInput() {
+        return genericInput(KeyCode.I);
     }
 
     private boolean genericInput(KeyCode kc) {

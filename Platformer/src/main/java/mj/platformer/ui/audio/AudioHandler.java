@@ -28,7 +28,6 @@ public class AudioHandler {
         try {
             Media sound = new Media(new File(source).toURI().toString());
             musicPlayer = new MediaPlayer(sound);
-            playMusic();
         } catch (Exception e) {
             System.out.println("Error: Music file unavailable.");
         }

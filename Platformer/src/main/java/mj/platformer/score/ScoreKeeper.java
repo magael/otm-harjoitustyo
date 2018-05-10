@@ -28,13 +28,7 @@ public class ScoreKeeper {
             scoringPositionIndex += 1;
             startText = "";
         }
-        if (gameStart && score == 0) {
-            startText = "Dodge the spikes!\nPress Space to jump";
-        } else if (playerScoringPosition > scoringPositions.get(scoringPositions.size() - 1)) {
-            startText = "Congratulations!\nLevel cleared!\nPress 'R' to play again."
-                    + "\nor 'B' to go back to the menu.";
-            gameWon = true;
-        }
+        setState(gameStart);
     }
 
     public void addPosition(int obstacleX) {
@@ -51,5 +45,15 @@ public class ScoreKeeper {
 
     public boolean getGameWon() {
         return gameWon;
+    }
+
+    private void setState(boolean gameStart) {
+        if (gameStart && score == 0) {
+            startText = "Dodge the spikes!\nPress Space to jump";
+        } else if (playerScoringPosition > scoringPositions.get(scoringPositions.size() - 1)) {
+            startText = "Congratulations!\nLevel cleared!\nPress 'R' to play again."
+                    + "\nor 'B' to go back to the menu.";
+            gameWon = true;
+        }
     }
 }

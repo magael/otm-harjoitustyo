@@ -62,13 +62,17 @@ public class Player extends GameObject {
             falling = true;
         }
 
+        updateVelocity();
+
+        this.setY(this.getY() - velocity);
+    }
+
+    private void updateVelocity() {
         if (!falling) {
             velocity += speed * acceleration;
         } else {
             velocity -= speed * acceleration;
         }
-
-        this.setY(this.getY() - velocity);
     }
 
     public boolean getFalling() {

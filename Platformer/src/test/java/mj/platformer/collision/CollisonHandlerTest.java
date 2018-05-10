@@ -1,7 +1,6 @@
 package mj.platformer.collision;
 
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import mj.platformer.gameobject.Obstacle;
 import mj.platformer.gameobject.Player;
 import org.junit.Before;

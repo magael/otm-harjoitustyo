@@ -2,13 +2,10 @@
 
 Ohjelmaa on testattu sekä automatisoiduin yksikkötestein JUnitilla sekä manuaalisesti tapahtunein järjestelmätason testein.
 
-## Yksikkö- ja integraatiotestaus
-
-### Sovelluslogiikka
-
+## Yksikkötestaus
 
 ### Testauskattavuus
-
+76% (ei yksinkertaisia gettereitä ja settereitä).
 
 ## Järjestelmätestaus
 
@@ -21,6 +18,8 @@ Sovellus on haettu ja sitä on testattu [käyttöohjeen](https://github.com/maga
 Sovellusta on testattu sekä tilanteissa, joissa huipputuloksen tallettava tiedosto on ollut olemassa ja jossa sitä ei ole ollut jolloin ohjelma on luonut sen itse.
 
 ### Toiminnallisuudet
-
+Kaikki määrittelydokumentin ja käyttöohjeen listaamat toiminnallisuudet on käyty läpi. Kaikkien toiminnallisuuksien yhteydessä on yritetty käyttää myös virheellisiä syötteitä.
 
 ## Sovellukseen jääneet laatuongelmat
+
+Ainakaan release:n .jarissa äänet eivät toimi.

@@ -24,4 +24,7 @@
 | 2.5. | 4 | Highscore-testi, LevelCreatorin pilkkomista, väreillä sun muilla leikkimistä |
 | 5.5. | 3 | Start-näkymä, kaksi eri tasoa, hylättyjä pelimekaniikkakokeiluja |
 | 6.5. | 2 | Testien fiksailua, levelien hiomista, level-teksti yläkulmaan, refaktorointia |
-| yht | 72 |
+| 8.5 | 1 | Uusi pisteidenlaskutapa ja muuta pientä |
+| 9.5. | 3 | Alustavat äänet, ruuduntärähtelyefekti, options-menu |
+| 10.5 | 4 | Info-menu, käyttöliittymän ja koodin laadun parantamista, testejä ja javadocia |
+| yht | 80 |

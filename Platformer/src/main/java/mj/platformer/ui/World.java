@@ -47,6 +47,7 @@ public class World extends Application {
     private int levelCount;
     private int maxShake;
     private int shake;
+    private long pauseTime;
     private double goSpeed;
     private ArrayList<GameObject> movingObjects;
     private String lvlFilePath;
@@ -150,13 +151,16 @@ public class World extends Application {
                     }
                 } else { // main scene loop
                     // possible pause input
-                    if (inputHandler.pauseInput()) {
+                    // the timer prevents single keystrokes from registering as
+                    // multiple, and prevents slowing the game down by holding P
+                    if (inputHandler.pauseInput() && pauseTime + 250000000 < currentTime) {
                         gamePaused = !gamePaused;
                         if (gamePaused) {
                             levelText.setText("PAUSED");
                         } else {
                             levelText.setText("Level: " + level);
                         }
+                        pauseTime = currentTime;
                     }
 
                     // jumping input and sfx
@@ -282,6 +286,7 @@ public class World extends Application {
         levelCount = 2;
         goSpeed = 5;
         maxShake = 12;
+        pauseTime = 0;
         musicOn = false;
         sfxOn = false;
 
@@ -527,9 +532,13 @@ public class World extends Application {
     }
 
     // apply a pseudorandom vertical offset to the player and other object sprites
+    // ensuring the last stutter goes opposite of the moving direction
+    // using Apache Commons Math library
     private void screenShake() {
-        // using Apache Commons Math library
-        int random = new RandomDataGenerator().nextInt(-shake, shake + 1);
+        int random = 1;
+        if (shake > 1) {
+            random = new RandomDataGenerator().nextInt(-shake, shake + 1);
+        }
 
         player.setX(player.getX() + random);
         for (GameObject go : movingObjects) {

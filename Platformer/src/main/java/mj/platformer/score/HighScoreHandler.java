@@ -9,10 +9,19 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
+/**
+ * HighScoreHandler handles file IO to read, write and store the high score.
+ * The high score for each level is stored in a local external textfile.
+ * 
+ * @author Maguel
+ */
 public class HighScoreHandler implements HighScoreDao {
 
     private HashMap<Integer, Long> highScores;
 
+    /**
+     * Constructor for the HighScoreHandler class.
+     */
     public HighScoreHandler() {
         this.highScores = new HashMap<>();
     }
@@ -30,10 +39,16 @@ public class HighScoreHandler implements HighScoreDao {
         highScores.put(level, score);
     }
 
+    /**
+     * Write the high score for each level from given file path.
+     * Creates a new file if one is not found at project / executable root.
+     * 
+     * @param filePath
+     * @param levelCount amount of levels in the game
+     */
     @Override
     public void writeHighScore(String filePath, int levelCount) {
         try {
-            // Create a new file if one is not found at project / executable root
             FileWriter writer = new FileWriter(filePath);
             BufferedWriter bw = new BufferedWriter(writer);
 
@@ -41,13 +56,19 @@ public class HighScoreHandler implements HighScoreDao {
                 bw.write(Long.toString(highScores.get(i)) + "\n");
             }
 
-            // Close the output stream
             bw.close();
         } catch (Exception e) {
-            System.err.println("Error when attempting to write to or create a high score file: " + e.getMessage());
+            System.err.println("Error when attempting to write to or create a high score file: " + e);
         }
     }
 
+    /**
+     * Read the high score for each level from given file path.
+     * If the read attempt fails, the high score is set to 0.
+     * 
+     * @param filePath
+     * @param levelCount amount of levels in the game
+     */
     @Override
     public void readHighScore(String filePath, int levelCount) {
         try {

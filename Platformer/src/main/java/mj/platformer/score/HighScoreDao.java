@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mj.platformer.score;
 
 /**
@@ -15,8 +10,20 @@ public interface HighScoreDao {
 
     void setHighScore(long score, int level);
 
+    /**
+     * Read the high score for each level from given file path.
+     * 
+     * @param filePath
+     * @param levelCount amount of levels in the game
+     */
     void readHighScore(String filePath, int levelCount);
 
+    /**
+     * Write the high score for each level from given file path.
+     * 
+     * @param filePath
+     * @param levelCount amount of levels in the game
+     */
     void writeHighScore(String filePath, int levelCount);
-    
+
 }

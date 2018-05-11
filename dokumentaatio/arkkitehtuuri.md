@@ -23,8 +23,11 @@ Utils-pakkauksessa on tason tiedoston lukuuun tarkoitettu luokka.
 ![luokka-pakkauskaavio](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/luokka-pakkauskaavio.png)
 
 ## Sekvenssikaavioita
-Pelin alustukset ja pääosa "game loopista":</br>
-![World](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/game_loop.png)
+Pelin alustukset</br>
+![World](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/alustus.png)
+
+Pääosa "game loopista" (valitettavasti tämän parempilaatuista kuvaa ei saanut sovelluksen ilmaisversiolla ulos):
+![Game loop](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/game_loop.png)
 
 World-luokan AnimationTimerin silmukassa esteiden liikuttelu:</br>
 ![Esteen liikkuminen](https://github.com/magael/otm-harjoitustyo/blob/master/dokumentaatio/Esteen%20liikkuminen.png)

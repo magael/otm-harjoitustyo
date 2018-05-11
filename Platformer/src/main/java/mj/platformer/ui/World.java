@@ -97,7 +97,7 @@ public class World extends Application {
         audioHandler = initAudio();
         CollisionHandler collisionHandler = new CollisionHandler();
         HighScoreHandler highScoreHandler = new HighScoreHandler();
-        highScoreHandler.readHighScore(highScoreFilePath, 2); // if no highscore, highscore = 0
+        highScoreHandler.readHighScore(highScoreFilePath, levelCount); // if no highscore, highscore = 0
 
         // Start scene
         Pane startPane = initPane();
@@ -308,9 +308,10 @@ public class World extends Application {
 
     private AudioHandler initAudio() {
         jumpSound = "audio/jump.mp3";
+        String musicFile = "audio/POL-ninja-panda-short.wav";
         AudioHandler audioHandler = new AudioHandler();
         audioHandler.addClip(jumpSound);
-        audioHandler.addMusic("audio/POL-ninja-panda-short.wav");
+        audioHandler.addMusic(musicFile);
         if (musicOn) {
             audioHandler.playMusic();
         }

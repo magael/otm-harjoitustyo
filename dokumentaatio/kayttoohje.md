@@ -1,20 +1,20 @@
 Lataa viimeisin release (linkki [readme:ssa](https://github.com/magael/otm-harjoitustyo/blob/master/README.md)) ja suorita .jar-tiedosto, tai kloonaa repositorio ja suorita esimerkiksi NetBeans IDE-ympäristössä pääluokka World. Jar:in saa myös generoitua repositorion juuressa Maven-plugin:in komennolla mvn package.
 
-Peli avautuu erilliseen ikkunaan, jonka saa suljettua oikeassa ylälaidassa sijaitsevasta ruksista tai painamalla näppäintä q.
+Peli avautuu erilliseen ikkunaan, jonka saa suljettua oikeassa ylälaidassa sijaitsevasta ruksista tai painamalla näppäintä Q.
 
 Alussa tulee valita pelattava taso haluamansa vaikeusasteen mukaan. Taso valitaan näppäimistön numeronäppäimillä.
 
-Aloitusnäkymästä voi myös navigoida "Options"-valikkoon o-näppäintä painamalla, josta käsin voi hiirellä nappeja painaen laittaa päälle ja pois päältä musiikin, ääniefektit ja tärähtelyefektin.
+Aloitusnäkymästä voi myös navigoida "Options"-valikkoon O-näppäintä painamalla, josta käsin voi hiirellä nappeja painaen laittaa päälle ja pois päältä musiikin, ääniefektit ja tärähtelyefektin.
 
-Vaihtoehtoisesti näppäimellä i pääsee näkemään kaikki näppäinkomennot, pysyväistallennukseen käytettävän tiedoston nimen sekä tekijätiedot.
+Vaihtoehtoisesti näppäimellä I pääsee näkemään kaikki näppäinkomennot, pysyväistallennukseen käytettävän tiedoston nimen sekä tekijätiedot.
 
-Eri valikoista pääsee takaisin päävalikkoon näppäimellä b.
+Eri valikoista pääsee takaisin päävalikkoon näppäimellä B.
 
 Pelaajan hahmo on vasemmalla puolella ruutua sijaitseva neliö. Tavoitteena on väistää lähestyviä piikkejä, mikä on mahdollista hyppimällä.
 
 Hyppiminen onnistuu painamalla välilyöntiä.
 
-Pelin voi laittaa tauolle näppäimellä p.
+Pelin voi laittaa tauolle näppäimellä P.
 
 Pisteitä saa ylittämällä esteitä.
 

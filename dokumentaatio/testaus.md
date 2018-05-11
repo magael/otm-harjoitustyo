@@ -5,7 +5,7 @@ Ohjelmaa on testattu sekä automatisoiduin yksikkötestein JUnitilla sekä manua
 ## Yksikkötestaus
 
 ### Testauskattavuus
-76% (ei yksinkertaisia gettereitä ja settereitä).
+76%, 61% (ei yksinkertaisia gettereitä ja settereitä).
 
 ## Järjestelmätestaus
 

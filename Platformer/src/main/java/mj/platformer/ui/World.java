@@ -7,7 +7,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Reflection;
 import javafx.scene.layout.HBox;
@@ -360,17 +360,26 @@ public class World extends Application {
         // title
         Text optionsText = new Text("Options");
         optionsText.setFill(playerColor);
+        optionsText.setFont(new Font(18));
+
+        String toggleStyle = "-fx-background-color: #6AB583";
 
         // screen shake on/off
         HBox shakeRow = new HBox(10);
         shakeRow.setPadding(new Insets(10));
         Label screenShake = new Label("Screen shake");
-        Button shakeButton = new Button("On/Off");
+        screenShake.setFont(new Font(16));
+        ToggleButton shakeButton = new ToggleButton("On/Off");
+        if (maxShake > 0) {
+            shakeButton.setStyle(toggleStyle);
+        }
         shakeButton.setOnAction(e -> {
             if (maxShake > 0) {
                 maxShake = 0;
+                shakeButton.setStyle("");
             } else {
                 maxShake = 12;
+                shakeButton.setStyle(toggleStyle);
             }
         });
         shakeRow.getChildren().addAll(screenShake, shakeButton);
@@ -379,12 +388,18 @@ public class World extends Application {
         HBox musicRow = new HBox(10);
         musicRow.setPadding(new Insets(10));
         Label music = new Label("Music");
-        Button musicButton = new Button("On/Off");
+        music.setFont(new Font(16));
+        ToggleButton musicButton = new ToggleButton("On/Off");
+        if (musicOn) {
+            musicButton.setStyle(toggleStyle);
+        }
         musicButton.setOnAction(e -> {
             if (musicOn) {
                 audioHandler.stopMusic();
+                musicButton.setStyle("");
             } else {
                 audioHandler.playMusic();
+                musicButton.setStyle(toggleStyle);
             }
             musicOn = !musicOn;
         });
@@ -394,9 +409,18 @@ public class World extends Application {
         HBox sfxRow = new HBox(10);
         musicRow.setPadding(new Insets(10));
         Label sfx = new Label("Sound effects");
-        Button sfxButton = new Button("On/Off");
+        sfx.setFont(new Font(16));
+        ToggleButton sfxButton = new ToggleButton("On/Off");
+        if (sfxOn) {
+            sfxButton.setStyle(toggleStyle);
+        }
         sfxButton.setOnAction(e -> {
             sfxOn = !sfxOn;
+            if (sfxOn) {
+                sfxButton.setStyle(toggleStyle);
+            } else {
+                sfxButton.setStyle("");
+            }
         });
         sfxRow.getChildren().addAll(sfx, sfxButton);
 
@@ -404,15 +428,25 @@ public class World extends Application {
         HBox frameCapRow = new HBox(10);
         frameCapRow.setPadding(new Insets(10));
         Label frameLabel = new Label("Frame rate cap");
-        Button frameCapButton = new Button("On/Off");
+        frameLabel.setFont(new Font(16));
+        ToggleButton frameCapButton = new ToggleButton("On/Off");
+        if (frameCap) {
+            frameCapButton.setStyle(toggleStyle);
+        }
         frameCapButton.setOnAction(e -> {
             frameCap = !frameCap;
+            if (frameCap) {
+                frameCapButton.setStyle(toggleStyle);
+            } else {
+                frameCapButton.setStyle("");
+            }
         });
         frameCapRow.getChildren().addAll(frameLabel, frameCapButton);
 
         // back to menu text
         Text backText = new Text("Press 'B' to go back to the main menu.");
         backText.setFill(backgroundColor);
+        backText.setFont(new Font(18));
 
         // adding everything together
         VBox vBox = new VBox(30);
@@ -430,7 +464,7 @@ public class World extends Application {
                 + "The high score for each level will be stored at\n"
                 + highScoreFilePath + ".\n\n"
                 + "Credits:\n"
-                + "Game by Mikael Jaakkola,\n"
+                + "Game by MJ,\n"
                 + "licensed under the MIT License.\n"
                 + "Background music by PlayOnLoop.com,\n"
                 + "licensed under Creative Commons By Attribution 3.0.");

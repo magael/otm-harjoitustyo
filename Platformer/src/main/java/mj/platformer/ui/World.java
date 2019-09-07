@@ -60,6 +60,7 @@ public class World extends Application {
     private boolean reflectionOn;
     private boolean musicOn;
     private boolean sfxOn;
+    private boolean noFrameCap;
     private Reflection playerReflection;
     private Color color1, color2, color3, color4;
     private Color playerColor, obstacleColor, groundColor, backgroundColor;
@@ -185,6 +186,9 @@ public class World extends Application {
                         // object positions, collisions and the score
                         while (delta >= 1) {
                             update();
+                            if (noFrameCap) {
+                                break;
+                            }
                             delta--;
                         }
                     } else {
@@ -309,6 +313,7 @@ public class World extends Application {
         pauseTime = 0;
         musicOn = false;
         sfxOn = false;
+        noFrameCap = false;
 
         initColors();
         newGame();
@@ -395,6 +400,16 @@ public class World extends Application {
             sfxOn = !sfxOn;
         });
         sfxRow.getChildren().addAll(sfx, sfxButton);
+        
+        // frame cap on/off
+        HBox frameCapRow = new HBox(10);
+        musicRow.setPadding(new Insets(10));
+        Label frameLabel = new Label("Frame rate cap");
+        Button frameCapButton = new Button("On/Off");
+        frameCapButton.setOnAction(e -> {
+            noFrameCap = !noFrameCap;
+        });
+        frameCapRow.getChildren().addAll(frameLabel, frameCapButton);
 
         // back to menu text
         Text backText = new Text("Press 'B' to go back to the main menu.");
@@ -403,7 +418,7 @@ public class World extends Application {
         // adding everything together
         VBox vBox = new VBox(30);
         vBox.setPadding(new Insets(100));
-        vBox.getChildren().addAll(optionsText, shakeRow, musicRow, sfxRow, backText);
+        vBox.getChildren().addAll(optionsText, shakeRow, musicRow, sfxRow, frameCapRow, backText);
         pane.getChildren().add(vBox);
     }
 

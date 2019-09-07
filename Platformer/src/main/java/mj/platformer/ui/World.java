@@ -157,11 +157,11 @@ public class World extends Application {
                     }
                 } else { // main scene loop
 //                    long now = System.nanoTime();
-                    long now = currentTime;
-                    delta += (now - lastTime) / ns;
-                    lastTime = now;
-                    double fps = 1000000.0 / (lastTime - (lastTime = System.nanoTime()));
-
+                    if (!noFrameCap) {
+                        long now = currentTime;
+                        delta += (now - lastTime) / ns;
+                        lastTime = now;
+                    }
                     // possible pause input
                     // the timer prevents single keystrokes from registering as
                     // multiple, and prevents slowing the game down by holding P
@@ -200,8 +200,6 @@ public class World extends Application {
                     if (inputHandler.quitInput()) {
                         quit();
                     }
-
-                    System.out.println(fps);
                 }
             }
 

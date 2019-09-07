@@ -121,12 +121,17 @@ public class World extends Application {
          * The game loop is based on javafx.animation.AnimationTimer.
          */
         new AnimationTimer() {
+            long lastTime = System.nanoTime();
+            double amountOfTicks = 60.0;
+            double ns = 1000000000 / amountOfTicks;
+            double delta = 0;
             /**
              *
              * @param currentTime
              */
             @Override
             public void handle(long currentTime) {
+
                 if (!gameStarted) { // start scene loop
                     // level selection input
                     level = inputHandler.levelInput();
@@ -170,7 +175,13 @@ public class World extends Application {
                         }
 
                         // object positions, collisions and the score
-                        update();
+                        long now = System.nanoTime();
+                        delta += (now - lastTime) / ns;
+                        lastTime = now;
+                        while (delta >= 1) {
+                            update();
+                            delta--;
+                        }
                     } else if (gameOver) {
                         gameOverEvent();
                     }
@@ -402,11 +413,11 @@ public class World extends Application {
                 + "licensed under Creative Commons By Attribution 3.0.");
         info.setFill(playerColor);
         info.setFont(Font.font(18));
-        
+
         Text back = new Text(200, 550, "Press 'B' to go back to the menu.");
         back.setFill(backgroundColor);
         back.setFont(Font.font(18));
-        
+
         pane.getChildren().addAll(info, back);
     }
 

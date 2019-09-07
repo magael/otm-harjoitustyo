@@ -60,7 +60,7 @@ public class World extends Application {
     private boolean reflectionOn;
     private boolean musicOn;
     private boolean sfxOn;
-    private boolean noFrameCap;
+    private boolean frameCap;
     private Reflection playerReflection;
     private Color color1, color2, color3, color4;
     private Color playerColor, obstacleColor, groundColor, backgroundColor;
@@ -157,7 +157,7 @@ public class World extends Application {
                     }
                 } else { // main scene loop
 //                    long now = System.nanoTime();
-                    if (!noFrameCap) {
+                    if (frameCap) {
                         long now = currentTime;
                         delta += (now - lastTime) / ns;
                         lastTime = now;
@@ -184,7 +184,7 @@ public class World extends Application {
                             audioHandler.playClip(jumpSound);
                         }
                         // object positions, collisions and the score
-                        if (noFrameCap) {
+                        if (!frameCap) {
                             update();
                         } else {
                             while (delta >= 1) {
@@ -312,7 +312,7 @@ public class World extends Application {
         pauseTime = 0;
         musicOn = false;
         sfxOn = false;
-        noFrameCap = false;
+        frameCap = false;
 
         initColors();
         newGame();
@@ -406,7 +406,7 @@ public class World extends Application {
         Label frameLabel = new Label("Frame rate cap");
         Button frameCapButton = new Button("On/Off");
         frameCapButton.setOnAction(e -> {
-            noFrameCap = !noFrameCap;
+            frameCap = !frameCap;
         });
         frameCapRow.getChildren().addAll(frameLabel, frameCapButton);
 

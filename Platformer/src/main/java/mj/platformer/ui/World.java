@@ -160,40 +160,42 @@ public class World extends Application {
                     delta += (now - lastTime) / ns;
                     lastTime = now;
                     double fps = 1000000.0 / (lastTime - (lastTime = System.nanoTime()));
-                    while (delta >= 1) {
-                        // possible pause input
-                        // the timer prevents single keystrokes from registering as
-                        // multiple, and prevents slowing the game down by holding P
-                        if (inputHandler.pauseInput() && pauseTime + 250000000 < currentTime) {
-                            gamePaused = !gamePaused;
-                            if (gamePaused) {
-                                levelText.setText("PAUSED");
-                            } else {
-                                levelText.setText("Level: " + level);
-                            }
-                            pauseTime = currentTime;
-                        }
 
-                        if (gameOver) {
-                            delta = 0;
-                            gameOverEvent();
-                        } else if (gameStarted && !gamePaused) {
-                            // jumping input and sfx
-                            if (inputHandler.playerInput(player) && sfxOn) {
-                                audioHandler.playClip(jumpSound);
-                            }
-                            // object positions, collisions and the score
+                    // possible pause input
+                    // the timer prevents single keystrokes from registering as
+                    // multiple, and prevents slowing the game down by holding P
+                    if (inputHandler.pauseInput() && pauseTime + 250000000 < currentTime) {
+                        gamePaused = !gamePaused;
+                        if (gamePaused) {
+                            levelText.setText("PAUSED");
+                        } else {
+                            levelText.setText("Level: " + level);
+                        }
+                        pauseTime = currentTime;
+                    }
+
+                    if (gameOver) {
+                        delta = 0;
+                        gameOverEvent();
+                    } else if (gameStarted && !gamePaused) {
+                        // jumping input and sfx
+                        if (inputHandler.playerInput(player) && sfxOn) {
+                            audioHandler.playClip(jumpSound);
+                        }
+                        // object positions, collisions and the score
+                        while (delta >= 1) {
                             update();
                             delta--;
-                        } else {
-                            // paused
-                            delta--;
                         }
-
-                        if (inputHandler.quitInput()) {
-                            quit();
-                        }
+                    } else {
+                        // paused
+                        delta--;
                     }
+
+                    if (inputHandler.quitInput()) {
+                        quit();
+                    }
+
                     System.out.println(fps);
                 }
             }

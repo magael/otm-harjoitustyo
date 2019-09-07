@@ -125,6 +125,7 @@ public class World extends Application {
             double amountOfTicks = 60.0;
             double ns = 1000000000 / amountOfTicks;
             double delta = 0;
+
             /**
              *
              * @param currentTime
@@ -155,35 +156,39 @@ public class World extends Application {
                         setStartScene(stage, startScene);
                     }
                 } else { // main scene loop
-                    // possible pause input
-                    // the timer prevents single keystrokes from registering as
-                    // multiple, and prevents slowing the game down by holding P
-                    if (inputHandler.pauseInput() && pauseTime + 250000000 < currentTime) {
-                        gamePaused = !gamePaused;
-                        if (gamePaused) {
-                            levelText.setText("PAUSED");
-                        } else {
-                            levelText.setText("Level: " + level);
+//                    long now = System.nanoTime();
+                    long now = currentTime;
+                    delta += (now - lastTime) / ns;
+                    lastTime = now;
+                    while (delta >= 1) {
+                        // possible pause input
+                        // the timer prevents single keystrokes from registering as
+                        // multiple, and prevents slowing the game down by holding P
+                        if (inputHandler.pauseInput() && pauseTime + 250000000 < currentTime) {
+                            gamePaused = !gamePaused;
+                            if (gamePaused) {
+                                levelText.setText("PAUSED");
+                            } else {
+                                levelText.setText("Level: " + level);
+                            }
+                            pauseTime = currentTime;
                         }
-                        pauseTime = currentTime;
-                    }
 
-                    // jumping input and sfx
-                    if (gameStarted && !gameOver && !gamePaused) {
-                        if (inputHandler.playerInput(player) && sfxOn) {
-                            audioHandler.playClip(jumpSound);
-                        }
+                        // jumping input and sfx
+                        if (gameOver) {
+                            delta = 0;
+                            gameOverEvent();
+                        } else if (gameStarted && !gamePaused) {
+                            if (inputHandler.playerInput(player) && sfxOn) {
+                                audioHandler.playClip(jumpSound);
+                            }
 
-                        // object positions, collisions and the score
-                        long now = System.nanoTime();
-                        delta += (now - lastTime) / ns;
-                        lastTime = now;
-                        while (delta >= 1) {
+                            // object positions, collisions and the score
                             update();
                             delta--;
+                        } else {
+                            delta--;
                         }
-                    } else if (gameOver) {
-                        gameOverEvent();
                     }
                 }
                 if (inputHandler.quitInput()) {
@@ -296,7 +301,7 @@ public class World extends Application {
 
         levelCount = 2;
         goSpeed = 5;
-        maxShake = 12;
+        maxShake = 0;
         pauseTime = 0;
         musicOn = false;
         sfxOn = false;

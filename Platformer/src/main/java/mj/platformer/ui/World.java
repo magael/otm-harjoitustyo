@@ -132,7 +132,6 @@ public class World extends Application {
              */
             @Override
             public void handle(long currentTime) {
-
                 if (!gameStarted) { // start scene loop
                     // level selection input
                     level = inputHandler.levelInput();
@@ -160,6 +159,7 @@ public class World extends Application {
                     long now = currentTime;
                     delta += (now - lastTime) / ns;
                     lastTime = now;
+                    double fps = 1000000.0 / (lastTime - (lastTime = System.nanoTime()));
                     while (delta >= 1) {
                         // possible pause input
                         // the timer prevents single keystrokes from registering as
@@ -174,25 +174,27 @@ public class World extends Application {
                             pauseTime = currentTime;
                         }
 
-                        // jumping input and sfx
                         if (gameOver) {
                             delta = 0;
                             gameOverEvent();
                         } else if (gameStarted && !gamePaused) {
+                            // jumping input and sfx
                             if (inputHandler.playerInput(player) && sfxOn) {
                                 audioHandler.playClip(jumpSound);
                             }
-
                             // object positions, collisions and the score
                             update();
                             delta--;
                         } else {
+                            // paused
                             delta--;
                         }
+
+                        if (inputHandler.quitInput()) {
+                            quit();
+                        }
                     }
-                }
-                if (inputHandler.quitInput()) {
-                    quit();
+                    System.out.println(fps);
                 }
             }
 

@@ -407,7 +407,7 @@ public class World extends Application {
 
         // sfx on/off
         HBox sfxRow = new HBox(10);
-        musicRow.setPadding(new Insets(10));
+        sfxRow.setPadding(new Insets(10));
         Label sfx = new Label("Sound effects");
         sfx.setFont(new Font(16));
         ToggleButton sfxButton = new ToggleButton("On/Off");

@@ -184,12 +184,13 @@ public class World extends Application {
                             audioHandler.playClip(jumpSound);
                         }
                         // object positions, collisions and the score
-                        while (delta >= 1) {
+                        if (noFrameCap) {
                             update();
-                            if (noFrameCap) {
-                                break;
+                        } else {
+                            while (delta >= 1) {
+                                update();
+                                delta--;
                             }
-                            delta--;
                         }
                     } else {
                         // paused
@@ -400,10 +401,10 @@ public class World extends Application {
             sfxOn = !sfxOn;
         });
         sfxRow.getChildren().addAll(sfx, sfxButton);
-        
+
         // frame cap on/off
         HBox frameCapRow = new HBox(10);
-        musicRow.setPadding(new Insets(10));
+        frameCapRow.setPadding(new Insets(10));
         Label frameLabel = new Label("Frame rate cap");
         Button frameCapButton = new Button("On/Off");
         frameCapButton.setOnAction(e -> {
